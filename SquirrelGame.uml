@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>/Users/alex/IdeaProjects/SquirrelGame</OriginalElement>
+  <nodes>
+    <node x="1236.2122093023254" y="455.5">hs.augsburg.squirrelgame.entity.plant.GoodPlant</node>
+    <node x="1303.7955426356586" y="150.0">hs.augsburg.squirrelgame.entity.Entity</node>
+    <node x="537.2122093023254" y="455.5">hs.augsburg.squirrelgame.entity.squirrel.MiniSquirrel</node>
+    <node x="1323.2955426356586" y="0.0">hs.augsburg.squirrelgame.util.Position</node>
+    <node x="1688.095930232558" y="241.0">hs.augsburg.squirrelgame.entity.plant.Plant</node>
+    <node x="1432.2122093023254" y="422.0">hs.augsburg.squirrelgame.entity.ListElement</node>
+    <node x="339.2122093023254" y="444.0">hs.augsburg.squirrelgame.entity.beast.GoodBeast</node>
+    <node x="0.0" y="851.0">hs.augsburg.squirrelgame.main.SquirrelGame</node>
+    <node x="1075.2122093023254" y="455.5">hs.augsburg.squirrelgame.entity.util.Wall</node>
+    <node x="147.2122093023254" y="444.0">hs.augsburg.squirrelgame.entity.beast.BadBeast</node>
+    <node x="1400.7122093023254" y="617.0">hs.augsburg.squirrelgame.entity.EntitySet</node>
+    <node x="769.2122093023254" y="433.0">hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel</node>
+    <node x="0.0" y="228.5">hs.augsburg.squirrelgame.entity.beast.Beast</node>
+    <node x="1634.2122093023254" y="455.5">hs.augsburg.squirrelgame.entity.plant.BadPlant</node>
+    <node x="295.9999999999999" y="228.5">hs.augsburg.squirrelgame.entity.squirrel.Squirrel</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel" target="hs.augsburg.squirrelgame.entity.Entity" relationship="GENERALIZATION">
+      <point x="71.5" y="-61.5" />
+      <point x="983.7122093023254" y="402.0" />
+      <point x="952.2499999999998" y="402.0" />
+      <point x="952.2499999999998" y="392.0" />
+      <point x="1342.4622093023254" y="392.0" />
+      <point x="-77.33333333333326" y="106.0" />
+    </edge>
+    <edge source="hs.augsburg.squirrelgame.entity.plant.BadPlant" target="hs.augsburg.squirrelgame.entity.plant.Plant" relationship="REALIZATION">
+      <point x="41.25" y="-39.0" />
+      <point x="1757.9622093023254" y="392.0" />
+      <point x="1733.595930232558" y="392.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel" target="hs.augsburg.squirrelgame.entity.squirrel.Squirrel" relationship="REALIZATION">
+      <point x="-71.5" y="-61.5" />
+      <point x="840.7122093023254" y="382.0" />
+      <point x="381.9999999999999" y="382.0" />
+      <point x="0.0" y="27.5" />
+    </edge>
+    <edge source="hs.augsburg.squirrelgame.entity.plant.BadPlant" target="hs.augsburg.squirrelgame.entity.Entity" relationship="GENERALIZATION">
+      <point x="-41.25" y="-39.0" />
+      <point x="1675.4622093023254" y="402.0" />
+      <point x="952.2499999999998" y="402.0" />
+      <point x="952.2499999999998" y="392.0" />
+      <point x="1342.4622093023254" y="392.0" />
+      <point x="-77.33333333333326" y="106.0" />
+    </edge>
+    <edge source="hs.augsburg.squirrelgame.entity.beast.GoodBeast" target="hs.augsburg.squirrelgame.entity.Entity" relationship="GENERALIZATION">
+      <point x="44.5" y="-50.5" />
+      <point x="472.7122093023254" y="402.0" />
+      <point x="952.2499999999998" y="402.0" />
+      <point x="952.2499999999998" y="392.0" />
+      <point x="1342.4622093023254" y="392.0" />
+      <point x="-77.33333333333326" y="106.0" />
+    </edge>
+    <edge source="hs.augsburg.squirrelgame.entity.util.Wall" target="hs.augsburg.squirrelgame.entity.Entity" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.0" />
+      <point x="1145.7122093023254" y="402.0" />
+      <point x="952.2499999999998" y="402.0" />
+      <point x="952.2499999999998" y="392.0" />
+      <point x="1342.4622093023254" y="392.0" />
+      <point x="-77.33333333333326" y="106.0" />
+    </edge>
+    <edge source="hs.augsburg.squirrelgame.entity.beast.BadBeast" target="hs.augsburg.squirrelgame.entity.Entity" relationship="GENERALIZATION">
+      <point x="43.0" y="-50.5" />
+      <point x="276.2122093023254" y="402.0" />
+      <point x="952.2499999999998" y="402.0" />
+      <point x="952.2499999999998" y="392.0" />
+      <point x="1342.4622093023254" y="392.0" />
+      <point x="-77.33333333333326" y="106.0" />
+    </edge>
+    <edge source="hs.augsburg.squirrelgame.entity.squirrel.MiniSquirrel" target="hs.augsburg.squirrelgame.entity.Entity" relationship="GENERALIZATION">
+      <point x="53.0" y="-39.0" />
+      <point x="696.2122093023254" y="402.0" />
+      <point x="952.2499999999998" y="402.0" />
+      <point x="952.2499999999998" y="392.0" />
+      <point x="1342.4622093023254" y="392.0" />
+      <point x="-77.33333333333326" y="106.0" />
+    </edge>
+    <edge source="hs.augsburg.squirrelgame.entity.squirrel.MiniSquirrel" target="hs.augsburg.squirrelgame.entity.squirrel.Squirrel" relationship="REALIZATION">
+      <point x="-53.0" y="-39.0" />
+      <point x="590.2122093023254" y="382.0" />
+      <point x="381.9999999999999" y="382.0" />
+      <point x="0.0" y="27.5" />
+    </edge>
+    <edge source="hs.augsburg.squirrelgame.entity.Entity" target="hs.augsburg.squirrelgame.util.Position" relationship="TO_ONE">
+      <point x="-58.0" y="-106.0" />
+      <point x="1361.7955426356586" y="125.0" />
+      <point x="1374.7955426356586" y="125.0" />
+      <point x="-51.5" y="50.0" />
+    </edge>
+    <edge source="hs.augsburg.squirrelgame.entity.plant.GoodPlant" target="hs.augsburg.squirrelgame.entity.Entity" relationship="GENERALIZATION">
+      <point x="-44.0" y="-39.0" />
+      <point x="1280.2122093023254" y="402.0" />
+      <point x="952.2499999999998" y="402.0" />
+      <point x="952.2499999999998" y="392.0" />
+      <point x="1342.4622093023254" y="392.0" />
+      <point x="-77.33333333333326" y="106.0" />
+    </edge>
+    <edge source="hs.augsburg.squirrelgame.entity.plant.GoodPlant" target="hs.augsburg.squirrelgame.entity.plant.Plant" relationship="REALIZATION">
+      <point x="44.0" y="-39.0" />
+      <point x="1368.2122093023254" y="392.0" />
+      <point x="1733.595930232558" y="392.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="hs.augsburg.squirrelgame.entity.ListElement" target="hs.augsburg.squirrelgame.entity.Entity" relationship="DEPENDENCY">
+      <point x="-45.5" y="-72.5" />
+      <point x="1477.7122093023254" y="382.0" />
+      <point x="1419.7955426356586" y="382.0" />
+      <point x="0.0" y="106.0" />
+    </edge>
+    <edge source="hs.augsburg.squirrelgame.entity.beast.BadBeast" target="hs.augsburg.squirrelgame.entity.beast.Beast" relationship="REALIZATION">
+      <point x="-43.0" y="-50.5" />
+      <point x="190.2122093023254" y="392.0" />
+      <point x="85.99999999999989" y="392.0" />
+      <point x="0.0" y="27.5" />
+    </edge>
+    <edge source="hs.augsburg.squirrelgame.entity.EntitySet" target="hs.augsburg.squirrelgame.entity.ListElement" relationship="TO_ONE">
+      <point x="-56.0" y="-94.5" />
+      <point x="1456.7122093023254" y="592.0" />
+      <point x="1477.7122093023254" y="592.0" />
+      <point x="-45.5" y="72.5" />
+    </edge>
+    <edge source="hs.augsburg.squirrelgame.entity.beast.GoodBeast" target="hs.augsburg.squirrelgame.entity.beast.Beast" relationship="REALIZATION">
+      <point x="-44.5" y="-50.5" />
+      <point x="383.7122093023254" y="392.0" />
+      <point x="85.99999999999989" y="392.0" />
+      <point x="0.0" y="27.5" />
+    </edge>
+    <edge source="hs.augsburg.squirrelgame.entity.ListElement" target="hs.augsburg.squirrelgame.entity.Entity" relationship="TO_ONE">
+      <point x="45.5" y="-72.5" />
+      <point x="1568.7122093023254" y="382.0" />
+      <point x="1497.128875968992" y="382.0" />
+      <point x="77.33333333333326" y="106.0" />
+    </edge>
+    <edge source="hs.augsburg.squirrelgame.entity.Entity" target="hs.augsburg.squirrelgame.util.Position" relationship="DEPENDENCY">
+      <point x="58.0" y="-106.0" />
+      <point x="51.5" y="50.0" />
+    </edge>
+    <edge source="hs.augsburg.squirrelgame.entity.EntitySet" target="hs.augsburg.squirrelgame.entity.ListElement" relationship="DEPENDENCY">
+      <point x="56.0" y="-94.5" />
+      <point x="45.5" y="72.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.5703296703296703" showDependencies="true" x="900.0" y="475.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
