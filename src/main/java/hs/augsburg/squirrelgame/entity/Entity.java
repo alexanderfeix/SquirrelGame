@@ -6,7 +6,7 @@ public abstract class Entity {
 
     public static int idCount = 0;
 
-    private int id;
+    private final int id;
     private int energy;
     private Position position;
 

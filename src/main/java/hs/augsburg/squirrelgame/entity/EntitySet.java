@@ -21,7 +21,7 @@ public class EntitySet {
         MasterSquirrel masterSquirrel = new MasterSquirrel(new Position(6.2, 8.3));
         addEntity(masterSquirrel);
         addEntity(masterSquirrel.createMiniSquirrel(new Position(1., 1.), 200));
-
+ 
     }
 
     public static void addEntity(Entity entity){
