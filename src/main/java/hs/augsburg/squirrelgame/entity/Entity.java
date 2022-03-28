@@ -1,6 +1,6 @@
 package hs.augsburg.squirrelgame.entity;
 
-import hs.augsburg.squirrelgame.util.Position;
+import hs.augsburg.squirrelgame.util.XY;
 
 public abstract class Entity {
 
@@ -8,11 +8,11 @@ public abstract class Entity {
 
     private final int id;
     private int energy;
-    private Position position;
+    private XY XY;
 
 
-    public Entity(Position position){
-        this.position = position;
+    public Entity(XY XY){
+        this.XY = XY;
         this.id = idCount;
         idCount++;
     }
@@ -21,8 +21,8 @@ public abstract class Entity {
         this.energy += energy;
     }
 
-    public void updatePosition(Position position){
-        this.position = position;
+    public void updatePosition(XY XY){
+        this.XY = XY;
     }
 
     public void nextStep(){
@@ -37,8 +37,8 @@ public abstract class Entity {
         return energy;
     }
 
-    public Position getPosition() {
-        return position;
+    public XY getPosition() {
+        return XY;
     }
 
     public void setEnergy(int energy) {

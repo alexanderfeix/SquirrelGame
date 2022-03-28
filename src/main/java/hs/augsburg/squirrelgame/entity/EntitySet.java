@@ -6,21 +6,21 @@ import hs.augsburg.squirrelgame.entity.plant.BadPlant;
 import hs.augsburg.squirrelgame.entity.plant.GoodPlant;
 import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.entity.util.Wall;
-import hs.augsburg.squirrelgame.util.Position;
+import hs.augsburg.squirrelgame.util.XY;
 
 public class EntitySet {
 
     private static ListElement tail;
 
     public static void initializeExamples(){
-        addEntity(new BadPlant(new Position(1.2, 3.3)));
-        addEntity(new GoodPlant(new Position(2.2, 4.3)));
-        addEntity(new BadBeast(new Position(3.2, 5.3)));
-        addEntity(new GoodBeast(new Position(4.2, 6.3)));
-        addEntity(new Wall(new Position(5.2, 7.3)));
-        MasterSquirrel masterSquirrel = new MasterSquirrel(new Position(6.2, 8.3));
+        addEntity(new BadPlant(new XY(1, 3)));
+        addEntity(new GoodPlant(new XY(2, 4)));
+        addEntity(new BadBeast(new XY(3, 5)));
+        addEntity(new GoodBeast(new XY(4, 6)));
+        addEntity(new Wall(new XY(5, 7)));
+        MasterSquirrel masterSquirrel = new MasterSquirrel(new XY(6, 8));
         addEntity(masterSquirrel);
-        addEntity(masterSquirrel.createMiniSquirrel(new Position(1., 1.), 200));
+        addEntity(masterSquirrel.createMiniSquirrel(new XY(1, 1), 200));
  
     }
 

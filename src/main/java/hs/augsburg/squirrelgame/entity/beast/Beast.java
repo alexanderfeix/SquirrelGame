@@ -1,9 +1,9 @@
 package hs.augsburg.squirrelgame.entity.beast;
 
-import hs.augsburg.squirrelgame.util.Position;
+import hs.augsburg.squirrelgame.util.XY;
 
 public interface Beast {
 
-    void move(Position position);
+    void move(XY XY);
 
 }

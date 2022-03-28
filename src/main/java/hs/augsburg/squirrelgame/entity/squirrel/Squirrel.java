@@ -1,10 +1,10 @@
 package hs.augsburg.squirrelgame.entity.squirrel;
 
-import hs.augsburg.squirrelgame.util.Position;
+import hs.augsburg.squirrelgame.util.XY;
 
 public interface Squirrel {
 
-    void move(Position position);
+    void move(XY position);
 
 
 }
