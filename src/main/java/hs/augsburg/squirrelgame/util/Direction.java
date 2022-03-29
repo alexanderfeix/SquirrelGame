@@ -2,7 +2,7 @@ package hs.augsburg.squirrelgame.util;
 
 public enum Direction {
     UP,
-    Down,
+    DOWN,
     LEFT,
     RIGHT,
     UP_RIGHT,
