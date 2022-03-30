@@ -16,19 +16,17 @@ public class SquirrelGame {
         frame.addKeyListener(ho);
         //Ab hier GUI Implementierung vorbei
         EntitySet.initializeExamples();
-        try{
+        try {
             gameLoop();
-        }catch (InterruptedException interruptedException){}
-
-
+        } catch (InterruptedException e) {}
     }
 
    public static void gameLoop() throws InterruptedException {
-
+        while(true){
+            //Loop will run until the JFrame window gets closed
             EntitySet.getEntityInformations();
+            System.out.println("-----");
             Thread.sleep(5000);
-
+        }
     }
-
-
 }

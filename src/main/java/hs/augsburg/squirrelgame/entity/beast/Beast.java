@@ -4,6 +4,6 @@ import hs.augsburg.squirrelgame.util.XY;
 
 public interface Beast {
 
-    void move(XY XY);
+    void move(XY position);
 
 }

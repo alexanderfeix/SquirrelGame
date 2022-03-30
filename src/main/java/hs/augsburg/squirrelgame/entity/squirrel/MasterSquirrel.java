@@ -20,7 +20,7 @@ public class MasterSquirrel extends Entity implements Squirrel {
     }
 
     @Override
-    public void move(XY XY) {
+    public void move(XY position) {
 
     }
 }
