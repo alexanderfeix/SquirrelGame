@@ -11,8 +11,8 @@ public abstract class Entity {
     private XY XY;
 
 
-    public Entity(XY XY){
-        this.XY = XY;
+    public Entity(XY position){
+        this.XY = position;
         this.id = idCount;
         idCount++;
     }
@@ -21,12 +21,16 @@ public abstract class Entity {
         this.energy += energy;
     }
 
-    public void updatePosition(XY XY){
-        this.XY = XY;
+    public void updatePosition(XY position){
+        this.XY = position;
     }
 
     public void nextStep(){
 
+    }
+
+    public boolean equals(Entity entity){
+        return getId() == entity.getId();
     }
 
     public int getId() {
