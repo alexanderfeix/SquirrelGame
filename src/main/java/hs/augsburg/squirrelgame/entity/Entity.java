@@ -2,7 +2,7 @@ package hs.augsburg.squirrelgame.entity;
 
 import hs.augsburg.squirrelgame.util.XY;
 
-public abstract class Entity {
+public abstract class Entity implements EntityInterface{
 
     public static int idCount = 0;
 
@@ -25,9 +25,7 @@ public abstract class Entity {
         this.XY = position;
     }
 
-    public void nextStep(){
-
-    }
+    public void nextStep(){}
 
     public boolean equals(Entity entity){
         return getId() == entity.getId();

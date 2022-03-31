@@ -3,7 +3,9 @@ package hs.augsburg.squirrelgame.entity.squirrel;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.util.XY;
 
-public class MasterSquirrel extends Entity implements Squirrel {
+public class MasterSquirrel extends Entity {
+    //MasterSquirrel is actually a movable entity but can't implement the move() method, because move() provides
+    //a random position
 
     private static final int startEnergy = 500;
 
@@ -19,8 +21,4 @@ public class MasterSquirrel extends Entity implements Squirrel {
         return miniSquirrel;
     }
 
-    @Override
-    public void move(XY position) {
-
-    }
 }

@@ -1,9 +1,9 @@
 package hs.augsburg.squirrelgame.entity.beast;
 
-import hs.augsburg.squirrelgame.entity.Entity;
+import hs.augsburg.squirrelgame.entity.MovableEntity;
 import hs.augsburg.squirrelgame.util.XY;
 
-public class BadBeast extends Entity implements Beast {
+public class BadBeast extends MovableEntity {
 
     private static final int startEnergy = -150;
 
@@ -12,8 +12,4 @@ public class BadBeast extends Entity implements Beast {
         this.setEnergy(startEnergy);
     }
 
-    @Override
-    public void move(XY position) {
-
-    }
 }
