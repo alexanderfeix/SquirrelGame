@@ -9,14 +9,13 @@ public class MasterSquirrel extends Entity {
 
     private static final int startEnergy = 500;
 
-    public MasterSquirrel(XY position) {
-        super(position);
-        this.setEnergy(startEnergy);
+    public MasterSquirrel(hs.augsburg.squirrelgame.util.XY position) {
+        super(position, startEnergy);
     }
+
 
     public Entity createMiniSquirrel(XY position, int energy){
         MiniSquirrel miniSquirrel = new MiniSquirrel(position, energy);
-        miniSquirrel.setEnergy(energy);
         this.updateEnergy(energy);
         return miniSquirrel;
     }

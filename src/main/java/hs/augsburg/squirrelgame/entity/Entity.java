@@ -11,8 +11,9 @@ public abstract class Entity implements EntityInterface{
     private XY XY;
 
 
-    public Entity(XY position){
+    public Entity(XY position, int energy){
         this.XY = position;
+        this.energy = energy;
         this.id = idCount;
         idCount++;
     }

@@ -7,8 +7,7 @@ public class Wall extends Entity {
 
     private static final int startEnergy = -30;
 
-    public Wall(XY position) {
-        super(position);
-        this.setEnergy(startEnergy);
+    public Wall(hs.augsburg.squirrelgame.util.XY position) {
+        super(position, startEnergy);
     }
 }
