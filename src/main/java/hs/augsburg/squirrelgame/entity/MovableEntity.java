@@ -1,9 +1,11 @@
 package hs.augsburg.squirrelgame.entity;
 
+import hs.augsburg.squirrelgame.util.XY;
+
 public abstract class MovableEntity extends Entity{
 
-    public MovableEntity(hs.augsburg.squirrelgame.util.XY position) {
-        super(position);
+    public MovableEntity(hs.augsburg.squirrelgame.util.XY position, int energy) {
+        super(position, energy);
     }
 
     private void move(){

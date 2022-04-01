@@ -7,8 +7,7 @@ public class BadPlant extends Entity {
 
     private static final int startEnergy = -300;
 
-    public BadPlant(XY position) {
-        super(position);
-        this.setEnergy(startEnergy);
+    public BadPlant(hs.augsburg.squirrelgame.util.XY position) {
+        super(position, startEnergy);
     }
 }
