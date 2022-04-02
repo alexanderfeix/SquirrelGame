@@ -1,6 +1,11 @@
 package hs.augsburg.squirrelgame.main;
+import hs.augsburg.squirrelgame.board.Board;
 import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.entity.squirrel.HandOperatedMasterSquirrel;
+import hs.augsburg.squirrelgame.game.Game;
+import hs.augsburg.squirrelgame.game.GameImpl;
+import hs.augsburg.squirrelgame.game.State;
+import hs.augsburg.squirrelgame.ui.ConsoleUI;
 import hs.augsburg.squirrelgame.util.XY;
 
 import javax.swing.*;
@@ -9,12 +14,9 @@ public class SquirrelGame {
 
     public static void main(String[] args) {
         //initializeJFrame();
-        EntitySet.initializeExamples();
-        try {
-            gameLoop();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        //EntitySet.initializeExamples();
+        GameImpl game = new GameImpl(new State(new Board()));
+        game.run();
     }
 
    public static void gameLoop() throws InterruptedException {
@@ -30,11 +32,11 @@ public class SquirrelGame {
     }
 
     private static void initializeJFrame(){
-        HandOperatedMasterSquirrel ho = new HandOperatedMasterSquirrel(new XY(9, 9));
         JFrame frame = new JFrame("My First GUI");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300,300);
         frame.setVisible(true);
-        frame.addKeyListener(ho);
+        frame.addKeyListener(new ConsoleUI());
     }
+
 }

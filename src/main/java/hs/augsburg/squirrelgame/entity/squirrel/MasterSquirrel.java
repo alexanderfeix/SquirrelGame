@@ -1,6 +1,7 @@
 package hs.augsburg.squirrelgame.entity.squirrel;
 
 import hs.augsburg.squirrelgame.entity.Entity;
+import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.util.XY;
 
 public class MasterSquirrel extends Entity {
@@ -10,7 +11,8 @@ public class MasterSquirrel extends Entity {
     private static final int startEnergy = 500;
 
     public MasterSquirrel(hs.augsburg.squirrelgame.util.XY position) {
-        super(position, startEnergy);
+        super(EntityType.MASTER_SQUIRREL, position, startEnergy);
+        setEntity(this);
     }
 
 

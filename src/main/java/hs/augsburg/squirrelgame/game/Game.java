@@ -1,12 +1,24 @@
 package hs.augsburg.squirrelgame.game;
 
-public abstract class Game {
+import hs.augsburg.squirrelgame.board.Board;
+import hs.augsburg.squirrelgame.entity.EntitySet;
+
+public abstract class Game{
+
+    public Game(State state){
+
+    }
 
     public void run(){
         while (true){
             render();
             processInput();
             update();
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -19,6 +31,7 @@ public abstract class Game {
      * Updates the current state
      */
     public void update() {
+        EntitySet.nextStep();
     }
 
     /**

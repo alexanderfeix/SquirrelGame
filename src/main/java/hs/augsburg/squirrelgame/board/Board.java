@@ -17,14 +17,16 @@ import java.util.Random;
 
 public class Board {
 
+    private FlattenedBoard flattenedBoard;
+
     public Board(){
         spawnBoarderWalls();
         spawnEntitiesRandomly();
+        flatten();
     }
 
-
     /**
-     * @return ArrayList with all enties in the linked list
+     * @return ArrayList with all entities in the linked list
      * commonly used to get all entities that are currently on the board
      */
     public ArrayList<Entity> getEntities(){
@@ -41,8 +43,18 @@ public class Board {
         return entities;
     }
 
+    /**
+     * Creates the FlattenedBoard by defining an array of entites
+     */
     public void flatten(){
-
+        Entity[][] gameBoard = new Entity[BoardConfig.COLUMNS][BoardConfig.ROWS];
+        ArrayList<Entity> entities = getEntities();
+        System.out.println(entities.size());
+        for (Entity entity : entities) {
+            XY position = entity.getPosition();
+            gameBoard[position.getX()][position.getY()] = entity;
+        }
+        setFlattenedBoard(new FlattenedBoard(gameBoard));
     }
 
     private Entity getNewEntityFromType(XY position, EntityType entityType){
@@ -65,8 +77,8 @@ public class Board {
         Random random = new Random();
         for(int i = 0; i < BoardConfig.SPAWN_RATES.size(); i++){
             for(int j = 0; j < (int) BoardConfig.SPAWN_RATES.values().toArray()[i]; j++){
-                int spawnX = random.nextInt(BoardConfig.COLUMNS);
-                int spawnY = random.nextInt(BoardConfig.ROWS);
+                int spawnX = random.nextInt(BoardConfig.COLUMNS - 2) + 1;
+                int spawnY = random.nextInt(BoardConfig.ROWS - 2) + 1;
                 XY spawnPosition = new XY(spawnX, spawnY);
                 if(spawnPositions.contains(spawnPosition)){
                     j--;
@@ -85,13 +97,20 @@ public class Board {
      */
     private void spawnBoarderWalls(){
         for(int column = 0; column < BoardConfig.COLUMNS; column++){
-            EntitySet.addEntity(new Wall(new XY(column, 1)));
-            EntitySet.addEntity(new Wall(new XY(column, -(BoardConfig.ROWS + 1))));
+            EntitySet.addEntity(new Wall(new XY(column, 0)));
+            EntitySet.addEntity(new Wall(new XY(column, BoardConfig.ROWS - 1)));
         }
-        for(int row = BoardConfig.ROWS + 1; row >= -1; row--){
-            EntitySet.addEntity(new Wall(new XY(-1, -row)));
-            EntitySet.addEntity(new Wall(new XY(BoardConfig.COLUMNS + 1, -row)));
+        for(int row = 0; row < BoardConfig.ROWS; row++){
+            EntitySet.addEntity(new Wall(new XY(0, row)));
+            EntitySet.addEntity(new Wall(new XY(BoardConfig.COLUMNS - 1, row)));
         }
     }
 
+    public void setFlattenedBoard(FlattenedBoard flattenedBoard) {
+        this.flattenedBoard = flattenedBoard;
+    }
+
+    public FlattenedBoard getFlattenedBoard() {
+        return flattenedBoard;
+    }
 }

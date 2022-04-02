@@ -8,6 +8,7 @@ public enum EntityType {
     BAD_BEAST,
     GOOD_PLANT,
     BAD_PLANT,
-    WALL
+    WALL,
+    NULL;
 
 }

@@ -18,10 +18,10 @@ public class EntitySet {
         addEntity(new BadBeast(new XY(0, 0)));
         addEntity(new GoodBeast(new XY(4, -6)));
         addEntity(new Wall(new XY(5, -7)));
-        MasterSquirrel masterSquirrel = new MasterSquirrel(new XY(6, -8));
-        addEntity(masterSquirrel);
+        //MasterSquirrel masterSquirrel = new MasterSquirrel(new XY(6, -8));
+        //addEntity(masterSquirrel);
         //Creating a mini-squirrel
-        addEntity(masterSquirrel.createMiniSquirrel(new XY(0, -1), 200));
+        //addEntity(masterSquirrel.createMiniSquirrel(new XY(0, -1), 200));
     }
 
     public static void addEntity(Entity entity){
@@ -84,12 +84,17 @@ public class EntitySet {
     public static void getEntityInformations(){
         ListElement temptail = tail;
         if(temptail != null){
-            System.out.println("ID: " + temptail.getEntity().getId() + ", Energy: " + temptail.getEntity().getEnergy() + ", Position: " + temptail.getEntity().getPosition().getX() + ", " + temptail.getEntity().getPosition().getY());
+            if(temptail.getEntity().getEntityType() != EntityType.WALL){
+                System.out.println("ID: " + temptail.getEntity().getId() + ", Energy: " + temptail.getEntity().getEnergy() + ", Position: " + temptail.getEntity().getPosition().getX() + ", " + temptail.getEntity().getPosition().getY() + " | " + temptail.getEntity().getEntityType());
+            }
         }
         while(temptail != null && temptail.hasPrev()){
-            System.out.println("ID: " + temptail.getPrevItem().getEntity().getId() + ", Energy: " + temptail.getPrevItem().getEntity().getEnergy() + ", Position: " + temptail.getPrevItem().getEntity().getPosition().getX() + ", " + temptail.getPrevItem().getEntity().getPosition().getY());
+            if(temptail.getPrevItem().getEntity().getEntityType() != EntityType.WALL){
+                System.out.println("ID: " + temptail.getPrevItem().getEntity().getId() + ", Energy: " + temptail.getPrevItem().getEntity().getEnergy() + ", Position: " + temptail.getPrevItem().getEntity().getPosition().getX() + ", " + temptail.getPrevItem().getEntity().getPosition().getY() + " | " + temptail.getPrevItem().getEntity().getEntityType());
+            }
             temptail = temptail.getPrevItem();
         }
+        System.out.println("\n----------\n");
     }
 
     public static ListElement getTail() {

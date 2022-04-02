@@ -1,22 +1,37 @@
 package hs.augsburg.squirrelgame.game;
 
 import hs.augsburg.squirrelgame.board.Board;
+import hs.augsburg.squirrelgame.board.FlattenedBoard;
 
 public class State {
 
     private int highScore = 0;
-    private Board board;
+    private static Board board;
+    private static FlattenedBoard flattenedBoard;
+
+    public State(Board board){
+        setBoard(board);
+        setFlattenedBoard(getBoard().getFlattenedBoard());
+    }
+
+    public static FlattenedBoard getFlattenedBoard() {
+        return flattenedBoard;
+    }
+
+    public static void setFlattenedBoard(FlattenedBoard flattenedBoard) {
+        State.flattenedBoard = flattenedBoard;
+    }
 
     public int getHighScore() {
         return highScore;
     }
 
-    public Board getBoard() {
+    public static Board getBoard() {
         return board;
     }
 
     public void setBoard(Board board) {
-        this.board = board;
+        State.board = board;
     }
 
     public void setHighScore(int highScore) {

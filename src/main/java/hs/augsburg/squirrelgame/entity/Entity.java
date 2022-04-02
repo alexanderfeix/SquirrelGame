@@ -9,11 +9,14 @@ public abstract class Entity implements EntityInterface{
     private final int id;
     private int energy;
     private XY XY;
+    private final EntityType entityType;
+    private Entity entity;
 
 
-    public Entity(XY position, int energy){
+    public Entity(EntityType entityType, XY position, int energy){
         this.XY = position;
         this.energy = energy;
+        this.entityType = entityType;
         this.id = idCount;
         idCount++;
     }
@@ -42,6 +45,18 @@ public abstract class Entity implements EntityInterface{
 
     public XY getPosition() {
         return XY;
+    }
+
+    public Entity getEntity() {
+        return entity;
+    }
+
+    public EntityType getEntityType() {
+        return entityType;
+    }
+
+    public void setEntity(Entity entity) {
+        this.entity = entity;
     }
 
     public void setEnergy(int energy) {
