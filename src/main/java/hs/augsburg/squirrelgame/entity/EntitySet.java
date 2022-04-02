@@ -12,7 +12,7 @@ public class EntitySet {
 
     private static ListElement tail;
 
-    public static void initializeExamples(){
+    public static void initializeExamples() {
         addEntity(new BadPlant(new XY(1, -3)));
         addEntity(new GoodPlant(new XY(2, -4)));
         addEntity(new BadBeast(new XY(0, 0)));
@@ -24,81 +24,90 @@ public class EntitySet {
         addEntity(masterSquirrel.createMiniSquirrel(new XY(0, -1), 200));
     }
 
-    public static void addEntity(Entity entity){
-        ListElement newItem = new ListElement(entity);
-        if(tail == null){
-            tail = newItem;
-        }else{
-            ListElement prevTail = tail;
-            tail.setNextItem(newItem);
-            tail = newItem;
-            tail.setPrevItem(prevTail);
+    public static void addEntity(Entity entity) {
+        try {
+            ListElement newItem = new ListElement(entity);
+            if (tail == null) {
+                tail = newItem;
+            } else {
+                ListElement prevTail = tail;
+                tail.setNextItem(newItem);
+                tail = newItem;
+                tail.setPrevItem(prevTail);
+            }
+        } catch (IllegalStateException ise) {
+            System.out.println("List element already exists");
         }
     }
 
-    public static void removeEntity(Entity entity){
-        ListElement tempTail = tail;
-        if(tempTail == null){
-            return;
-        }
-        if(!tempTail.hasPrev() && tempTail.getEntity() == entity){
-            tail = null;
-            return;
-        }
-        while(tempTail.hasPrev()){
-            ListElement newTempTail = tempTail.getPrevItem();
-            if(tempTail.getEntity() == entity){
-                if(tail.getEntity() == tempTail.getEntity()){
-                    tail = tempTail.getPrevItem();
-                }
-                tempTail.getPrevItem().setNextItem(null);
-                tempTail.setNextItem(null);
-                tempTail.setPrevItem(null);
+    public static void removeEntity(Entity entity) {
+        try {
+            ListElement tempTail = tail;
+            if (tempTail == null) {
                 return;
             }
-            if(tempTail.getPrevItem().getEntity() == entity){
-                if(tempTail.getPrevItem().hasPrev()){
-                    tempTail.getPrevItem().getPrevItem().setNextItem(tempTail);
-                    tempTail.setPrevItem(tempTail.getPrevItem().getPrevItem());
-                    tempTail.getPrevItem().setPrevItem(null);
+            if (!tempTail.hasPrev() && tempTail.getEntity() == entity) {
+                tail = null;
+                return;
+            }
+            while (tempTail.hasPrev()) {
+                ListElement newTempTail = tempTail.getPrevItem();
+                if (tempTail.getEntity() == entity) {
+                    if (tail.getEntity() == tempTail.getEntity()) {
+                        tail = tempTail.getPrevItem();
+                    }
                     tempTail.getPrevItem().setNextItem(null);
-                }else{
-                    tempTail.getPrevItem().setNextItem(null);
+                    tempTail.setNextItem(null);
                     tempTail.setPrevItem(null);
+                    return;
                 }
-                return;
+                if (tempTail.getPrevItem().getEntity() == entity) {
+                    if (tempTail.getPrevItem().hasPrev()) {
+                        tempTail.getPrevItem().getPrevItem().setNextItem(tempTail);
+                        tempTail.setPrevItem(tempTail.getPrevItem().getPrevItem());
+                        tempTail.getPrevItem().setPrevItem(null);
+                        tempTail.getPrevItem().setNextItem(null);
+                    } else {
+                        tempTail.getPrevItem().setNextItem(null);
+                        tempTail.setPrevItem(null);
+                    }
+                    return;
+                }
+                tempTail = newTempTail;
             }
-            tempTail = newTempTail;
+        } catch (IllegalStateException ise) {
+            System.out.println("Entity list is empty");
         }
     }
 
-    public static void nextStep(){
+    public static void nextStep() {
         ListElement temptail = tail;
         temptail.getEntity().nextStep();
-        while(temptail.hasPrev()){
+        while (temptail.hasPrev()) {
             temptail.getPrevItem().getEntity().nextStep();
             temptail = temptail.getPrevItem();
         }
     }
 
-    public static void getEntityInformations(){
+    public static void getEntityInformations() {
         ListElement temptail = tail;
-        if(temptail != null){
+        if (temptail != null) {
             System.out.println("ID: " + temptail.getEntity().getId() + ", Energy: " + temptail.getEntity().getEnergy() + ", Position: " + temptail.getEntity().getPosition().getX() + ", " + temptail.getEntity().getPosition().getY());
         }
-        while(temptail != null && temptail.hasPrev()){
+        while (temptail != null && temptail.hasPrev()) {
             System.out.println("ID: " + temptail.getPrevItem().getEntity().getId() + ", Energy: " + temptail.getPrevItem().getEntity().getEnergy() + ", Position: " + temptail.getPrevItem().getEntity().getPosition().getX() + ", " + temptail.getPrevItem().getEntity().getPosition().getY());
             temptail = temptail.getPrevItem();
         }
     }
 }
+
 class ListElement {
 
     private final Entity entity;
     private ListElement prevItem;
     private ListElement nextItem;
 
-    public ListElement(Entity entity){
+    public ListElement(Entity entity) {
         this.entity = entity;
         nextItem = null;
     }
@@ -111,19 +120,19 @@ class ListElement {
         return prevItem;
     }
 
-    public ListElement getNextItem() {
-        return nextItem;
-    }
-
     public void setPrevItem(ListElement prevItem) {
         this.prevItem = prevItem;
+    }
+
+    public ListElement getNextItem() {
+        return nextItem;
     }
 
     public void setNextItem(ListElement nextItem) {
         this.nextItem = nextItem;
     }
 
-    public boolean hasPrev(){
+    public boolean hasPrev() {
         return this.prevItem != null;
     }
 }
