@@ -6,7 +6,7 @@ import hs.augsburg.squirrelgame.util.XY;
 
 public class MasterSquirrel extends Entity {
     //MasterSquirrel is actually a movable entity but can't implement the move() method, because move() provides
-    //a random position
+    //a random position, so we use the HandOperatedMasterSquirrel class to move the squirrel manually
 
     private static final int startEnergy = 500;
 

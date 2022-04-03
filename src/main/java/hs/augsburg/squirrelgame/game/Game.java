@@ -1,13 +1,8 @@
 package hs.augsburg.squirrelgame.game;
 
-import hs.augsburg.squirrelgame.board.Board;
 import hs.augsburg.squirrelgame.entity.EntitySet;
 
 public abstract class Game{
-
-    public Game(State state){
-
-    }
 
     public void run(){
         while (true){

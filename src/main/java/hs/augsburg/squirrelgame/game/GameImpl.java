@@ -7,11 +7,10 @@ public class GameImpl extends Game{
         super(state);
     }
 
-    //I think this class is unnecessary for us because we're using a key-listener. But not sure?
-
     @Override
     public void processInput() {
-
+        //Currently, this method does nothing, because we implemented the manual steering in HandOperatedMasterSquirrel
+        //because of using a key-listener
     }
 
     @Override

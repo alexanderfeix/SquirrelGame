@@ -49,7 +49,6 @@ public class Board {
     public void flatten(){
         Entity[][] gameBoard = new Entity[BoardConfig.COLUMNS][BoardConfig.ROWS];
         ArrayList<Entity> entities = getEntities();
-        System.out.println(entities.size());
         for (Entity entity : entities) {
             XY position = entity.getPosition();
             gameBoard[position.getX()][position.getY()] = entity;

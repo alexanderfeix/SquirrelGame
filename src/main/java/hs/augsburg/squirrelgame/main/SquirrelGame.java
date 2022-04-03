@@ -1,34 +1,18 @@
 package hs.augsburg.squirrelgame.main;
 import hs.augsburg.squirrelgame.board.Board;
-import hs.augsburg.squirrelgame.entity.EntitySet;
-import hs.augsburg.squirrelgame.entity.squirrel.HandOperatedMasterSquirrel;
 import hs.augsburg.squirrelgame.game.Game;
 import hs.augsburg.squirrelgame.game.GameImpl;
 import hs.augsburg.squirrelgame.game.State;
 import hs.augsburg.squirrelgame.ui.ConsoleUI;
-import hs.augsburg.squirrelgame.util.XY;
 
 import javax.swing.*;
 
 public class SquirrelGame {
 
     public static void main(String[] args) {
-        //initializeJFrame();
-        //EntitySet.initializeExamples();
-        GameImpl game = new GameImpl(new State(new Board()));
+        State state = new State(new Board());
+        Game game = new GameImpl(state);
         game.run();
-    }
-
-   public static void gameLoop() throws InterruptedException {
-        while(true){
-            //Loop will run until the JFrame window gets closed
-
-            //nextStep() calls all entities in the list to update (e.g. their positions)
-            EntitySet.nextStep();
-            EntitySet.getEntityInformations();
-            System.out.println("-----");
-            Thread.sleep(5000);
-        }
     }
 
     private static void initializeJFrame(){
