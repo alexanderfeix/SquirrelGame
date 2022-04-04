@@ -25,7 +25,10 @@ public class EntitySet {
     }
 
     public static void addEntity(Entity entity) {
-        try {
+
+        if(entityExists(entity)){
+            throw new IllegalStateException();
+        }else{
             ListElement newItem = new ListElement(entity);
             if (tail == null) {
                 tail = newItem;
@@ -35,13 +38,14 @@ public class EntitySet {
                 tail = newItem;
                 tail.setPrevItem(prevTail);
             }
-        } catch (IllegalStateException ise) {
-            System.out.println("List element already exists");
         }
     }
 
+
+
     public static void removeEntity(Entity entity) {
-        try {
+        if(!entityExists(entity))throw new IllegalStateException();
+
             ListElement tempTail = tail;
             if (tempTail == null) {
                 return;
@@ -75,9 +79,25 @@ public class EntitySet {
                 }
                 tempTail = newTempTail;
             }
-        } catch (IllegalStateException ise) {
-            System.out.println("Entity list is empty");
+
+    }
+
+    public static boolean entityExists(Entity entity){
+        ListElement tempTail = tail;
+        if (tempTail == null) {
+            return false;
         }
+        if (!tempTail.hasPrev() && tempTail.getEntity().equals(entity)) {
+            return true;
+        }
+        while (tempTail.hasPrev()){
+            ListElement newTempTail = tempTail.getPrevItem();
+            if(tempTail.getEntity().equals(entity)){
+                return true;
+            }
+            tempTail = newTempTail;
+        }
+        return tempTail.equals(entity);
     }
 
     public static void nextStep() {
