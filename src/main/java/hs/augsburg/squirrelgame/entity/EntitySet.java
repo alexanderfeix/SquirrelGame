@@ -4,7 +4,6 @@ import hs.augsburg.squirrelgame.entity.beast.BadBeast;
 import hs.augsburg.squirrelgame.entity.beast.GoodBeast;
 import hs.augsburg.squirrelgame.entity.plant.BadPlant;
 import hs.augsburg.squirrelgame.entity.plant.GoodPlant;
-import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.entity.util.Wall;
 import hs.augsburg.squirrelgame.util.XY;
 

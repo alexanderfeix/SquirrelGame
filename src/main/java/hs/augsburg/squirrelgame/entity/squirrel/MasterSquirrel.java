@@ -15,7 +15,6 @@ public class MasterSquirrel extends Entity {
         setEntity(this);
     }
 
-
     public Entity createMiniSquirrel(XY position, int energy){
         MiniSquirrel miniSquirrel = new MiniSquirrel(position, energy);
         this.updateEnergy(energy);

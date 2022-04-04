@@ -4,6 +4,10 @@ import hs.augsburg.squirrelgame.entity.EntitySet;
 
 public abstract class Game{
 
+    public Game(State state){
+
+    }
+
     public void run(){
         while (true){
             render();

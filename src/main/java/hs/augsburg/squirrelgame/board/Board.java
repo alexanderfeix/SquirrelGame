@@ -8,6 +8,7 @@ import hs.augsburg.squirrelgame.entity.beast.BadBeast;
 import hs.augsburg.squirrelgame.entity.beast.GoodBeast;
 import hs.augsburg.squirrelgame.entity.plant.BadPlant;
 import hs.augsburg.squirrelgame.entity.plant.GoodPlant;
+import hs.augsburg.squirrelgame.entity.squirrel.HandOperatedMasterSquirrel;
 import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.entity.util.Wall;
 import hs.augsburg.squirrelgame.util.XY;
@@ -58,7 +59,7 @@ public class Board {
 
     private Entity getNewEntityFromType(XY position, EntityType entityType){
         return switch (entityType) {
-            case MASTER_SQUIRREL -> new MasterSquirrel(position);
+            case MASTER_SQUIRREL -> new HandOperatedMasterSquirrel(position);
             case GOOD_BEAST -> new GoodBeast(position);
             case BAD_BEAST -> new BadBeast(position);
             case GOOD_PLANT -> new GoodPlant(position);

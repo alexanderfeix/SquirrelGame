@@ -14,7 +14,7 @@ public class BoardConfig {
         put(EntityType.BAD_BEAST, 3);
         put(EntityType.GOOD_PLANT, 3);
         put(EntityType.BAD_PLANT, 3);
-        put(EntityType.WALL, 10);
+        //put(EntityType.WALL, 10);
     }};
 
 }

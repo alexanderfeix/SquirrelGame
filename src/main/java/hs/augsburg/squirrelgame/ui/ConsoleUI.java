@@ -8,7 +8,7 @@ import java.awt.event.KeyListener;
 
 public class ConsoleUI implements UI, KeyListener {
 
-    private Direction nextDirection;
+    private static Direction nextDirection;
 
     @Override
     public void render(BoardView view) {
@@ -18,11 +18,11 @@ public class ConsoleUI implements UI, KeyListener {
 
     @Override
     public Direction getNextDirection() {
-        return this.nextDirection;
+        return nextDirection;
     }
 
     public void setNextDirection(Direction nextDirection) {
-        this.nextDirection = nextDirection;
+        ConsoleUI.nextDirection = nextDirection;
     }
 
     @Override

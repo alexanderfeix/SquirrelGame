@@ -2,6 +2,7 @@ package hs.augsburg.squirrelgame.board;
 
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
+import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.ui.BoardView;
 import hs.augsburg.squirrelgame.util.Direction;
 import hs.augsburg.squirrelgame.util.XY;
@@ -30,9 +31,9 @@ public class FlattenedBoard implements BoardView, EntityContext {
     public void move(Entity entity, Direction direction) {
         XY currentPosition = entity.getPosition();
         XY movePosition = switch (direction) {
-            case UP -> new XY(currentPosition.getX(), currentPosition.getY() + 1);
+            case UP -> new XY(currentPosition.getX(), currentPosition.getY() - 1);
             case RIGHT -> new XY(currentPosition.getX() + 1, currentPosition.getY());
-            case DOWN -> new XY(currentPosition.getX(), currentPosition.getY() - 1);
+            case DOWN -> new XY(currentPosition.getX(), currentPosition.getY() + 1);
             case LEFT -> new XY(currentPosition.getX() - 1, currentPosition.getY());
             default -> currentPosition;
         };

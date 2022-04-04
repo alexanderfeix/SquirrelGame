@@ -10,6 +10,7 @@ import javax.swing.*;
 public class SquirrelGame {
 
     public static void main(String[] args) {
+        initializeJFrame();
         State state = new State(new Board());
         Game game = new GameImpl(state);
         game.run();
