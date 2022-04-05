@@ -1,5 +1,7 @@
 package hs.augsburg.squirrelgame.main;
+import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntitySet;
+import hs.augsburg.squirrelgame.entity.plant.BadPlant;
 import hs.augsburg.squirrelgame.entity.squirrel.HandOperatedMasterSquirrel;
 import hs.augsburg.squirrelgame.util.XY;
 
