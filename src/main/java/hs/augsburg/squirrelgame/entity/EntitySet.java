@@ -123,6 +123,24 @@ public class EntitySet {
         }
         System.out.println("\n----------\n");
     }
+  
+    public static int returnLastID(){
+        return tail.getEntity().getId();
+    }
+  
+    public static int countItems(){
+        ListElement temptail = tail;
+        int counter = 0;
+        if(temptail == null){
+            return counter;
+        }else{
+            while(temptail != null){
+                counter++;
+                temptail = temptail.getPrevItem();
+            }
+        }
+        return counter;
+    }
 
     public static ListElement getTail() {
         return tail;
