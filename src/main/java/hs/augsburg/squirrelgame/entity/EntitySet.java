@@ -11,7 +11,7 @@ public class EntitySet {
 
     private static ListElement tail;
 
-    public static void initializeExamples(){
+    public static void initializeExamples() {
         addEntity(new BadPlant(new XY(1, -3)));
         addEntity(new GoodPlant(new XY(2, -4)));
         addEntity(new BadBeast(new XY(0, 0)));
@@ -23,64 +23,92 @@ public class EntitySet {
         //addEntity(masterSquirrel.createMiniSquirrel(new XY(0, -1), 200));
     }
 
-    public static void addEntity(Entity entity){
-        ListElement newItem = new ListElement(entity);
-        if(tail == null){
-            tail = newItem;
+    public static void addEntity(Entity entity) {
+
+        if(entityExists(entity)){
+            throw new IllegalStateException();
         }else{
-            ListElement prevTail = tail;
-            tail.setNextItem(newItem);
-            tail = newItem;
-            tail.setPrevItem(prevTail);
+            ListElement newItem = new ListElement(entity);
+            if (tail == null) {
+                tail = newItem;
+            } else {
+                ListElement prevTail = tail;
+                tail.setNextItem(newItem);
+                tail = newItem;
+                tail.setPrevItem(prevTail);
+            }
         }
     }
 
-    public static void removeEntity(Entity entity){
-        ListElement tempTail = tail;
-        if(tempTail == null){
-            return;
-        }
-        if(!tempTail.hasPrev() && tempTail.getEntity() == entity){
-            tail = null;
-            return;
-        }
-        while(tempTail.hasPrev()){
-            ListElement newTempTail = tempTail.getPrevItem();
-            if(tempTail.getEntity() == entity){
-                if(tail.getEntity() == tempTail.getEntity()){
-                    tail = tempTail.getPrevItem();
-                }
-                tempTail.getPrevItem().setNextItem(null);
-                tempTail.setNextItem(null);
-                tempTail.setPrevItem(null);
+
+
+    public static void removeEntity(Entity entity) {
+        if(!entityExists(entity))throw new IllegalStateException();
+
+            ListElement tempTail = tail;
+            if (tempTail == null) {
                 return;
             }
-            if(tempTail.getPrevItem().getEntity() == entity){
-                if(tempTail.getPrevItem().hasPrev()){
-                    tempTail.getPrevItem().getPrevItem().setNextItem(tempTail);
-                    tempTail.setPrevItem(tempTail.getPrevItem().getPrevItem());
-                    tempTail.getPrevItem().setPrevItem(null);
-                    tempTail.getPrevItem().setNextItem(null);
-                }else{
-                    tempTail.getPrevItem().setNextItem(null);
-                    tempTail.setPrevItem(null);
-                }
+            if (!tempTail.hasPrev() && tempTail.getEntity() == entity) {
+                tail = null;
                 return;
+            }
+            while (tempTail.hasPrev()) {
+                ListElement newTempTail = tempTail.getPrevItem();
+                if (tempTail.getEntity() == entity) {
+                    if (tail.getEntity() == tempTail.getEntity()) {
+                        tail = tempTail.getPrevItem();
+                    }
+                    tempTail.getPrevItem().setNextItem(null);
+                    tempTail.setNextItem(null);
+                    tempTail.setPrevItem(null);
+                    return;
+                }
+                if (tempTail.getPrevItem().getEntity() == entity) {
+                    if (tempTail.getPrevItem().hasPrev()) {
+                        tempTail.getPrevItem().getPrevItem().setNextItem(tempTail);
+                        tempTail.setPrevItem(tempTail.getPrevItem().getPrevItem());
+                        tempTail.getPrevItem().setPrevItem(null);
+                        tempTail.getPrevItem().setNextItem(null);
+                    } else {
+                        tempTail.getPrevItem().setNextItem(null);
+                        tempTail.setPrevItem(null);
+                    }
+                    return;
+                }
+                tempTail = newTempTail;
+            }
+
+    }
+
+    public static boolean entityExists(Entity entity){
+        ListElement tempTail = tail;
+        if (tempTail == null) {
+            return false;
+        }
+        if (!tempTail.hasPrev() && tempTail.getEntity().equals(entity)) {
+            return true;
+        }
+        while (tempTail.hasPrev()){
+            ListElement newTempTail = tempTail.getPrevItem();
+            if(tempTail.getEntity().equals(entity)){
+                return true;
             }
             tempTail = newTempTail;
         }
+        return tempTail.equals(entity);
     }
 
-    public static void nextStep(){
+    public static void nextStep() {
         ListElement temptail = tail;
         temptail.getEntity().nextStep();
-        while(temptail.hasPrev()){
+        while (temptail.hasPrev()) {
             temptail.getPrevItem().getEntity().nextStep();
             temptail = temptail.getPrevItem();
         }
     }
 
-    public static void getEntityInformations(){
+    public static void getEntityInformations() {
         ListElement temptail = tail;
         if(temptail != null){
             if(temptail.getEntity().getEntityType() != EntityType.WALL){
