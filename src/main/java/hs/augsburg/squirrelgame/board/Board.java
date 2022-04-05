@@ -9,11 +9,11 @@ import hs.augsburg.squirrelgame.entity.beast.GoodBeast;
 import hs.augsburg.squirrelgame.entity.plant.BadPlant;
 import hs.augsburg.squirrelgame.entity.plant.GoodPlant;
 import hs.augsburg.squirrelgame.entity.squirrel.HandOperatedMasterSquirrel;
-import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.entity.util.Wall;
 import hs.augsburg.squirrelgame.util.XY;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class Board {
@@ -49,11 +49,7 @@ public class Board {
      */
     public void flatten(){
         Entity[][] gameBoard = new Entity[BoardConfig.COLUMNS][BoardConfig.ROWS];
-        ArrayList<Entity> entities = getEntities();
-        for (Entity entity : entities) {
-            XY position = entity.getPosition();
-            gameBoard[position.getX()][position.getY()] = entity;
-        }
+        refreshGameBoard(gameBoard);
         setFlattenedBoard(new FlattenedBoard(gameBoard));
     }
 
@@ -105,6 +101,21 @@ public class Board {
             EntitySet.addEntity(new Wall(new XY(BoardConfig.COLUMNS - 1, row)));
         }
     }
+
+    /**
+     * Refresh/updates the gameboard after the Entities.next() call
+     */
+    public void refreshGameBoard(Entity[][] gameBoard){
+        //First clear the gameBoard
+        for (Entity[] value : gameBoard) Arrays.fill(value, null);
+        //Then refill the gameBoard with the new positions
+        ArrayList<Entity> entities = getEntities();
+        for (Entity entity : entities) {
+            XY position = entity.getPosition();
+            gameBoard[position.getX()][position.getY()] = entity;
+        }
+    }
+
 
     public void setFlattenedBoard(FlattenedBoard flattenedBoard) {
         this.flattenedBoard = flattenedBoard;

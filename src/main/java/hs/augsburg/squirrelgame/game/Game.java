@@ -4,8 +4,10 @@ import hs.augsburg.squirrelgame.entity.EntitySet;
 
 public abstract class Game{
 
-    public Game(State state){
+    private State state;
 
+    public Game(State state){
+        this.state = state;
     }
 
     public void run(){
@@ -31,6 +33,7 @@ public abstract class Game{
      */
     public void update() {
         EntitySet.nextStep();
+        State.getBoard().refreshGameBoard(State.getFlattenedBoard().getGameBoard());
     }
 
     /**
@@ -38,4 +41,7 @@ public abstract class Game{
      */
     public abstract void render();
 
+    public State getState() {
+        return state;
+    }
 }

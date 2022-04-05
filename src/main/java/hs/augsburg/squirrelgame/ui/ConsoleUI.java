@@ -1,5 +1,6 @@
 package hs.augsburg.squirrelgame.ui;
 
+import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.util.Direction;
 
@@ -14,6 +15,7 @@ public class ConsoleUI implements UI, KeyListener {
     public void render(BoardView view) {
         //Get entity by view.getEntity(x, y)
         EntitySet.getEntityInformations();
+        printBoard(view.getGameBoard());
     }
 
     @Override
@@ -46,4 +48,28 @@ public class ConsoleUI implements UI, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
     }
+
+
+    private void printBoard(Entity[][] gameBoard){
+        for(int row = 0; row < gameBoard[0].length; row++){
+            for(int col = 0; col < gameBoard.length; col++){
+                if(gameBoard[col][row] == null){
+                    System.out.print("   ");
+                    continue;
+                }
+                switch (gameBoard[col][row].getEntityType()) {
+                    case WALL -> System.out.print("W  ");
+                    case MASTER_SQUIRREL -> System.out.print("MA  ");
+                    case BAD_BEAST -> System.out.print("BB ");
+                    case GOOD_BEAST -> System.out.print("GB ");
+                    case GOOD_PLANT -> System.out.print("GP ");
+                    case BAD_PLANT -> System.out.print("BP ");
+                    case MINI_SQUIRREL -> System.out.print("MS ");
+                    default -> System.out.print("   ");
+                }
+            }
+            System.out.println();
+        }
+    }
+
 }

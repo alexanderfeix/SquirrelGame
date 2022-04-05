@@ -2,7 +2,6 @@ package hs.augsburg.squirrelgame.board;
 
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
-import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.ui.BoardView;
 import hs.augsburg.squirrelgame.util.Direction;
 import hs.augsburg.squirrelgame.util.XY;
@@ -44,5 +43,6 @@ public class FlattenedBoard implements BoardView, EntityContext {
             //field is empty
             entity.updatePosition(movePosition);
         }
+
     }
 }
