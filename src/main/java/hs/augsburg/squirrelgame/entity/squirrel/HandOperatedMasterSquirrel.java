@@ -1,11 +1,11 @@
 package hs.augsburg.squirrelgame.entity.squirrel;
 
-import hs.augsburg.squirrelgame.util.XY;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import hs.augsburg.squirrelgame.game.State;
+import hs.augsburg.squirrelgame.ui.ConsoleUI;
+import hs.augsburg.squirrelgame.util.Direction;
 
-public class HandOperatedMasterSquirrel extends MasterSquirrel implements KeyListener {
+public class HandOperatedMasterSquirrel extends MasterSquirrel {
 
 
     public HandOperatedMasterSquirrel(hs.augsburg.squirrelgame.util.XY position) {
@@ -13,30 +13,21 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel implements KeyLis
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if(e.getKeyChar() == 'w' || e.getKeyCode() == KeyEvent.VK_UP){
-            System.out.println("up");
-            updatePosition(new XY(getPosition().getX(), getPosition().getY() + 1));
-        }else if(e.getKeyChar() == 'a' || e.getKeyCode() == KeyEvent.VK_LEFT){
-            updatePosition(new XY(getPosition().getX() - 1, getPosition().getY()));
-            System.out.println("left");
-        }else if(e.getKeyChar() == 's' || e.getKeyCode() == KeyEvent.VK_DOWN){
-            updatePosition(new XY(getPosition().getX(), getPosition().getY() - 1));
-            System.out.println("down");
-        } else if (e.getKeyChar() == 'd' || e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            updatePosition(new XY(getPosition().getX() + 1, getPosition().getY()));
-            System.out.println("right");
+    public void nextStep() {
+        ConsoleUI consoleUI = new ConsoleUI();
+        if(consoleUI.getNextDirection() == Direction.UP){
+            System.out.println("UP");
+            State.getFlattenedBoard().move(getEntity(), Direction.UP);
+        }else if (consoleUI.getNextDirection() == Direction.RIGHT){
+            System.out.println("RIGHT");
+            State.getFlattenedBoard().move(getEntity(), Direction.RIGHT);
+        }else if(consoleUI.getNextDirection() == Direction.DOWN){
+            System.out.println("DOWN");
+            State.getFlattenedBoard().move(getEntity(), Direction.DOWN);
+        }else if(consoleUI.getNextDirection() == Direction.LEFT){
+            System.out.println("LEFT");
+            State.getFlattenedBoard().move(getEntity(), Direction.LEFT);
         }
-        System.out.println("New position: " + getPosition().getX() + ", "+ getPosition().getY());
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
     }
 }
 
