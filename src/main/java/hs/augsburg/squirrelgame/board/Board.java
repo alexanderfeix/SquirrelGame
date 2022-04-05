@@ -53,6 +53,11 @@ public class Board {
         setFlattenedBoard(new FlattenedBoard(gameBoard));
     }
 
+    /**
+     *
+     * @param position creates the new entity on this position
+     * @return the new entity
+     */
     private Entity getNewEntityFromType(XY position, EntityType entityType){
         return switch (entityType) {
             case MASTER_SQUIRREL -> new HandOperatedMasterSquirrel(position);

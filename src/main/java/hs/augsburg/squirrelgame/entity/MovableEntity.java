@@ -13,16 +13,25 @@ public abstract class MovableEntity extends Entity implements EntityContext{
 
     public void nextStep(){
         Random random = new Random();
-        int nextInt = random.nextInt(4);
+        int nextInt = random.nextInt(8);
         if(nextInt == 0){
             State.getFlattenedBoard().move(getEntity(), Direction.UP);
         }else if(nextInt == 1){
-            State.getFlattenedBoard().move(getEntity(), Direction.RIGHT);
+            State.getFlattenedBoard().move(getEntity(), Direction.UP_LEFT);
         }else if(nextInt == 2){
-            State.getFlattenedBoard().move(getEntity(), Direction.DOWN);
-        }else{
+            State.getFlattenedBoard().move(getEntity(), Direction.UP_RIGHT);
+        }else if(nextInt == 3){
             State.getFlattenedBoard().move(getEntity(), Direction.RIGHT);
+        }else if(nextInt == 4){
+            State.getFlattenedBoard().move(getEntity(), Direction.DOWN);
+        }else if(nextInt == 5){
+            State.getFlattenedBoard().move(getEntity(), Direction.DOWN_LEFT);
+        }else if(nextInt == 6){
+            State.getFlattenedBoard().move(getEntity(), Direction.DOWN_RIGHT);
+        }else{
+            State.getFlattenedBoard().move(getEntity(), Direction.LEFT);
         }
+
     }
 
 }

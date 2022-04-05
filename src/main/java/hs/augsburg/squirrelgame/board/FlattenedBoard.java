@@ -29,13 +29,7 @@ public class FlattenedBoard implements BoardView, EntityContext {
     @Override
     public void move(Entity entity, Direction direction) {
         XY currentPosition = entity.getPosition();
-        XY movePosition = switch (direction) {
-            case UP -> new XY(currentPosition.getX(), currentPosition.getY() - 1);
-            case RIGHT -> new XY(currentPosition.getX() + 1, currentPosition.getY());
-            case DOWN -> new XY(currentPosition.getX(), currentPosition.getY() + 1);
-            case LEFT -> new XY(currentPosition.getX() - 1, currentPosition.getY());
-            default -> currentPosition;
-        };
+        XY movePosition = currentPosition.getRandomPosition(direction);
         if(getEntity(movePosition.getX(), movePosition.getY()) != null && getEntity(movePosition.getX(), movePosition.getY()).getId() != entity.getId()){
             //collision
             System.out.println("Avoided collision! (" + currentPosition.getX() + ", " + currentPosition.getY() + ") -> (" + movePosition.getX() + ", " + movePosition.getY() + "), ID: " + entity.getId() + " on " + getEntity(movePosition.getX(), movePosition.getY()).getId());

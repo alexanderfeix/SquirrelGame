@@ -11,6 +11,9 @@ public class EntitySet {
 
     private static ListElement tail;
 
+    /**
+     * Just examples for testing
+     */
     public static void initializeExamples(){
         addEntity(new BadPlant(new XY(1, -3)));
         addEntity(new GoodPlant(new XY(2, -4)));
@@ -23,6 +26,9 @@ public class EntitySet {
         //addEntity(masterSquirrel.createMiniSquirrel(new XY(0, -1), 200));
     }
 
+    /**
+     * Adds a new entity to the linked list
+     */
     public static void addEntity(Entity entity){
         ListElement newItem = new ListElement(entity);
         if(tail == null){
@@ -35,6 +41,9 @@ public class EntitySet {
         }
     }
 
+    /**
+     * Removes an entity from the linked list
+     */
     public static void removeEntity(Entity entity){
         ListElement tempTail = tail;
         if(tempTail == null){
@@ -71,6 +80,9 @@ public class EntitySet {
         }
     }
 
+    /**
+     * Calls the nextStep() method in all entities that are in the list
+     */
     public static void nextStep(){
         ListElement temptail = tail;
         temptail.getEntity().nextStep();
@@ -80,6 +92,9 @@ public class EntitySet {
         }
     }
 
+    /**
+     * Prints the most important attributes of an entity
+     */
     public static void getEntityInformations(){
         ListElement temptail = tail;
         if(temptail != null){

@@ -10,13 +10,16 @@ public abstract class Game{
         this.state = state;
     }
 
+    /**
+     * This method is the game loop
+     */
     public void run(){
         while (true){
             render();
             processInput();
             update();
             try {
-                Thread.sleep(5000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -7,7 +7,7 @@ import hs.augsburg.squirrelgame.ui.ConsoleUI;
 
 import javax.swing.*;
 
-public class SquirrelGame {
+public class Launcher {
 
     public static void main(String[] args) {
         initializeJFrame();
@@ -17,7 +17,7 @@ public class SquirrelGame {
     }
 
     private static void initializeJFrame(){
-        JFrame frame = new JFrame("My First GUI");
+        JFrame frame = new JFrame("SquirrelGame");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300,300);
         frame.setVisible(true);

@@ -50,6 +50,10 @@ public class ConsoleUI implements UI, KeyListener {
     }
 
 
+    /**
+     * Prints the gameBoard to the console.
+     * This method should get deleted once the gui works fine.
+     */
     private void printBoard(Entity[][] gameBoard){
         for(int row = 0; row < gameBoard[0].length; row++){
             for(int col = 0; col < gameBoard.length; col++){
@@ -59,7 +63,7 @@ public class ConsoleUI implements UI, KeyListener {
                 }
                 switch (gameBoard[col][row].getEntityType()) {
                     case WALL -> System.out.print("W  ");
-                    case MASTER_SQUIRREL -> System.out.print("MA  ");
+                    case MASTER_SQUIRREL -> System.out.print("MA ");
                     case BAD_BEAST -> System.out.print("BB ");
                     case GOOD_BEAST -> System.out.print("GB ");
                     case GOOD_PLANT -> System.out.print("GP ");

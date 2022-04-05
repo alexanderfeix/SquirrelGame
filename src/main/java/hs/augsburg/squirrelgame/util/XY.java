@@ -13,52 +13,27 @@ public class XY {
     }
 
     /**
-     * @return a random number from 0-7
-     */
-    private int randomMove(){
-        return new Random().nextInt(8);
-    }
-
-    /**
      * @return a random position in the eight surrounding positions
      */
-    public XY getRandomPosition(){
-        int move = randomMove();
-        XY newPosition;
-        switch (move){
-            case 0: //Move left-up
-                newPosition = new XY(getX() - 1, getY() + 1);
-                break;
-            case 1: //Move up
-                newPosition = new XY(getX(), getY() + 1);
-                break;
-            case 2: //Move right-up
-                newPosition = new XY(getX() + 1, getY() + 1);
-                break;
-            case 3: //Move right
-                newPosition = new XY(getX() + 1, getY());
-                break;
-            case 4: //Move right-down
-                newPosition = new XY(getX() + 1, getY() - 1);
-                break;
-            case 5: //Move down
-                newPosition = new XY(getX(), getY() - 1);
-                break;
-            case 6: //Move left-down
-                newPosition = new XY(getX() - 1, getY() - 1);
-                break;
-            case 7: //Move left
-                newPosition = new XY(getX() - 1, getY());
-                break;
-            default:
-                newPosition = new XY(getX(), getY());
-        }
-        if(newPosition.getX() < 0 || newPosition.getY() > 0){
-            //New position is out of the field, so generate a new one
-            return getRandomPosition();
-        }else{
-            return newPosition;
-        }
+    public XY getRandomPosition(Direction direction){
+        return switch (direction) {
+            case UP_LEFT -> //Move left-up
+                    new XY(getX() - 1, getY() - 1);
+            case UP -> //Move up
+                    new XY(getX(), getY() - 1);
+            case UP_RIGHT -> //Move right-up
+                    new XY(getX() + 1, getY() - 1);
+            case RIGHT -> //Move right
+                    new XY(getX() + 1, getY());
+            case DOWN_RIGHT -> //Move right-down
+                    new XY(getX() + 1, getY() + 1);
+            case DOWN -> //Move down
+                    new XY(getX(), getY() + 1);
+            case DOWN_LEFT -> //Move left-down
+                    new XY(getX() - 1, getY() + 1);
+            case LEFT -> //Move left
+                    new XY(getX() - 1, getY());
+        };
     }
 
     public int getX() {
