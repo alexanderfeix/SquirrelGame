@@ -2,19 +2,19 @@ package hs.augsburg.squirrelgame.game;
 
 import hs.augsburg.squirrelgame.entity.EntitySet;
 
-public abstract class Game{
+public abstract class Game {
 
-    private State state;
+    private final State state;
 
-    public Game(State state){
+    public Game(State state) {
         this.state = state;
     }
 
     /**
      * This method is the game loop
      */
-    public void run(){
-        while (true){
+    public void run() {
+        while (true) {
             render();
             processInput();
             update();

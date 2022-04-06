@@ -25,9 +25,9 @@ public class EntitySet {
 
     public static void addEntity(Entity entity) {
 
-        if(entityExists(entity)){
+        if (entityExists(entity)) {
             throw new IllegalStateException();
-        }else{
+        } else {
             ListElement newItem = new ListElement(entity);
             if (tail == null) {
                 tail = newItem;
@@ -41,47 +41,46 @@ public class EntitySet {
     }
 
 
-
     public static void removeEntity(Entity entity) {
-        if(!entityExists(entity))throw new IllegalStateException();
+        if (!entityExists(entity)) throw new IllegalStateException();
 
-            ListElement tempTail = tail;
-            if (tempTail == null) {
+        ListElement tempTail = tail;
+        if (tempTail == null) {
+            return;
+        }
+        if (!tempTail.hasPrev() && tempTail.getEntity() == entity) {
+            tail = null;
+            return;
+        }
+        while (tempTail.hasPrev()) {
+            ListElement newTempTail = tempTail.getPrevItem();
+            if (tempTail.getEntity() == entity) {
+                if (tail.getEntity() == tempTail.getEntity()) {
+                    tail = tempTail.getPrevItem();
+                }
+                tempTail.getPrevItem().setNextItem(null);
+                tempTail.setNextItem(null);
+                tempTail.setPrevItem(null);
                 return;
             }
-            if (!tempTail.hasPrev() && tempTail.getEntity() == entity) {
-                tail = null;
-                return;
-            }
-            while (tempTail.hasPrev()) {
-                ListElement newTempTail = tempTail.getPrevItem();
-                if (tempTail.getEntity() == entity) {
-                    if (tail.getEntity() == tempTail.getEntity()) {
-                        tail = tempTail.getPrevItem();
-                    }
+            if (tempTail.getPrevItem().getEntity() == entity) {
+                if (tempTail.getPrevItem().hasPrev()) {
+                    tempTail.getPrevItem().getPrevItem().setNextItem(tempTail);
+                    tempTail.setPrevItem(tempTail.getPrevItem().getPrevItem());
+                    tempTail.getPrevItem().setPrevItem(null);
                     tempTail.getPrevItem().setNextItem(null);
-                    tempTail.setNextItem(null);
+                } else {
+                    tempTail.getPrevItem().setNextItem(null);
                     tempTail.setPrevItem(null);
-                    return;
                 }
-                if (tempTail.getPrevItem().getEntity() == entity) {
-                    if (tempTail.getPrevItem().hasPrev()) {
-                        tempTail.getPrevItem().getPrevItem().setNextItem(tempTail);
-                        tempTail.setPrevItem(tempTail.getPrevItem().getPrevItem());
-                        tempTail.getPrevItem().setPrevItem(null);
-                        tempTail.getPrevItem().setNextItem(null);
-                    } else {
-                        tempTail.getPrevItem().setNextItem(null);
-                        tempTail.setPrevItem(null);
-                    }
-                    return;
-                }
-                tempTail = newTempTail;
+                return;
             }
+            tempTail = newTempTail;
+        }
 
     }
 
-    public static boolean entityExists(Entity entity){
+    public static boolean entityExists(Entity entity) {
         ListElement tempTail = tail;
         if (tempTail == null) {
             return false;
@@ -89,14 +88,14 @@ public class EntitySet {
         if (!tempTail.hasPrev() && tempTail.getEntity().equals(entity)) {
             return true;
         }
-        while (tempTail.hasPrev()){
+        while (tempTail.hasPrev()) {
             ListElement newTempTail = tempTail.getPrevItem();
-            if(tempTail.getEntity().equals(entity)){
+            if (tempTail.getEntity().equals(entity)) {
                 return true;
             }
             tempTail = newTempTail;
         }
-        return tempTail.equals(entity);
+        return tempTail.getEntity().equals(entity);
     }
 
     public static void nextStep() {
@@ -110,31 +109,31 @@ public class EntitySet {
 
     public static void getEntityInformations() {
         ListElement temptail = tail;
-        if(temptail != null){
-            if(temptail.getEntity().getEntityType() != EntityType.WALL){
+        if (temptail != null) {
+            if (temptail.getEntity().getEntityType() != EntityType.WALL) {
                 System.out.println("ID: " + temptail.getEntity().getId() + ", Energy: " + temptail.getEntity().getEnergy() + ", Position: " + temptail.getEntity().getPosition().getX() + ", " + temptail.getEntity().getPosition().getY() + " | " + temptail.getEntity().getEntityType());
             }
         }
-        while(temptail != null && temptail.hasPrev()){
-            if(temptail.getPrevItem().getEntity().getEntityType() != EntityType.WALL){
+        while (temptail != null && temptail.hasPrev()) {
+            if (temptail.getPrevItem().getEntity().getEntityType() != EntityType.WALL) {
                 System.out.println("ID: " + temptail.getPrevItem().getEntity().getId() + ", Energy: " + temptail.getPrevItem().getEntity().getEnergy() + ", Position: " + temptail.getPrevItem().getEntity().getPosition().getX() + ", " + temptail.getPrevItem().getEntity().getPosition().getY() + " | " + temptail.getPrevItem().getEntity().getEntityType());
             }
             temptail = temptail.getPrevItem();
         }
         System.out.println("\n----------\n");
     }
-  
-    public static int returnLastID(){
+
+    public static int returnLastID() {
         return tail.getEntity().getId();
     }
-  
-    public static int countItems(){
+
+    public static int countItems() {
         ListElement temptail = tail;
         int counter = 0;
-        if(temptail == null){
+        if (temptail == null) {
             return counter;
-        }else{
-            while(temptail != null){
+        } else {
+            while (temptail != null) {
                 counter++;
                 temptail = temptail.getPrevItem();
             }

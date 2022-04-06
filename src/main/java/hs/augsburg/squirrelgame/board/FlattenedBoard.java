@@ -10,7 +10,7 @@ public class FlattenedBoard implements BoardView, EntityContext {
 
     public Entity[][] gameBoard;
 
-    public FlattenedBoard(Entity[][] gameBoard){
+    public FlattenedBoard(Entity[][] gameBoard) {
         this.gameBoard = gameBoard;
     }
 
@@ -20,7 +20,7 @@ public class FlattenedBoard implements BoardView, EntityContext {
 
     @Override
     public Entity getEntity(int x, int y) {
-        if(getGameBoard()[x][y] != null){
+        if (getGameBoard()[x][y] != null) {
             return getGameBoard()[x][y];
         }
         return null;
@@ -30,10 +30,10 @@ public class FlattenedBoard implements BoardView, EntityContext {
     public void move(Entity entity, Direction direction) {
         XY currentPosition = entity.getPosition();
         XY movePosition = currentPosition.getRandomPosition(direction);
-        if(getEntity(movePosition.getX(), movePosition.getY()) != null && getEntity(movePosition.getX(), movePosition.getY()).getId() != entity.getId()){
+        if (getEntity(movePosition.getX(), movePosition.getY()) != null && getEntity(movePosition.getX(), movePosition.getY()).getId() != entity.getId()) {
             //collision
             System.out.println("Avoided collision! (" + currentPosition.getX() + ", " + currentPosition.getY() + ") -> (" + movePosition.getX() + ", " + movePosition.getY() + "), ID: " + entity.getId() + " on " + getEntity(movePosition.getX(), movePosition.getY()).getId());
-        }else{
+        } else {
             //field is empty
             entity.updatePosition(movePosition);
         }

@@ -20,7 +20,7 @@ public class Board {
 
     private FlattenedBoard flattenedBoard;
 
-    public Board(){
+    public Board() {
         spawnBoarderWalls();
         spawnEntitiesRandomly();
         flatten();
@@ -30,14 +30,14 @@ public class Board {
      * @return ArrayList with all entities in the linked list
      * commonly used to get all entities that are currently on the board
      */
-    public ArrayList<Entity> getEntities(){
+    public ArrayList<Entity> getEntities() {
         ArrayList<Entity> entities = new ArrayList<>();
-        if(EntitySet.getTail() == null){
+        if (EntitySet.getTail() == null) {
             return entities;
         }
         ListElement tempTail = EntitySet.getTail();
         entities.add(tempTail.getEntity());
-        while(tempTail.hasPrev()){
+        while (tempTail.hasPrev()) {
             entities.add(tempTail.getPrevItem().getEntity());
             tempTail = tempTail.getPrevItem();
         }
@@ -47,18 +47,17 @@ public class Board {
     /**
      * Creates the FlattenedBoard by defining an array of entites
      */
-    public void flatten(){
+    public void flatten() {
         Entity[][] gameBoard = new Entity[BoardConfig.COLUMNS][BoardConfig.ROWS];
         refreshGameBoard(gameBoard);
         setFlattenedBoard(new FlattenedBoard(gameBoard));
     }
 
     /**
-     *
      * @param position creates the new entity on this position
      * @return the new entity
      */
-    private Entity getNewEntityFromType(XY position, EntityType entityType){
+    private Entity getNewEntityFromType(XY position, EntityType entityType) {
         return switch (entityType) {
             case MASTER_SQUIRREL -> new HandOperatedMasterSquirrel(position);
             case GOOD_BEAST -> new GoodBeast(position);
@@ -73,17 +72,17 @@ public class Board {
     /**
      * Spawns all entities randomly on the board and checks that two entities can't spawn on the same position
      */
-    private void spawnEntitiesRandomly(){
+    private void spawnEntitiesRandomly() {
         ArrayList<XY> spawnPositions = new ArrayList<>();
         Random random = new Random();
-        for(int i = 0; i < BoardConfig.SPAWN_RATES.size(); i++){
-            for(int j = 0; j < (int) BoardConfig.SPAWN_RATES.values().toArray()[i]; j++){
+        for (int i = 0; i < BoardConfig.SPAWN_RATES.size(); i++) {
+            for (int j = 0; j < (int) BoardConfig.SPAWN_RATES.values().toArray()[i]; j++) {
                 int spawnX = random.nextInt(BoardConfig.COLUMNS - 2) + 1;
                 int spawnY = random.nextInt(BoardConfig.ROWS - 2) + 1;
                 XY spawnPosition = new XY(spawnX, spawnY);
-                if(spawnPositions.contains(spawnPosition)){
+                if (spawnPositions.contains(spawnPosition)) {
                     j--;
-                }else{
+                } else {
                     Object entityType = BoardConfig.SPAWN_RATES.keySet().toArray()[i];
                     Entity entity = getNewEntityFromType(spawnPosition, (EntityType) entityType);
                     EntitySet.addEntity(entity);
@@ -96,12 +95,12 @@ public class Board {
     /**
      * Creates the surrounding walls
      */
-    private void spawnBoarderWalls(){
-        for(int column = 0; column < BoardConfig.COLUMNS; column++){
+    private void spawnBoarderWalls() {
+        for (int column = 0; column < BoardConfig.COLUMNS; column++) {
             EntitySet.addEntity(new Wall(new XY(column, 0)));
             EntitySet.addEntity(new Wall(new XY(column, BoardConfig.ROWS - 1)));
         }
-        for(int row = 0; row < BoardConfig.ROWS; row++){
+        for (int row = 0; row < BoardConfig.ROWS; row++) {
             EntitySet.addEntity(new Wall(new XY(0, row)));
             EntitySet.addEntity(new Wall(new XY(BoardConfig.COLUMNS - 1, row)));
         }
@@ -110,7 +109,7 @@ public class Board {
     /**
      * Refresh/updates the gameboard after the Entities.next() call
      */
-    public void refreshGameBoard(Entity[][] gameBoard){
+    public void refreshGameBoard(Entity[][] gameBoard) {
         //First clear the gameBoard
         for (Entity[] value : gameBoard) Arrays.fill(value, null);
         //Then refill the gameBoard with the new positions
@@ -121,12 +120,11 @@ public class Board {
         }
     }
 
+    public FlattenedBoard getFlattenedBoard() {
+        return flattenedBoard;
+    }
 
     public void setFlattenedBoard(FlattenedBoard flattenedBoard) {
         this.flattenedBoard = flattenedBoard;
-    }
-
-    public FlattenedBoard getFlattenedBoard() {
-        return flattenedBoard;
     }
 }

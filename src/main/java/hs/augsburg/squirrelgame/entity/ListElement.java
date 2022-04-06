@@ -6,7 +6,7 @@ public class ListElement {
     private ListElement prevItem;
     private ListElement nextItem;
 
-    public ListElement(Entity entity){
+    public ListElement(Entity entity) {
         this.entity = entity;
         nextItem = null;
     }
@@ -19,19 +19,19 @@ public class ListElement {
         return prevItem;
     }
 
-    public ListElement getNextItem() {
-        return nextItem;
-    }
-
     public void setPrevItem(ListElement prevItem) {
         this.prevItem = prevItem;
+    }
+
+    public ListElement getNextItem() {
+        return nextItem;
     }
 
     public void setNextItem(ListElement nextItem) {
         this.nextItem = nextItem;
     }
 
-    public boolean hasPrev(){
+    public boolean hasPrev() {
         return this.prevItem != null;
     }
 }

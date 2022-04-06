@@ -10,6 +10,6 @@ public enum EntityType {
     BAD_PLANT,
     WALL,
     TEST,
-    NULL;
+    NULL
 
 }

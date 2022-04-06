@@ -2,7 +2,7 @@ package hs.augsburg.squirrelgame.game;
 
 import hs.augsburg.squirrelgame.ui.ConsoleUI;
 
-public class GameImpl extends Game{
+public class GameImpl extends Game {
     public GameImpl(State state) {
         super(state);
     }

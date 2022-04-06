@@ -29,11 +29,11 @@ public class ConsoleUI implements UI, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyChar() == 'w' || e.getKeyCode() == KeyEvent.VK_UP){
+        if (e.getKeyChar() == 'w' || e.getKeyCode() == KeyEvent.VK_UP) {
             setNextDirection(Direction.UP);
-        }else if(e.getKeyChar() == 'a' || e.getKeyCode() == KeyEvent.VK_LEFT){
+        } else if (e.getKeyChar() == 'a' || e.getKeyCode() == KeyEvent.VK_LEFT) {
             setNextDirection(Direction.LEFT);
-        }else if(e.getKeyChar() == 's' || e.getKeyCode() == KeyEvent.VK_DOWN){
+        } else if (e.getKeyChar() == 's' || e.getKeyCode() == KeyEvent.VK_DOWN) {
             setNextDirection(Direction.DOWN);
         } else if (e.getKeyChar() == 'd' || e.getKeyCode() == KeyEvent.VK_RIGHT) {
             setNextDirection(Direction.RIGHT);
@@ -54,10 +54,10 @@ public class ConsoleUI implements UI, KeyListener {
      * Prints the gameBoard to the console.
      * This method should get deleted once the gui works fine.
      */
-    private void printBoard(Entity[][] gameBoard){
-        for(int row = 0; row < gameBoard[0].length; row++){
-            for(int col = 0; col < gameBoard.length; col++){
-                if(gameBoard[col][row] == null){
+    private void printBoard(Entity[][] gameBoard) {
+        for (int row = 0; row < gameBoard[0].length; row++) {
+            for (int col = 0; col < gameBoard.length; col++) {
+                if (gameBoard[col][row] == null) {
                     System.out.print("   ");
                     continue;
                 }

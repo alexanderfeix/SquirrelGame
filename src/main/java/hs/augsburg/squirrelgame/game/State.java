@@ -5,11 +5,11 @@ import hs.augsburg.squirrelgame.board.FlattenedBoard;
 
 public class State {
 
-    private int highScore = 0;
     private static Board board;
     private static FlattenedBoard flattenedBoard;
+    private int highScore = 0;
 
-    public State(Board board){
+    public State(Board board) {
         setBoard(board);
         setFlattenedBoard(getBoard().getFlattenedBoard());
     }
@@ -22,16 +22,16 @@ public class State {
         State.flattenedBoard = flattenedBoard;
     }
 
-    public int getHighScore() {
-        return highScore;
-    }
-
     public static Board getBoard() {
         return board;
     }
 
     public void setBoard(Board board) {
         State.board = board;
+    }
+
+    public int getHighScore() {
+        return highScore;
     }
 
     public void setHighScore(int highScore) {

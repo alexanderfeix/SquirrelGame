@@ -1,9 +1,9 @@
 package hs.augsburg.squirrelgame.entity.tests;
+
 import hs.augsburg.squirrelgame.board.Board;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.entity.plant.BadPlant;
-import hs.augsburg.squirrelgame.entity.testUnit.TestEntity;
 import hs.augsburg.squirrelgame.entity.testUnit.TestEntity;
 import hs.augsburg.squirrelgame.game.State;
 import hs.augsburg.squirrelgame.util.XY;
@@ -13,39 +13,42 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EntitySetTest {
     @Test
-    void checkIfAddMethodReallyAddsEntities(){
+    void checkIfAddMethodReallyAddsEntities() {
         EntitySet.initializeExamples();
         int firstID = EntitySet.returnLastID();
         Entity test = new BadPlant(new XY(3, -3));
         EntitySet.addEntity(test);
         int secondID = EntitySet.returnLastID();
-        assertNotEquals(firstID,secondID);
-        assertEquals(secondID,test.getId());
+        assertNotEquals(firstID, secondID);
+        assertEquals(secondID, test.getId());
     }
+
     @Test
-    void checkIfRemoveMethodReallyRemovesEntities(){
+    void checkIfRemoveMethodReallyRemovesEntities() {
         EntitySet.initializeExamples();
         Entity test = new BadPlant(new XY(3, -3));
         int removedID = test.getId();
         EntitySet.addEntity(test);
-        assertEquals(EntitySet.returnLastID(),test.getId());
+        assertEquals(EntitySet.returnLastID(), test.getId());
         EntitySet.removeEntity(test);
-        assertNotEquals(removedID,EntitySet.returnLastID());
+        assertNotEquals(removedID, EntitySet.returnLastID());
     }
+
     @Test
-    void checkIfRemoveOnlyRemovesWhatNeedsToBeRemoved(){
+    void checkIfRemoveOnlyRemovesWhatNeedsToBeRemoved() {
         EntitySet.initializeExamples();
         int itemsInListStart = EntitySet.countItems();
         Entity test = new BadPlant(new XY(3, -3));
         EntitySet.addEntity(test);
         int itemsInListAfterAdd = EntitySet.countItems();
-        assertNotEquals(itemsInListStart,itemsInListAfterAdd);
+        assertNotEquals(itemsInListStart, itemsInListAfterAdd);
         EntitySet.removeEntity(test);
         int itemsInListAfterRemove = EntitySet.countItems();
-        assertEquals(itemsInListStart,itemsInListAfterRemove);
+        assertEquals(itemsInListStart, itemsInListAfterRemove);
     }
+
     @Test
-    void throwExceptionIfEntityInContainer(){
+    void throwExceptionIfEntityInContainer() {
         boolean thrown = false;
         Entity test = new BadPlant(new XY(3, -3));
         try {
@@ -57,8 +60,9 @@ class EntitySetTest {
         }
         assertTrue(thrown);
     }
+
     @Test
-    void throwExceptionIfTryingToRemoveNonExistentEntity(){
+    void throwExceptionIfTryingToRemoveNonExistentEntity() {
         boolean thrown = false;
         Entity test = new BadPlant(new XY(3, -3));
         try {
@@ -69,11 +73,12 @@ class EntitySetTest {
         }
         assertTrue(thrown);
     }
+
     @Test
-    void doesTheNextStepMethodActuallyCallTheNextStepMethodOfEntity(){
+    void doesTheNextStepMethodActuallyCallTheNextStepMethodOfEntity() {
         EntitySet.initializeExamples();
         new State(new Board());
-        Entity test = new TestEntity(new XY(2,5));
+        Entity test = new TestEntity(new XY(2, 5));
         EntitySet.addEntity(test);
         EntitySet.nextStep();
         assertTrue(TestEntity.getStatus());

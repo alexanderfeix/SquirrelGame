@@ -2,18 +2,18 @@ package hs.augsburg.squirrelgame.entity;
 
 import hs.augsburg.squirrelgame.util.XY;
 
-public abstract class Entity implements EntityInterface{
+public abstract class Entity implements EntityInterface {
 
     public static int idCount = 0;
 
     private final int id;
+    private final EntityType entityType;
     private int energy;
     private XY XY;
-    private final EntityType entityType;
     private Entity entity;
 
 
-    public Entity(EntityType entityType, XY position, int energy){
+    public Entity(EntityType entityType, XY position, int energy) {
         this.XY = position;
         this.energy = energy;
         this.entityType = entityType;
@@ -21,17 +21,18 @@ public abstract class Entity implements EntityInterface{
         idCount++;
     }
 
-    public void updateEnergy(int energy){
+    public void updateEnergy(int energy) {
         this.energy += energy;
     }
 
-    public void updatePosition(XY position){
+    public void updatePosition(XY position) {
         this.XY = position;
     }
 
-    public void nextStep(){}
+    public void nextStep() {
+    }
 
-    public boolean equals(Entity entity){
+    public boolean equals(Entity entity) {
         return getId() == entity.getId();
     }
 
@@ -43,6 +44,10 @@ public abstract class Entity implements EntityInterface{
         return energy;
     }
 
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
     public XY getPosition() {
         return XY;
     }
@@ -51,15 +56,11 @@ public abstract class Entity implements EntityInterface{
         return entity;
     }
 
-    public EntityType getEntityType() {
-        return entityType;
-    }
-
     public void setEntity(Entity entity) {
         this.entity = entity;
     }
 
-    public void setEnergy(int energy) {
-        this.energy = energy;
+    public EntityType getEntityType() {
+        return entityType;
     }
 }

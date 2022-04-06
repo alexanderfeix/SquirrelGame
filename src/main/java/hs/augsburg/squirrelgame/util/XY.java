@@ -1,13 +1,11 @@
 package hs.augsburg.squirrelgame.util;
 
-import java.util.Random;
-
 public class XY {
 
     private final int x;
     private final int y;
 
-    public XY(int posX, int posY){
+    public XY(int posX, int posY) {
         this.x = posX;
         this.y = posY;
     }
@@ -15,7 +13,7 @@ public class XY {
     /**
      * @return a random position in the eight surrounding positions
      */
-    public XY getRandomPosition(Direction direction){
+    public XY getRandomPosition(Direction direction) {
         return switch (direction) {
             case UP_LEFT -> //Move left-up
                     new XY(getX() - 1, getY() - 1);

@@ -4,11 +4,11 @@ import hs.augsburg.squirrelgame.util.XY;
 
 public interface EntityInterface {
 
-     void updateEnergy(int energy);
+    void updateEnergy(int energy);
 
-     void updatePosition(XY position);
+    void updatePosition(XY position);
 
-     void nextStep();
+    void nextStep();
 
-     boolean equals(Entity entity);
+    boolean equals(Entity entity);
 }
