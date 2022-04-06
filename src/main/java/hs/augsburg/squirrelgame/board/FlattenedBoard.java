@@ -14,11 +14,14 @@ public class FlattenedBoard implements BoardView, EntityContext {
     private final Entity[][] gameBoard;
     private final EntitySet entitySet;
     private final Board board;
+    private FlattenedBoard flattenedBoard;
 
     public FlattenedBoard(Board board, EntitySet entitySet) {
+        System.out.println("New flattened board created!");
         this.board = board;
         this.entitySet = entitySet;
         this.gameBoard = new Entity[BoardConfig.COLUMNS][BoardConfig.ROWS];
+        this.flattenedBoard = this;
         fillGameBoard();
     }
 
@@ -65,5 +68,9 @@ public class FlattenedBoard implements BoardView, EntityContext {
 
     public Board getBoard() {
         return board;
+    }
+
+    public FlattenedBoard getFlattenedBoard() {
+        return flattenedBoard;
     }
 }

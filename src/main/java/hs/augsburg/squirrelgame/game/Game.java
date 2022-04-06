@@ -33,7 +33,7 @@ public abstract class Game {
      * Updates the current state
      */
     public void update() {
-        getState().getBoard().getEntitySet().nextStep(getState().getFlattenedBoard());
+        getState().getBoard().getEntitySet().nextStep(getState().getBoard().getFlattenedBoard());
     }
 
     /**

@@ -18,6 +18,7 @@ public class Board {
 
     private final EntitySet entitySet;
     private final Board board;
+    private FlattenedBoard flattenedBoard;
 
     public Board() {
         this.entitySet = new EntitySet();
@@ -30,7 +31,9 @@ public class Board {
      * Creates the FlattenedBoard
      */
     public FlattenedBoard flatten() {
-        return new FlattenedBoard(getBoard(), getEntitySet());
+        FlattenedBoard flattenedBoard = new FlattenedBoard(getBoard(), getEntitySet());
+        this.flattenedBoard = flattenedBoard;
+        return flattenedBoard;
     }
 
     /**
@@ -105,5 +108,9 @@ public class Board {
 
     public Board getBoard() {
         return board;
+    }
+
+    public FlattenedBoard getFlattenedBoard() {
+        return flattenedBoard;
     }
 }
