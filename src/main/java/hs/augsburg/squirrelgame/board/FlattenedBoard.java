@@ -2,16 +2,24 @@ package hs.augsburg.squirrelgame.board;
 
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
+import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.ui.BoardView;
 import hs.augsburg.squirrelgame.util.Direction;
 import hs.augsburg.squirrelgame.util.XY;
 
+import java.util.ArrayList;
+
 public class FlattenedBoard implements BoardView, EntityContext {
 
-    public Entity[][] gameBoard;
+    private final Entity[][] gameBoard;
+    private final EntitySet entitySet;
+    private final Board board;
 
-    public FlattenedBoard(Entity[][] gameBoard) {
-        this.gameBoard = gameBoard;
+    public FlattenedBoard(Board board, EntitySet entitySet) {
+        this.board = board;
+        this.entitySet = entitySet;
+        this.gameBoard = new Entity[BoardConfig.COLUMNS][BoardConfig.ROWS];
+        fillGameBoard();
     }
 
     public Entity[][] getGameBoard() {
@@ -34,9 +42,28 @@ public class FlattenedBoard implements BoardView, EntityContext {
             //collision
             System.out.println("Avoided collision! (" + currentPosition.getX() + ", " + currentPosition.getY() + ") -> (" + movePosition.getX() + ", " + movePosition.getY() + "), ID: " + entity.getId() + " on " + getEntity(movePosition.getX(), movePosition.getY()).getId());
         } else {
-            //field is empty
             entity.updatePosition(movePosition);
         }
 
+    }
+
+
+    /**
+     * Sets the entities to their positions on the gameBoard
+     */
+    private void fillGameBoard() {
+        ArrayList<Entity> entities = getEntitySet().getEntities();
+        for (Entity entity : entities) {
+            XY position = entity.getPosition();
+            gameBoard[position.getX()][position.getY()] = entity;
+        }
+    }
+
+    public EntitySet getEntitySet() {
+        return entitySet;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 }

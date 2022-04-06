@@ -1,6 +1,7 @@
 package hs.augsburg.squirrelgame.entity.squirrel;
 
 import hs.augsburg.squirrelgame.entity.Entity;
+import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.util.XY;
 
@@ -21,4 +22,8 @@ public class MasterSquirrel extends Entity {
         return miniSquirrel;
     }
 
+    @Override
+    public void nextStep(EntityContext entityContext) {
+
+    }
 }

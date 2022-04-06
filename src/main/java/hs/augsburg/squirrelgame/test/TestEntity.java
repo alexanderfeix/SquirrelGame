@@ -1,6 +1,7 @@
-package hs.augsburg.squirrelgame.entity.testUnit;
+package hs.augsburg.squirrelgame.test;
 
 import hs.augsburg.squirrelgame.entity.Entity;
+import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.entity.EntityType;
 
 public class TestEntity extends Entity {
@@ -16,7 +17,7 @@ public class TestEntity extends Entity {
     }
 
     @Override
-    public void nextStep() {
+    public void nextStep(EntityContext entityContext) {
         gotActivated = true;
     }
 

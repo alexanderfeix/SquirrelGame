@@ -1,7 +1,5 @@
 package hs.augsburg.squirrelgame.game;
 
-import hs.augsburg.squirrelgame.entity.EntitySet;
-
 public abstract class Game {
 
     private final State state;
@@ -35,8 +33,7 @@ public abstract class Game {
      * Updates the current state
      */
     public void update() {
-        EntitySet.nextStep();
-        State.getBoard().refreshGameBoard(State.getFlattenedBoard().getGameBoard());
+        getState().getBoard().getEntitySet().nextStep(getState().getFlattenedBoard());
     }
 
     /**

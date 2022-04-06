@@ -1,10 +1,9 @@
-package hs.augsburg.squirrelgame.entity.tests;
+package hs.augsburg.squirrelgame.test;
 
 import hs.augsburg.squirrelgame.board.Board;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.entity.plant.BadPlant;
-import hs.augsburg.squirrelgame.entity.testUnit.TestEntity;
 import hs.augsburg.squirrelgame.game.State;
 import hs.augsburg.squirrelgame.util.XY;
 import org.junit.jupiter.api.Test;
@@ -14,47 +13,47 @@ import static org.junit.jupiter.api.Assertions.*;
 class EntitySetTest {
     @Test
     void checkIfAddMethodReallyAddsEntities() {
-        EntitySet.initializeExamples();
-        int firstID = EntitySet.returnLastID();
+        EntitySet entitySet = new EntitySet();
+        int firstID = entitySet.returnLastID();
         Entity test = new BadPlant(new XY(3, 3));
-        EntitySet.addEntity(test);
-        int secondID = EntitySet.returnLastID();
+        entitySet.addEntity(test);
+        int secondID = entitySet.returnLastID();
         assertNotEquals(firstID, secondID);
         assertEquals(secondID, test.getId());
     }
 
     @Test
     void checkIfRemoveMethodReallyRemovesEntities() {
-        EntitySet.initializeExamples();
+        EntitySet entitySet = new EntitySet();
         Entity test = new BadPlant(new XY(3, 3));
         int removedID = test.getId();
-        EntitySet.addEntity(test);
-        assertEquals(EntitySet.returnLastID(), test.getId());
-        EntitySet.removeEntity(test);
-        assertNotEquals(removedID, EntitySet.returnLastID());
+        entitySet.addEntity(test);
+        assertEquals(entitySet.returnLastID(), test.getId());
+        entitySet.removeEntity(test);
+        assertNotEquals(removedID, entitySet.returnLastID());
     }
 
     @Test
     void checkIfRemoveOnlyRemovesWhatNeedsToBeRemoved() {
-        EntitySet.initializeExamples();
-        int itemsInListStart = EntitySet.countItems();
+        EntitySet entitySet = new EntitySet();
+        int itemsInListStart = entitySet.countItems();
         Entity test = new BadPlant(new XY(3, 3));
-        EntitySet.addEntity(test);
-        int itemsInListAfterAdd = EntitySet.countItems();
+        entitySet.addEntity(test);
+        int itemsInListAfterAdd = entitySet.countItems();
         assertNotEquals(itemsInListStart, itemsInListAfterAdd);
-        EntitySet.removeEntity(test);
-        int itemsInListAfterRemove = EntitySet.countItems();
+        entitySet.removeEntity(test);
+        int itemsInListAfterRemove = entitySet.countItems();
         assertEquals(itemsInListStart, itemsInListAfterRemove);
     }
 
     @Test
     void throwExceptionIfEntityInContainer() {
         boolean thrown = false;
+        EntitySet entitySet = new EntitySet();
         Entity test = new BadPlant(new XY(3, 3));
         try {
-            EntitySet.initializeExamples();
-            EntitySet.addEntity(test);
-            EntitySet.addEntity(test);
+            entitySet.addEntity(test);
+            entitySet.addEntity(test);
         } catch (IllegalStateException ise) {
             thrown = true;
         }
@@ -64,10 +63,10 @@ class EntitySetTest {
     @Test
     void throwExceptionIfTryingToRemoveNonExistentEntity() {
         boolean thrown = false;
+        EntitySet entitySet = new EntitySet();
         Entity test = new BadPlant(new XY(3, 3));
         try {
-            EntitySet.initializeExamples();
-            EntitySet.removeEntity(test);
+            entitySet.removeEntity(test);
         } catch (IllegalStateException ise) {
             thrown = true;
         }
@@ -76,11 +75,11 @@ class EntitySetTest {
 
     @Test
     void doesTheNextStepMethodActuallyCallTheNextStepMethodOfEntity() {
-        new State(new Board());
-        EntitySet.initializeExamples();
+        State state = new State(new Board());
+        EntitySet entitySet = new EntitySet();
         Entity test = new TestEntity(new XY(2, 5));
-        EntitySet.addEntity(test);
-        EntitySet.nextStep();
+        entitySet.addEntity(test);
+        entitySet.nextStep(state.getFlattenedBoard());
         assertTrue(TestEntity.getStatus());
     }
 

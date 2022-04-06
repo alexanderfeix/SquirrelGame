@@ -1,6 +1,7 @@
 package hs.augsburg.squirrelgame.entity.plant;
 
 import hs.augsburg.squirrelgame.entity.Entity;
+import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.entity.EntityType;
 
 public class BadPlant extends Entity {
@@ -10,5 +11,10 @@ public class BadPlant extends Entity {
     public BadPlant(hs.augsburg.squirrelgame.util.XY position) {
         super(EntityType.BAD_PLANT, position, startEnergy);
         setEntity(this);
+    }
+
+    @Override
+    public void nextStep(EntityContext entityContext) {
+
     }
 }

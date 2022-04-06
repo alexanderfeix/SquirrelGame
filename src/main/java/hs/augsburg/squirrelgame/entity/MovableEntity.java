@@ -1,6 +1,5 @@
 package hs.augsburg.squirrelgame.entity;
 
-import hs.augsburg.squirrelgame.game.State;
 import hs.augsburg.squirrelgame.util.Direction;
 
 import java.util.Random;
@@ -11,25 +10,25 @@ public abstract class MovableEntity extends Entity implements EntityContext {
         super(entityType, position, energy);
     }
 
-    public void nextStep() {
+    public void nextStep(EntityContext entityContext) {
         Random random = new Random();
         int nextInt = random.nextInt(8);
         if (nextInt == 0) {
-            State.getFlattenedBoard().move(getEntity(), Direction.UP);
+            entityContext.move(getEntity(), Direction.UP);
         } else if (nextInt == 1) {
-            State.getFlattenedBoard().move(getEntity(), Direction.UP_LEFT);
+            entityContext.move(getEntity(), Direction.UP_LEFT);
         } else if (nextInt == 2) {
-            State.getFlattenedBoard().move(getEntity(), Direction.UP_RIGHT);
+            entityContext.move(getEntity(), Direction.UP_RIGHT);
         } else if (nextInt == 3) {
-            State.getFlattenedBoard().move(getEntity(), Direction.RIGHT);
+            entityContext.move(getEntity(), Direction.RIGHT);
         } else if (nextInt == 4) {
-            State.getFlattenedBoard().move(getEntity(), Direction.DOWN);
+            entityContext.move(getEntity(), Direction.DOWN);
         } else if (nextInt == 5) {
-            State.getFlattenedBoard().move(getEntity(), Direction.DOWN_LEFT);
+            entityContext.move(getEntity(), Direction.DOWN_LEFT);
         } else if (nextInt == 6) {
-            State.getFlattenedBoard().move(getEntity(), Direction.DOWN_RIGHT);
+            entityContext.move(getEntity(), Direction.DOWN_RIGHT);
         } else {
-            State.getFlattenedBoard().move(getEntity(), Direction.LEFT);
+            entityContext.move(getEntity(), Direction.LEFT);
         }
     }
 }

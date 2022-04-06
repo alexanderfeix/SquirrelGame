@@ -1,7 +1,7 @@
 package hs.augsburg.squirrelgame.entity.squirrel;
 
 
-import hs.augsburg.squirrelgame.game.State;
+import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.ui.ConsoleUI;
 import hs.augsburg.squirrelgame.util.Direction;
 
@@ -13,20 +13,20 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel {
     }
 
     @Override
-    public void nextStep() {
+    public void nextStep(EntityContext entityContext) {
         ConsoleUI consoleUI = new ConsoleUI();
         if (consoleUI.getNextDirection() == Direction.UP) {
             System.out.println("UP");
-            State.getFlattenedBoard().move(getEntity(), Direction.UP);
+            entityContext.move(getEntity(), Direction.UP);
         } else if (consoleUI.getNextDirection() == Direction.RIGHT) {
             System.out.println("RIGHT");
-            State.getFlattenedBoard().move(getEntity(), Direction.RIGHT);
+            entityContext.move(getEntity(), Direction.RIGHT);
         } else if (consoleUI.getNextDirection() == Direction.DOWN) {
             System.out.println("DOWN");
-            State.getFlattenedBoard().move(getEntity(), Direction.DOWN);
+            entityContext.move(getEntity(), Direction.DOWN);
         } else if (consoleUI.getNextDirection() == Direction.LEFT) {
             System.out.println("LEFT");
-            State.getFlattenedBoard().move(getEntity(), Direction.LEFT);
+            entityContext.move(getEntity(), Direction.LEFT);
         }
     }
 }

@@ -29,8 +29,7 @@ public abstract class Entity implements EntityInterface {
         this.XY = position;
     }
 
-    public void nextStep() {
-    }
+    public void nextStep(EntityContext entityContext) {}
 
     public boolean equals(Entity entity) {
         return getId() == entity.getId();

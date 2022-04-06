@@ -16,7 +16,7 @@ public class GameImpl extends Game {
     @Override
     public void render() {
         ConsoleUI consoleUI = new ConsoleUI();
-        consoleUI.render(State.getFlattenedBoard());
+        consoleUI.render(getState().getFlattenedBoard());
     }
 
 }

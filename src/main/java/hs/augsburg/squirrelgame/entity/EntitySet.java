@@ -1,32 +1,14 @@
 package hs.augsburg.squirrelgame.entity;
 
-import hs.augsburg.squirrelgame.entity.beast.BadBeast;
-import hs.augsburg.squirrelgame.entity.beast.GoodBeast;
-import hs.augsburg.squirrelgame.entity.plant.BadPlant;
-import hs.augsburg.squirrelgame.entity.plant.GoodPlant;
-import hs.augsburg.squirrelgame.entity.util.Wall;
-import hs.augsburg.squirrelgame.util.XY;
+import java.util.ArrayList;
 
 public class EntitySet {
 
-    private static ListElement tail;
+    private ListElement tail;
 
-    public static void initializeExamples() {
-        addEntity(new BadPlant(new XY(1, 3)));
-        addEntity(new GoodPlant(new XY(2, 4)));
-        addEntity(new BadBeast(new XY(0, 0)));
-        addEntity(new GoodBeast(new XY(4, 6)));
-        addEntity(new Wall(new XY(5, 7)));
-        //MasterSquirrel masterSquirrel = new MasterSquirrel(new XY(6, -8));
-        //addEntity(masterSquirrel);
-        //Creating a mini-squirrel
-        //addEntity(masterSquirrel.createMiniSquirrel(new XY(0, -1), 200));
-    }
-
-    public static void addEntity(Entity entity) {
-
+    public void addEntity(Entity entity) {
         if (entityExists(entity)) {
-            throw new IllegalStateException();
+            throw new IllegalStateException("An entity with this id already exists!");
         } else {
             ListElement newItem = new ListElement(entity);
             if (tail == null) {
@@ -41,8 +23,8 @@ public class EntitySet {
     }
 
 
-    public static void removeEntity(Entity entity) {
-        if (!entityExists(entity)) throw new IllegalStateException();
+    public void removeEntity(Entity entity) {
+        if (!entityExists(entity)) throw new IllegalStateException("The entity doesn't exists!");
 
         ListElement tempTail = tail;
         if (tempTail == null) {
@@ -80,7 +62,7 @@ public class EntitySet {
 
     }
 
-    public static boolean entityExists(Entity entity) {
+    public boolean entityExists(Entity entity) {
         ListElement tempTail = tail;
         if (tempTail == null) {
             return false;
@@ -98,36 +80,51 @@ public class EntitySet {
         return tempTail.getEntity().equals(entity);
     }
 
-    public static void nextStep() {
+    /**
+     * Calls the nextStep() method on all entities
+     */
+    public void nextStep(EntityContext entityContext) {
         ListElement temptail = tail;
-        temptail.getEntity().nextStep();
+        temptail.getEntity().nextStep(entityContext);
         while (temptail.hasPrev()) {
-            temptail.getPrevItem().getEntity().nextStep();
+            temptail.getPrevItem().getEntity().nextStep(entityContext);
             temptail = temptail.getPrevItem();
         }
     }
 
-    public static void getEntityInformations() {
-        ListElement temptail = tail;
-        if (temptail != null) {
-            if (temptail.getEntity().getEntityType() != EntityType.WALL) {
-                System.out.println("ID: " + temptail.getEntity().getId() + ", Energy: " + temptail.getEntity().getEnergy() + ", Position: " + temptail.getEntity().getPosition().getX() + ", " + temptail.getEntity().getPosition().getY() + " | " + temptail.getEntity().getEntityType());
-            }
+    /**
+     * @return ArrayList with all entities in the linked list
+     * commonly used to get all entities that are currently on the board
+     */
+    public ArrayList<Entity> getEntities() {
+        ArrayList<Entity> entities = new ArrayList<>();
+        if (getTail() == null) {
+            return entities;
         }
-        while (temptail != null && temptail.hasPrev()) {
-            if (temptail.getPrevItem().getEntity().getEntityType() != EntityType.WALL) {
-                System.out.println("ID: " + temptail.getPrevItem().getEntity().getId() + ", Energy: " + temptail.getPrevItem().getEntity().getEnergy() + ", Position: " + temptail.getPrevItem().getEntity().getPosition().getX() + ", " + temptail.getPrevItem().getEntity().getPosition().getY() + " | " + temptail.getPrevItem().getEntity().getEntityType());
-            }
-            temptail = temptail.getPrevItem();
+        ListElement tempTail = getTail();
+        entities.add(tempTail.getEntity());
+        while (tempTail.hasPrev()) {
+            entities.add(tempTail.getPrevItem().getEntity());
+            tempTail = tempTail.getPrevItem();
         }
-        System.out.println("\n----------\n");
+        return entities;
     }
 
-    public static int returnLastID() {
-        return tail.getEntity().getId();
+    /**
+     * @return the id of the tail. When tail == null, then return -1 flag.
+     */
+    public int returnLastID() {
+        if (tail == null) {
+            return -1;
+        } else {
+            return tail.getEntity().getId();
+        }
     }
 
-    public static int countItems() {
+    /**
+     * @return the amount of items in the list
+     */
+    public int countItems() {
         ListElement temptail = tail;
         int counter = 0;
         if (temptail == null) {
@@ -141,7 +138,7 @@ public class EntitySet {
         return counter;
     }
 
-    public static ListElement getTail() {
+    public ListElement getTail() {
         return tail;
     }
 }

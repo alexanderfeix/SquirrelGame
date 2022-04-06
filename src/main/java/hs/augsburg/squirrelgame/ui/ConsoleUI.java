@@ -1,7 +1,6 @@
 package hs.augsburg.squirrelgame.ui;
 
 import hs.augsburg.squirrelgame.entity.Entity;
-import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.util.Direction;
 
 import java.awt.event.KeyEvent;
@@ -13,8 +12,7 @@ public class ConsoleUI implements UI, KeyListener {
 
     @Override
     public void render(BoardView view) {
-        //Get entity by view.getEntity(x, y)
-        EntitySet.getEntityInformations();
+        view.getBoard().getEntityInformation();
         printBoard(view.getGameBoard());
     }
 
