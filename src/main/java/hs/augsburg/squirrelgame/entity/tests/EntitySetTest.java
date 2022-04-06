@@ -1,9 +1,11 @@
 package hs.augsburg.squirrelgame.entity.tests;
+import hs.augsburg.squirrelgame.board.Board;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.entity.plant.BadPlant;
 import hs.augsburg.squirrelgame.entity.testUnit.TestEntity;
 import hs.augsburg.squirrelgame.entity.testUnit.TestEntity;
+import hs.augsburg.squirrelgame.game.State;
 import hs.augsburg.squirrelgame.util.XY;
 import org.junit.jupiter.api.Test;
 
@@ -70,10 +72,11 @@ class EntitySetTest {
     @Test
     void doesTheNextStepMethodActuallyCallTheNextStepMethodOfEntity(){
         EntitySet.initializeExamples();
+        new State(new Board());
         Entity test = new TestEntity(new XY(2,5));
         EntitySet.addEntity(test);
         EntitySet.nextStep();
-        assertEquals(true,TestEntity.getStatus());
+        assertTrue(TestEntity.getStatus());
     }
 
 }

@@ -1,6 +1,7 @@
 package hs.augsburg.squirrelgame.entity.testUnit;
 
 import hs.augsburg.squirrelgame.entity.Entity;
+import hs.augsburg.squirrelgame.entity.EntityType;
 
 public class TestEntity extends Entity{
     private static final int startEnergy = 50;
@@ -16,7 +17,7 @@ public class TestEntity extends Entity{
     }
 
     public TestEntity(hs.augsburg.squirrelgame.util.XY position) {
-        super(position, startEnergy);
+        super(EntityType.TEST, position, startEnergy);
     }
 
 }
