@@ -16,7 +16,7 @@ class EntitySetTest {
     void checkIfAddMethodReallyAddsEntities() {
         EntitySet.initializeExamples();
         int firstID = EntitySet.returnLastID();
-        Entity test = new BadPlant(new XY(3, -3));
+        Entity test = new BadPlant(new XY(3, 3));
         EntitySet.addEntity(test);
         int secondID = EntitySet.returnLastID();
         assertNotEquals(firstID, secondID);
@@ -26,7 +26,7 @@ class EntitySetTest {
     @Test
     void checkIfRemoveMethodReallyRemovesEntities() {
         EntitySet.initializeExamples();
-        Entity test = new BadPlant(new XY(3, -3));
+        Entity test = new BadPlant(new XY(3, 3));
         int removedID = test.getId();
         EntitySet.addEntity(test);
         assertEquals(EntitySet.returnLastID(), test.getId());
@@ -38,7 +38,7 @@ class EntitySetTest {
     void checkIfRemoveOnlyRemovesWhatNeedsToBeRemoved() {
         EntitySet.initializeExamples();
         int itemsInListStart = EntitySet.countItems();
-        Entity test = new BadPlant(new XY(3, -3));
+        Entity test = new BadPlant(new XY(3, 3));
         EntitySet.addEntity(test);
         int itemsInListAfterAdd = EntitySet.countItems();
         assertNotEquals(itemsInListStart, itemsInListAfterAdd);
@@ -50,7 +50,7 @@ class EntitySetTest {
     @Test
     void throwExceptionIfEntityInContainer() {
         boolean thrown = false;
-        Entity test = new BadPlant(new XY(3, -3));
+        Entity test = new BadPlant(new XY(3, 3));
         try {
             EntitySet.initializeExamples();
             EntitySet.addEntity(test);
@@ -64,7 +64,7 @@ class EntitySetTest {
     @Test
     void throwExceptionIfTryingToRemoveNonExistentEntity() {
         boolean thrown = false;
-        Entity test = new BadPlant(new XY(3, -3));
+        Entity test = new BadPlant(new XY(3, 3));
         try {
             EntitySet.initializeExamples();
             EntitySet.removeEntity(test);
@@ -76,8 +76,8 @@ class EntitySetTest {
 
     @Test
     void doesTheNextStepMethodActuallyCallTheNextStepMethodOfEntity() {
-        EntitySet.initializeExamples();
         new State(new Board());
+        EntitySet.initializeExamples();
         Entity test = new TestEntity(new XY(2, 5));
         EntitySet.addEntity(test);
         EntitySet.nextStep();
