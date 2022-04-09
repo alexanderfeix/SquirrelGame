@@ -4,7 +4,6 @@ import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.ui.BoardView;
-import hs.augsburg.squirrelgame.util.Direction;
 import hs.augsburg.squirrelgame.util.XY;
 
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ public class FlattenedBoard implements BoardView, EntityContext {
     private final Board board;
 
     public FlattenedBoard(Board board, EntitySet entitySet) {
-        System.out.println("New flattened board created!");
         this.board = board;
         this.entitySet = entitySet;
         this.gameBoard = new Entity[BoardConfig.COLUMNS][BoardConfig.ROWS];
@@ -39,7 +37,7 @@ public class FlattenedBoard implements BoardView, EntityContext {
     public void move(Entity entity, XY movePosition) {
         XY currentPosition = entity.getPosition();
         if (getEntity(movePosition.getX(), movePosition.getY()) != null && getEntity(movePosition.getX(), movePosition.getY()).getId() != entity.getId()) {
-            //collision
+            entity.onCollision(getEntity(movePosition.getX(), movePosition.getY()));
             System.out.println("Avoided collision! (" + currentPosition.getX() + ", " + currentPosition.getY() + ") -> (" + movePosition.getX() + ", " + movePosition.getY() + "), ID: " + entity.getId() + " on " + getEntity(movePosition.getX(), movePosition.getY()).getId());
         } else {
             entity.updatePosition(movePosition);

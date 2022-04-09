@@ -13,4 +13,8 @@ public class BadPlant extends Entity {
         setEntity(this);
     }
 
+    public void onCollision(Entity enemy){
+
+    }
+
 }

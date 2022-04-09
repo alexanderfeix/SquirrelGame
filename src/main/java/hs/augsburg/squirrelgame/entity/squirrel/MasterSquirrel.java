@@ -22,8 +22,8 @@ public class MasterSquirrel extends Entity {
         return miniSquirrel;
     }
 
-    @Override
-    public void nextStep(EntityContext entityContext) {
+    public void onCollision(Entity enemy){
 
     }
+
 }

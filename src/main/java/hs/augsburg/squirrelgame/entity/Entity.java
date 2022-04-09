@@ -25,6 +25,8 @@ public abstract class Entity implements EntityInterface {
         this.energy += energy;
     }
 
+    public void onCollision(Entity enemy){}
+
     public void updatePosition(XY position) {
         this.XY = position;
     }

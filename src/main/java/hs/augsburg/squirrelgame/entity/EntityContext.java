@@ -7,4 +7,6 @@ public interface EntityContext {
 
     void move(Entity entity, XY randomPosition);
 
+
+
 }
