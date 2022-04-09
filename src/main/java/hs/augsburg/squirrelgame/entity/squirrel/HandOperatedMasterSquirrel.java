@@ -17,16 +17,16 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel {
         ConsoleUI consoleUI = new ConsoleUI();
         if (consoleUI.getNextDirection() == Direction.UP) {
             System.out.println("UP");
-            entityContext.move(getEntity(), Direction.UP);
+            entityContext.move(getEntity(), getPosition().getRandomPosition(Direction.UP));
         } else if (consoleUI.getNextDirection() == Direction.RIGHT) {
             System.out.println("RIGHT");
-            entityContext.move(getEntity(), Direction.RIGHT);
+            entityContext.move(getEntity(), getPosition().getRandomPosition(Direction.RIGHT));
         } else if (consoleUI.getNextDirection() == Direction.DOWN) {
             System.out.println("DOWN");
-            entityContext.move(getEntity(), Direction.DOWN);
+            entityContext.move(getEntity(), getPosition().getRandomPosition(Direction.DOWN));
         } else if (consoleUI.getNextDirection() == Direction.LEFT) {
             System.out.println("LEFT");
-            entityContext.move(getEntity(), Direction.LEFT);
+            entityContext.move(getEntity(), getPosition().getRandomPosition(Direction.LEFT));
         }
     }
 }

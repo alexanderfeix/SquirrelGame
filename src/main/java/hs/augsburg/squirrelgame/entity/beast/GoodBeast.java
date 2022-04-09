@@ -3,7 +3,6 @@ package hs.augsburg.squirrelgame.entity.beast;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.entity.MovableEntity;
-import hs.augsburg.squirrelgame.util.Direction;
 
 public class GoodBeast extends MovableEntity {
 
@@ -14,8 +13,9 @@ public class GoodBeast extends MovableEntity {
         setEntity(this);
     }
 
+
     @Override
-    public void move(Entity entity, Direction direction) {
+    public void move(Entity entity, hs.augsburg.squirrelgame.util.XY randomPosition) {
 
     }
 }

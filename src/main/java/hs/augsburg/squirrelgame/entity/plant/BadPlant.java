@@ -13,8 +13,4 @@ public class BadPlant extends Entity {
         setEntity(this);
     }
 
-    @Override
-    public void nextStep(EntityContext entityContext) {
-
-    }
 }

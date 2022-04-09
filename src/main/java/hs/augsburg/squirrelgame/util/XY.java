@@ -1,5 +1,7 @@
 package hs.augsburg.squirrelgame.util;
 
+import java.util.Random;
+
 public class XY {
 
     private final int x;
@@ -31,6 +33,30 @@ public class XY {
                     new XY(getX() - 1, getY() + 1);
             case LEFT -> //Move left
                     new XY(getX() - 1, getY());
+        };
+    }
+
+    public XY getRandomPosition(){
+        Random random = new Random();
+        int directionInt = random.nextInt(8);
+        return switch (directionInt){
+            case 0 -> //Move left-up
+                    new XY(getX() - 1, getY() - 1);
+            case 1 -> //Move up
+                    new XY(getX(), getY() - 1);
+            case 2 -> //Move right-up
+                    new XY(getX() + 1, getY() - 1);
+            case 3 -> //Move right
+                    new XY(getX() + 1, getY());
+            case 4 -> //Move right-down
+                    new XY(getX() + 1, getY() + 1);
+            case 5 -> //Move down
+                    new XY(getX(), getY() + 1);
+            case 6 -> //Move left-down
+                    new XY(getX() - 1, getY() + 1);
+            case 7 -> //Move left
+                    new XY(getX() - 1, getY());
+            default -> throw new IllegalStateException("Unexpected value: " + directionInt);
         };
     }
 

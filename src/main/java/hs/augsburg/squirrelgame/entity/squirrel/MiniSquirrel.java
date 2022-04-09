@@ -3,7 +3,6 @@ package hs.augsburg.squirrelgame.entity.squirrel;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.entity.MovableEntity;
-import hs.augsburg.squirrelgame.util.Direction;
 
 public class MiniSquirrel extends MovableEntity {
 
@@ -13,7 +12,7 @@ public class MiniSquirrel extends MovableEntity {
     }
 
     @Override
-    public void move(Entity entity, Direction direction) {
+    public void move(Entity entity, hs.augsburg.squirrelgame.util.XY randomPosition) {
 
     }
 }

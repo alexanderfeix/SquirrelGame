@@ -14,14 +14,12 @@ public class FlattenedBoard implements BoardView, EntityContext {
     private final Entity[][] gameBoard;
     private final EntitySet entitySet;
     private final Board board;
-    private FlattenedBoard flattenedBoard;
 
     public FlattenedBoard(Board board, EntitySet entitySet) {
         System.out.println("New flattened board created!");
         this.board = board;
         this.entitySet = entitySet;
         this.gameBoard = new Entity[BoardConfig.COLUMNS][BoardConfig.ROWS];
-        this.flattenedBoard = this;
         fillGameBoard();
     }
 
@@ -38,16 +36,14 @@ public class FlattenedBoard implements BoardView, EntityContext {
     }
 
     @Override
-    public void move(Entity entity, Direction direction) {
+    public void move(Entity entity, XY movePosition) {
         XY currentPosition = entity.getPosition();
-        XY movePosition = currentPosition.getRandomPosition(direction);
         if (getEntity(movePosition.getX(), movePosition.getY()) != null && getEntity(movePosition.getX(), movePosition.getY()).getId() != entity.getId()) {
             //collision
             System.out.println("Avoided collision! (" + currentPosition.getX() + ", " + currentPosition.getY() + ") -> (" + movePosition.getX() + ", " + movePosition.getY() + "), ID: " + entity.getId() + " on " + getEntity(movePosition.getX(), movePosition.getY()).getId());
         } else {
             entity.updatePosition(movePosition);
         }
-
     }
 
 
@@ -68,9 +64,5 @@ public class FlattenedBoard implements BoardView, EntityContext {
 
     public Board getBoard() {
         return board;
-    }
-
-    public FlattenedBoard getFlattenedBoard() {
-        return flattenedBoard;
     }
 }

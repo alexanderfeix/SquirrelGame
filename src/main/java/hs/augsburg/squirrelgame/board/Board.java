@@ -16,13 +16,13 @@ import java.util.Random;
 
 public class Board {
 
-    private final EntitySet entitySet;
+    private EntitySet entitySet;
     private final Board board;
     private FlattenedBoard flattenedBoard;
 
     public Board() {
-        this.entitySet = new EntitySet();
         this.board = this;
+        this.entitySet = new EntitySet();
         spawnBoarderWalls();
         spawnEntitiesRandomly();
     }

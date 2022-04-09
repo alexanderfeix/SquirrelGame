@@ -13,8 +13,5 @@ public class Wall extends Entity {
         setEntity(this);
     }
 
-    @Override
-    public void nextStep(EntityContext entityContext) {
 
-    }
 }
