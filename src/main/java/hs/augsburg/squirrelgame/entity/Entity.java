@@ -11,6 +11,7 @@ public abstract class Entity implements EntityInterface {
     private int energy;
     private XY XY;
     private Entity entity;
+    private int moveCounter = 0;
 
 
     public Entity(EntityType entityType, XY position, int energy) {
@@ -64,4 +65,8 @@ public abstract class Entity implements EntityInterface {
     public EntityType getEntityType() {
         return entityType;
     }
+
+    public int getMoveCounter() { return moveCounter;}
+
+    public void setMoveCounter(int moveCounter) { this.moveCounter = moveCounter;}
 }

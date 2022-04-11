@@ -89,8 +89,9 @@ public class EntitySet {
         while (temptail.hasPrev()) {
             temptail.getPrevItem().getEntity().nextStep(entityContext);
             temptail = temptail.getPrevItem();
+            }
         }
-    }
+
 
     /**
      * @return ArrayList with all entities in the linked list
