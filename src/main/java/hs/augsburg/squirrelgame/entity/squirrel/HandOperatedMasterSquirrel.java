@@ -14,6 +14,13 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel {
 
     @Override
     public void nextStep(EntityContext entityContext) {
+
+        if(getMoveCounter() != 0){
+            setMoveCounter(getMoveCounter()-1);
+            System.out.println("Current MoveCounter: " + getMoveCounter());
+            return;
+        }
+
         ConsoleUI consoleUI = new ConsoleUI();
         if (consoleUI.getNextDirection() == Direction.UP) {
             System.out.println("UP");
