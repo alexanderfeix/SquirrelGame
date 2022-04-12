@@ -1,5 +1,8 @@
 package hs.augsburg.squirrelgame.entity;
 
+import hs.augsburg.squirrelgame.entity.plant.BadPlant;
+import hs.augsburg.squirrelgame.util.XY;
+
 import java.util.ArrayList;
 
 public class EntitySet {
@@ -85,8 +88,16 @@ public class EntitySet {
      */
     public void nextStep(EntityContext entityContext) {
         ListElement temptail = tail;
+        if(temptail.getEntity().getEnergy() == 0){
+            removeEntity(temptail.getEntity());
+            System.out.println(temptail.getEntity() + " removed.");
+        }
         temptail.getEntity().nextStep(entityContext);
         while (temptail.hasPrev()) {
+            if(temptail.getEntity().getEnergy() == 0){
+             removeEntity(temptail.getEntity());
+                System.out.println(temptail.getEntity() + " removed.");
+            }
             temptail.getPrevItem().getEntity().nextStep(entityContext);
             temptail = temptail.getPrevItem();
             }

@@ -2,7 +2,9 @@ package hs.augsburg.squirrelgame.entity.squirrel;
 
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
+import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.entity.EntityType;
+import hs.augsburg.squirrelgame.entity.plant.BadPlant;
 import hs.augsburg.squirrelgame.entity.util.Wall;
 import hs.augsburg.squirrelgame.util.XY;
 
@@ -35,7 +37,8 @@ public class MasterSquirrel extends Entity {
             System.out.println("Collided with Wall!");
         } else if (enemy.getEntityType() == EntityType.BAD_PLANT) {
             getEntity().setEnergy(-10);
-            enemy.updatePosition(getPosition().getRandomPosition());
+            enemy.getEntity().setEnergy(0);
+            System.out.println(enemy.getEntity() + "Energie set to " + enemy.getEntity().getEnergy());
         } else if (enemy.getEntityType() == EntityType.GOOD_PLANT) {
 
         } else if (enemy.getEntityType() == EntityType.BAD_BEAST) {
