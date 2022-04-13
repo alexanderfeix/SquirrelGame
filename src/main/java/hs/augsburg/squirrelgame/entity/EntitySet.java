@@ -1,13 +1,16 @@
 package hs.augsburg.squirrelgame.entity;
 
+import hs.augsburg.squirrelgame.board.BoardConfig;
 import hs.augsburg.squirrelgame.entity.plant.BadPlant;
 import hs.augsburg.squirrelgame.util.XY;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class EntitySet {
 
     private ListElement tail;
+    private Entity recentlyRemovedEntity;
 
     public void addEntity(Entity entity) {
         if (entityExists(entity)) {
@@ -88,20 +91,35 @@ public class EntitySet {
      */
     public void nextStep(EntityContext entityContext) {
         ListElement temptail = tail;
-        if(temptail.getEntity().getEnergy() == 0){
+        if(temptail.getEntity().getEnergy() == 0){ //Removes Entities with 0 energie
+            recentlyRemovedEntity = temptail.getEntity(); //declares the last removed Entity before its actually removed
             removeEntity(temptail.getEntity());
             System.out.println(temptail.getEntity() + " removed.");
+            respawnEntity(recentlyRemovedEntity);
         }
         temptail.getEntity().nextStep(entityContext);
         while (temptail.hasPrev()) {
-            if(temptail.getEntity().getEnergy() == 0){
-             removeEntity(temptail.getEntity());
+            if(temptail.getEntity().getEnergy() == 0){ //Removes Entities with 0 energie
+                recentlyRemovedEntity = temptail.getEntity(); //declares the last removed Entity before its actually removed
+                removeEntity(temptail.getEntity());
                 System.out.println(temptail.getEntity() + " removed.");
+                //TODO: if(spawnableEntity) -> then spawn
+                respawnEntity(recentlyRemovedEntity);
             }
             temptail.getPrevItem().getEntity().nextStep(entityContext);
             temptail = temptail.getPrevItem();
-            }
         }
+    }
+    //TODO: Soll nun Entity-spezifisch spawnen. (Jede Entity hat ja andere Eigenschaften)
+    public void respawnEntity(Entity recentlyRemovedEntity){
+        Random random = new Random();
+        int spawnX = random.nextInt(BoardConfig.COLUMNS - 2) + 1;
+        int spawnY = random.nextInt(BoardConfig.ROWS - 2) + 1;
+        XY spawnPosition = new XY(spawnX, spawnY);
+        addEntity(recentlyRemovedEntity); //add the Entity to the list again
+        recentlyRemovedEntity.updatePosition(spawnPosition); //define new Position for the Entity
+        recentlyRemovedEntity.updateEnergy(-300);
+    }
 
 
     /**

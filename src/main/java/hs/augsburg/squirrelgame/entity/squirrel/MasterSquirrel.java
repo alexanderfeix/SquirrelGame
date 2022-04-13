@@ -30,7 +30,7 @@ public class MasterSquirrel extends Entity {
 
     public void onCollision(Entity enemy){
 
-        System.out.println("Method Called");
+        System.out.println("Squirrel collided with" + enemy);
         if (enemy.getEntityType() == EntityType.WALL) {
             getEntity().setEnergy(-10);
             setMoveCounter(3);
@@ -39,6 +39,7 @@ public class MasterSquirrel extends Entity {
             getEntity().setEnergy(-10);
             enemy.getEntity().setEnergy(0);
             System.out.println(enemy.getEntity() + "Energie set to " + enemy.getEntity().getEnergy());
+
         } else if (enemy.getEntityType() == EntityType.GOOD_PLANT) {
 
         } else if (enemy.getEntityType() == EntityType.BAD_BEAST) {
