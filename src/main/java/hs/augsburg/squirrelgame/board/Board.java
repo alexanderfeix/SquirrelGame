@@ -74,6 +74,16 @@ public class Board {
             }
         }
     }
+    //Moved from EntitySet
+    public void respawnEntity(Entity recentlyRemovedEntity){
+        Random random = new Random();
+        int spawnX = random.nextInt(BoardConfig.COLUMNS - 2) + 1;
+        int spawnY = random.nextInt(BoardConfig.ROWS - 2) + 1;
+        XY spawnPosition = new XY(spawnX, spawnY);
+        getEntitySet().addEntity(recentlyRemovedEntity); //add the Entity to the list again
+        recentlyRemovedEntity.updatePosition(spawnPosition); //define new Position for the Entity
+        recentlyRemovedEntity.updateEnergy(-300);
+    }
 
     /**
      * Creates the surrounding walls
