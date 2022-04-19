@@ -1,5 +1,6 @@
 package hs.augsburg.squirrelgame.entity;
 
+import hs.augsburg.squirrelgame.board.Board;
 import hs.augsburg.squirrelgame.board.BoardConfig;
 import hs.augsburg.squirrelgame.entity.plant.BadPlant;
 import hs.augsburg.squirrelgame.util.XY;
@@ -10,7 +11,7 @@ import java.util.Random;
 public class EntitySet {
 
     private ListElement tail;
-    private Entity recentlyRemovedEntity;
+    private Entity removedEntity;
 
     public void addEntity(Entity entity) {
         if (entityExists(entity)) {
@@ -31,7 +32,6 @@ public class EntitySet {
 
     public void removeEntity(Entity entity) {
         if (!entityExists(entity)) throw new IllegalStateException("The entity doesn't exists!");
-
         ListElement tempTail = tail;
         if (tempTail == null) {
             return;
@@ -86,31 +86,26 @@ public class EntitySet {
         return tempTail.getEntity().equals(entity);
     }
 
+
     /**
      * Calls the nextStep() method on all entities
      */
     public void nextStep(EntityContext entityContext) {
         ListElement temptail = tail;
-        if(temptail.getEntity().getEnergy() == 0){ //Removes Entities with 0 energie
-            recentlyRemovedEntity = temptail.getEntity(); //declares the last removed Entity before its actually removed
-            removeEntity(temptail.getEntity());
-            System.out.println(temptail.getEntity() + " removed.");
-            //respawnEntity(recentlyRemovedEntity); //maybe put it in the specific Entity-class
-        }
         temptail.getEntity().nextStep(entityContext);
-        while (temptail.hasPrev()) {
-            if(temptail.getEntity().getEnergy() == 0){ //Removes Entities with 0 energie
-                recentlyRemovedEntity = temptail.getEntity(); //declares the last removed Entity before its actually removed
-                removeEntity(temptail.getEntity());
-                System.out.println(temptail.getEntity() + " removed.");
-                //TODO: if(spawnableEntity) -> then spawn
-                //respawnEntity(recentlyRemovedEntity); //read comment from above
-            }
+        while (temptail.hasPrev()){
             temptail.getPrevItem().getEntity().nextStep(entityContext);
             temptail = temptail.getPrevItem();
+
         }
     }
-
+    public void respawnEntity(Entity removedEntity){
+        Random random = new Random();
+        int spawnX = random.nextInt(BoardConfig.COLUMNS - 2) + 1;
+        int spawnY = random.nextInt(BoardConfig.ROWS - 2) + 1;
+        XY spawnPosition = new XY(spawnX, spawnY);
+        removedEntity.updatePosition(spawnPosition);  //define new Position for the Entity
+    }
     /**
      * @return ArrayList with all entities in the linked list
      * commonly used to get all entities that are currently on the board

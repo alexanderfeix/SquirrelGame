@@ -1,9 +1,10 @@
 package hs.augsburg.squirrelgame.entity.plant;
 
+import hs.augsburg.squirrelgame.board.Board;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
+import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.entity.EntityType;
-import hs.augsburg.squirrelgame.util.XY;
 
 public class BadPlant extends Entity {
 
@@ -16,10 +17,10 @@ public class BadPlant extends Entity {
 
     public void nextStep(EntityContext entityContext){
 
-
     }
 
-    public void onCollision(Entity enemy){
+    public void onCollision(Entity enemy, Board board){
+
     }
 
 }

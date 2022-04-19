@@ -1,5 +1,6 @@
 package hs.augsburg.squirrelgame.entity.plant;
 
+import hs.augsburg.squirrelgame.board.Board;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
 
@@ -12,7 +13,7 @@ public class GoodPlant extends Entity {
         setEntity(this);
     }
 
-    public void onCollision(Entity enemy){
+    public void onCollision(Entity enemy, Board board){
 
     }
 

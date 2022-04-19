@@ -1,9 +1,7 @@
 package hs.augsburg.squirrelgame.entity.squirrel;
 
-import hs.augsburg.squirrelgame.entity.Entity;
-import hs.augsburg.squirrelgame.entity.EntityContext;
-import hs.augsburg.squirrelgame.entity.EntityType;
-import hs.augsburg.squirrelgame.entity.MovableEntity;
+import hs.augsburg.squirrelgame.board.Board;
+import hs.augsburg.squirrelgame.entity.*;
 
 public class MiniSquirrel extends MovableEntity {
 
@@ -21,7 +19,7 @@ public class MiniSquirrel extends MovableEntity {
         entityContext.move(getEntity(), getPosition().getRandomPosition());
     }
 
-    public void onCollision(Entity enemy){
+    public void onCollision(Entity enemy, Board board){
 
     }
 }

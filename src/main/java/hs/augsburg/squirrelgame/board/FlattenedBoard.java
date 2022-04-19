@@ -39,7 +39,7 @@ public class FlattenedBoard implements BoardView, EntityContext {
     public void move(Entity entity, XY movePosition) {
         XY currentPosition = entity.getPosition();
         if (getEntity(movePosition.getX(), movePosition.getY()) != null && getEntity(movePosition.getX(), movePosition.getY()).getId() != entity.getId()) {
-            entity.onCollision(getEntity(movePosition.getX(), movePosition.getY()));
+            entity.onCollision(getEntity(movePosition.getX(), movePosition.getY()), board);
             System.out.println("Avoided collision! (" + currentPosition.getX() + ", " + currentPosition.getY() + ") -> (" + movePosition.getX() + ", " + movePosition.getY() + "), ID: " + entity.getId() + " on " + getEntity(movePosition.getX(), movePosition.getY()).getId());
         } else {
             entity.updatePosition(movePosition);

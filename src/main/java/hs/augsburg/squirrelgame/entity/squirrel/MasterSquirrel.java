@@ -1,11 +1,9 @@
 package hs.augsburg.squirrelgame.entity.squirrel;
 
+import hs.augsburg.squirrelgame.board.Board;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
-import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.entity.EntityType;
-import hs.augsburg.squirrelgame.entity.plant.BadPlant;
-import hs.augsburg.squirrelgame.entity.util.Wall;
 import hs.augsburg.squirrelgame.util.XY;
 
 public class MasterSquirrel extends Entity {
@@ -28,17 +26,20 @@ public class MasterSquirrel extends Entity {
     public void nextStep(EntityContext entityContext){
     }
 
-    public void onCollision(Entity enemy){
+    public void onCollision(Entity enemy, Board board){
 
-        System.out.println("Squirrel collided with" + enemy);
+        System.out.println("Squirrel collided with " + enemy.getEntity());
         if (enemy.getEntityType() == EntityType.WALL) {
             getEntity().setEnergy(-10);
             setMoveCounter(3);
             System.out.println("Collided with Wall!");
         } else if (enemy.getEntityType() == EntityType.BAD_PLANT) {
             getEntity().setEnergy(-10);
-            enemy.getEntity().setEnergy(0);
-            System.out.println(enemy.getEntity() + "Energie set to " + enemy.getEntity().getEnergy());
+            System.out.println("Squirrel health now: " + getEntity().getEnergy());
+            board.getEntitySet().removeEntity(enemy);
+            board.getEntitySet().addEntity(enemy);
+            board.getEntitySet().respawnEntity(enemy);
+            System.out.println("respawn method aufgerufen");
 
         } else if (enemy.getEntityType() == EntityType.GOOD_PLANT) {
 
