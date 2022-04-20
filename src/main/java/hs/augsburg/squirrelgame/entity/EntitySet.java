@@ -2,6 +2,7 @@ package hs.augsburg.squirrelgame.entity;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.NoSuchElementException;
 
 public class EntitySet {
 
@@ -75,6 +76,8 @@ public class EntitySet {
                 if (!tempTail.hasPrev()) {
                     return tempTail.getEntity();
                 }
+                if(tempTail == null)
+                    throw new NoSuchElementException("Liste ist am Ende");
                 while (tempTail.hasPrev()) {
                     ListElement newTempTail = tempTail.getPrevItem();
                     if(tempTail.getEntity() != null){
@@ -86,6 +89,9 @@ public class EntitySet {
             }
         }
         return new E();
+    }
+    public Enumeration enumerateRandom(){
+        
     }
     public void removeEntity(Entity entity) {
         if (!entityExists(entity)) throw new IllegalStateException("The entity doesn't exists!");
