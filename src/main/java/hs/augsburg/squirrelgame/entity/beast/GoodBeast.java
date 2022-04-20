@@ -1,6 +1,5 @@
 package hs.augsburg.squirrelgame.entity.beast;
 
-import hs.augsburg.squirrelgame.board.Board;
 import hs.augsburg.squirrelgame.entity.*;
 import hs.augsburg.squirrelgame.util.XY;
 
@@ -23,8 +22,49 @@ public class GoodBeast extends MovableEntity {
         setMoveCounter(4);
     }
 
-    public void onCollision(Entity enemy){
+    public void onCollision(Entity enemy){;
+        if(enemy.getEntityType() == EntityType.MASTER_SQUIRREL || enemy.getEntityType() == EntityType.MINI_SQUIRREL){
+            XY currentPosition = getPosition();
+            while(currentPosition == getPosition()){
+                updatePosition(getPosition().getRandomPosition());
+            }
+            enemy.updatePosition(currentPosition);
+            enemy.updateEnergy(getEnergy());
+        }
+    }
 
+
+    private XY checkNearbyRadius(EntityContext entityContext, Entity entity) {
+        XY position = entity.getPosition();
+        if (entityContext.getNearbySquirrelPosition(entity) != null) {
+            XY enemyPosition = entityContext.getNearbySquirrelPosition(entity);
+            if (enemyPosition.getX() > position.getX() && enemyPosition.getY() < position.getY()) {
+                //Go right up
+                return new XY(position.getX() - 1, position.getY() + 1);
+            } else if (enemyPosition.getX() > position.getX() && enemyPosition.getY() > position.getY()) {
+                //Go right down
+                return new XY(position.getX() - 1, position.getY() - 1);
+            } else if (enemyPosition.getX() < position.getX() && enemyPosition.getY() < position.getY()) {
+                //Go left up
+                return new XY(position.getX() + 1, position.getY() + 1);
+            } else if (enemyPosition.getX() < position.getX() && enemyPosition.getY() > position.getY()) {
+                //Go left down
+                return new XY(position.getX() + 1, position.getY() - 1);
+            } else if (enemyPosition.getX() == position.getX() && enemyPosition.getY() > position.getY()) {
+                //Go down
+                return new XY(position.getX(), position.getY() - 1);
+            } else if (enemyPosition.getX() == position.getX() && enemyPosition.getY() < position.getY()) {
+                //Go up
+                return new XY(position.getX(), position.getY() + 1);
+            } else if (enemyPosition.getX() > position.getX() && enemyPosition.getY() == position.getY()) {
+                //Go right
+                return new XY(position.getX() - 1, position.getY());
+            } else if (enemyPosition.getX() < position.getX() && enemyPosition.getY() == position.getY()) {
+                //Go left
+                return new XY(position.getX() + 1, position.getY());
+            }
+        }
+        return position.getRandomNearbyPosition();
     }
 
     @Override

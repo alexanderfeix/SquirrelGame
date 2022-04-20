@@ -37,10 +37,13 @@ public class EntitySet {
         public boolean hasPrev() {
             return this.prevItem != null;
         }
+
+        public boolean hasNext() { return this.nextItem != null;}
     }
 
 
     private ListElement tail;
+    private ListElement head;
 
     public void addEntity(Entity entity) {
         if (entityExists(entity)) {
@@ -48,6 +51,7 @@ public class EntitySet {
         } else {
             ListElement newItem = new ListElement(entity);
             if (tail == null) {
+                head = newItem;
                 tail = newItem;
             } else {
                 ListElement prevTail = tail;
@@ -67,6 +71,7 @@ public class EntitySet {
         }
         if (!tempTail.hasPrev() && tempTail.getEntity() == entity) {
             tail = null;
+            head = null;
             return;
         }
         while (tempTail.hasPrev()) {
