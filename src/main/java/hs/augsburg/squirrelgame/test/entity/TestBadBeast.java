@@ -27,11 +27,10 @@ public class TestBadBeast extends BadBeast {
     public void onCollision(Entity enemy) {
         if (enemy.getEntityType() == EntityType.MASTER_SQUIRREL || enemy.getEntityType() == EntityType.MINI_SQUIRREL) {
             bites++;
-            //Energy remove from squirrel
-            System.out.println("BadBest collided with squirrel!");
+            enemy.updateEnergy(getEnergy());
             if (bites >= 7) {
                 bites = 0;
-                getEntity().updatePosition(getPosition().getRandomPosition());
+                updatePosition(getPosition().getRandomPosition());
             }
         }
     }

@@ -53,14 +53,14 @@ public class TestMasterSquirrel extends HandOperatedMasterSquirrel {
             while(currentPosition == enemy.getPosition()){
                 enemy.updatePosition(enemy.getPosition().getRandomPosition());
             }
-            getEntity().updatePosition(currentPosition);
+            updatePosition(currentPosition);
         } else if (enemy.getEntityType() == EntityType.BAD_BEAST || enemy.getEntityType() == EntityType.GOOD_BEAST) {
             updateEnergy(enemy.getEnergy());
             XY currentPosition = enemy.getPosition();
             while(currentPosition == enemy.getPosition()){
                 enemy.updatePosition(enemy.getPosition().getRandomPosition());
             }
-            getEntity().updatePosition(currentPosition);
+            updatePosition(currentPosition);
         } else if (enemy.getEntityType() == EntityType.MINI_SQUIRREL) {
             TestMiniSquirrel enemySquirrel = (TestMiniSquirrel) enemy;
             if(enemySquirrel.getMasterSquirrelId() == getId()){

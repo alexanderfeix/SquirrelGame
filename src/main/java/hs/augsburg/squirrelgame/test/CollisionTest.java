@@ -37,7 +37,7 @@ public class CollisionTest {
         XY beastPositionBeforeCollision = badBeast.getPosition();
         board.getFlattenedBoard().move(masterSquirrel, masterSquirrel.getPosition().getRandomNearbyPosition(Direction.LEFT));
         assertEquals(squirrelEnergyBeforeCollision + badBeastEnergyBeforeCollision, masterSquirrel.getEnergy());
-        //assertNotEquals(badBeast.getPosition(), beastPositionBeforeCollision);
+        assertNotEquals(badBeast.getPosition(), beastPositionBeforeCollision);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class CollisionTest {
         XY beastPositionBeforeCollision = goodBeast.getPosition();
         board.getFlattenedBoard().move(masterSquirrel, masterSquirrel.getPosition().getRandomNearbyPosition(Direction.DOWN));
         assertEquals(squirrelEnergyBeforeCollision + goodBeastEnergyBeforeCollision, masterSquirrel.getEnergy());
-        //assertNotEquals(goodBeast.getPosition(), beastPositionBeforeCollision);
+        assertNotEquals(goodBeast.getPosition(), beastPositionBeforeCollision);
     }
 
     @Test

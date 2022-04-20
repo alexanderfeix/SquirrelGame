@@ -27,7 +27,7 @@ public class Board {
         this.entitySet = new EntitySet();
         spawnBoarderWalls();
         //spawnEntitiesRandomly();
-        spawnEntities();
+        //spawnEntities();
     }
 
     /**

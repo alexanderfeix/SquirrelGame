@@ -23,12 +23,12 @@ public class TestGoodBeast extends GoodBeast {
 
     public void onCollision(Entity enemy){;
         if(enemy.getEntityType() == EntityType.MASTER_SQUIRREL || enemy.getEntityType() == EntityType.MINI_SQUIRREL){
-            XY currentPosition = getEntity().getPosition();
-            while(currentPosition == getEntity().getPosition()){
-                getEntity().updatePosition(getEntity().getPosition().getRandomPosition());
+            XY currentPosition = getPosition();
+            while(currentPosition == getPosition()){
+                updatePosition(getPosition().getRandomPosition());
             }
-            getEntity().updatePosition(currentPosition);
-            enemy.updateEnergy(getEntity().getEnergy());
+            enemy.updatePosition(currentPosition);
+            enemy.updateEnergy(getEnergy());
         }
     }
 

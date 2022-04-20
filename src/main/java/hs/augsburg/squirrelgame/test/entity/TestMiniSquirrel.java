@@ -36,7 +36,7 @@ public class TestMiniSquirrel extends MiniSquirrel {
                 setAlive(false);
             }
         } else if (enemy.getEntityType() == EntityType.BAD_PLANT || enemy.getEntityType() == EntityType.GOOD_PLANT) {
-            getEntity().updateEnergy(enemy.getEnergy());
+            updateEnergy(enemy.getEnergy());
             XY currentPosition = enemy.getPosition();
             while(currentPosition == enemy.getPosition()){
                 enemy.updatePosition(enemy.getPosition().getRandomPosition());
