@@ -1,6 +1,7 @@
 package hs.augsburg.squirrelgame.entity;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 public class EntitySet {
 
@@ -41,7 +42,6 @@ public class EntitySet {
         public boolean hasNext() { return this.nextItem != null;}
     }
 
-
     private ListElement tail;
     private ListElement head;
 
@@ -62,7 +62,31 @@ public class EntitySet {
         }
     }
 
+    public Enumeration enumerateBackwards(){
+        return new Enumeration() {
+            ListElement tempTail = tail;
+            @Override
+            public boolean hasMoreElements() {
+                return tempTail != null;
+            }
 
+            @Override
+            public Object nextElement() {
+                if (!tempTail.hasPrev()) {
+                    return tempTail.getEntity();
+                }
+                while (tempTail.hasPrev()) {
+                    ListElement newTempTail = tempTail.getPrevItem();
+                    if(tempTail.getEntity() != null){
+                        return tempTail.getEntity();
+                    }
+                    tempTail = newTempTail;
+                }
+                return tempTail.getEntity();
+            }
+        };
+
+    }
     public void removeEntity(Entity entity) {
         if (!entityExists(entity)) throw new IllegalStateException("The entity doesn't exists!");
         ListElement tempTail = tail;
