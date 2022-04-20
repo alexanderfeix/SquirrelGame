@@ -14,6 +14,10 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel {
 
     @Override
     public void nextStep(EntityContext entityContext) {
+        if(getEnergy() <= 0){
+            setAlive(false);
+            return;
+        }
         if(getMoveCounter() != 0){
             setMoveCounter(getMoveCounter()-1);
             System.out.println("Current MoveCounter: " + getMoveCounter());

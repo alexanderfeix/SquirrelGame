@@ -4,7 +4,6 @@ import hs.augsburg.squirrelgame.board.Board;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.entity.EntityType;
-import hs.augsburg.squirrelgame.test.entity.TestMiniSquirrel;
 import hs.augsburg.squirrelgame.util.XY;
 
 public class MasterSquirrel extends Entity {
@@ -45,7 +44,7 @@ public class MasterSquirrel extends Entity {
             }
             updatePosition(currentPosition);
         } else if (enemy.getEntityType() == EntityType.MINI_SQUIRREL) {
-            TestMiniSquirrel enemySquirrel = (TestMiniSquirrel) enemy;
+            MiniSquirrel enemySquirrel = (MiniSquirrel) enemy;
             if(enemySquirrel.getMasterSquirrelId() == getId()){
                 updateEnergy(enemy.getEnergy());
             }
@@ -63,7 +62,7 @@ public class MasterSquirrel extends Entity {
         if(energy < 100){
             return null;
         }else{
-            TestMiniSquirrel miniSquirrel = new TestMiniSquirrel(position, energy);
+            MiniSquirrel miniSquirrel = new MiniSquirrel(position, energy);
             miniSquirrel.setMasterSquirrelId(getId());
             this.updateEnergy(-energy);
             return miniSquirrel;

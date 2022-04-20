@@ -59,6 +59,10 @@ public class ConsoleUI implements UI, KeyListener {
                     System.out.print("   ");
                     continue;
                 }
+                if(!gameBoard[col][row].getEntity().isAlive()){
+                    System.out.print("   ");
+                    continue;
+                }
                 switch (gameBoard[col][row].getEntityType()) {
                     case WALL -> System.out.print("W  ");
                     case MASTER_SQUIRREL -> System.out.print("MA ");

@@ -132,6 +132,32 @@ public class EntitySet {
 
     }
 
+    public Enumeration enumerateForward() {
+        return new Enumeration() {
+            ListElement temphead = head;
+
+            @Override
+            public boolean hasMoreElements() {
+                return temphead != null;
+            }
+
+            @Override
+            public Object nextElement() {
+                if (!temphead.hasNext()) {
+                    return temphead.getEntity();
+                }
+                while (temphead.hasNext()) {
+                    if (temphead.getEntity() != null) {
+                        return temphead.getEntity();
+                    }
+                    temphead = temphead.getNextItem();
+                }
+                return temphead.getEntity();
+            }
+        };
+
+    }
+
     public boolean entityExists(Entity entity) {
         ListElement tempTail = tail;
         if (tempTail == null) {

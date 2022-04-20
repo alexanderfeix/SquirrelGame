@@ -19,12 +19,13 @@ public class BadBeast extends MovableEntity {
             System.out.println("Current MoveCounter Bad Beast: " + getMoveCounter());
             return;
         }
-        entityContext.move(getEntity(), getPosition().getRandomNearbyPosition());
+        entityContext.move(getEntity(), checkNearbyRadius(entityContext, getEntity()));
         setMoveCounter(4);
     }
 
     public void onCollision(Entity enemy) {
         if (enemy.getEntityType() == EntityType.MASTER_SQUIRREL || enemy.getEntityType() == EntityType.MINI_SQUIRREL) {
+            System.out.println("BadBeast collided with squirrel!");
             bites++;
             enemy.updateEnergy(getEnergy());
             if (bites >= 7) {
