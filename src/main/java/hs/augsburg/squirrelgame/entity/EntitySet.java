@@ -1,9 +1,6 @@
 package hs.augsburg.squirrelgame.entity;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.NoSuchElementException;
-import java.util.Random;
+import java.util.*;
 
 public class EntitySet {
 
@@ -46,6 +43,7 @@ public class EntitySet {
 
     private ListElement tail;
     private ListElement head;
+    public static int entityCounter = 0;
 
     public void addEntity(Entity entity) {
         if (entityExists(entity)) {
@@ -61,6 +59,7 @@ public class EntitySet {
                 tail = newItem;
                 tail.setPrevItem(prevTail);
             }
+            entityCounter++;
         }
     }
 
@@ -150,23 +149,40 @@ public class EntitySet {
             }
         };
     }
+    public class EnumerateRandomClass implements java.util.Enumeration {
+        HashSet <Integer> usedIndex = new HashSet<>();
+        boolean checkUsedIndex = false;
+        ListElement currentElement;
+        ListElement[] arrayTemp = new ListElement[entityCounter];
 
-    private Enumeration enumerateRandom(){
-        class E implements Enumeration{
-            Entity[] entities;
-            ListElement tempTail = tail;
-            @Override
-            public boolean hasMoreElements() {
-                return tempTail != null;
+        public java.util.Enumeration enumerateRandom() {
+            currentElement = head;
+            for (int j = 0; j < entityCounter; j++) {
+                arrayTemp[j] = currentElement;
+                currentElement = currentElement.getNextItem();
             }
+            return new EnumerateRandomClass();
+        }
 
-            @Override
-            public Object nextElement() {
-                if(tempTail == null){
-                    throw new NoSuchElementException("No more elements!");
+        @Override
+        public boolean hasMoreElements() {
+            return usedIndex.size() < entityCounter;
+        }
+
+        @Override
+        public Object nextElement() {
+            int randomIndex = 0;
+            Random indexGenerator = new Random();
+            if(this.hasMoreElements()) {
+                while (!checkUsedIndex) {
+                    randomIndex = indexGenerator.nextInt(entityCounter);
+                    checkUsedIndex = usedIndex.add(randomIndex);
                 }
-                Random random = new Random();
-
+                checkUsedIndex = false;
+                currentElement = arrayTemp[randomIndex];
+                return currentElement;
+            }else{
+                throw new NoSuchElementException("No more elements in list");
             }
         }
     }
