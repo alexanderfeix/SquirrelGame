@@ -1,6 +1,7 @@
 package hs.augsburg.squirrelgame.entity;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 public class EntitySet {
 
@@ -41,7 +42,6 @@ public class EntitySet {
         public boolean hasNext() { return this.nextItem != null;}
     }
 
-
     private ListElement tail;
     private ListElement head;
 
@@ -62,7 +62,31 @@ public class EntitySet {
         }
     }
 
+    public Enumeration enumerateBackwards(){
+        class E implements Enumeration{
+            ListElement tempTail = tail;
+            @Override
+            public boolean hasMoreElements() {
+                return tempTail != null;
+            }
 
+            @Override
+            public Object nextElement() {
+                if (!tempTail.hasPrev()) {
+                    return tempTail.getEntity();
+                }
+                while (tempTail.hasPrev()) {
+                    ListElement newTempTail = tempTail.getPrevItem();
+                    if(tempTail.getEntity() != null){
+                        return tempTail.getEntity();
+                    }
+                    tempTail = newTempTail;
+                }
+                return tempTail.getEntity();
+            }
+        }
+        return new E();
+    }
     public void removeEntity(Entity entity) {
         if (!entityExists(entity)) throw new IllegalStateException("The entity doesn't exists!");
         ListElement tempTail = tail;
@@ -99,6 +123,32 @@ public class EntitySet {
             }
             tempTail = newTempTail;
         }
+
+    }
+
+    public Enumeration enumerateForward() {
+        return new Enumeration() {
+            ListElement temphead = head;
+
+            @Override
+            public boolean hasMoreElements() {
+                return temphead != null;
+            }
+
+            @Override
+            public Object nextElement() {
+                if (!temphead.hasNext()) {
+                    return temphead.getEntity();
+                }
+                while (temphead.hasNext()) {
+                    if (temphead.getEntity() != null) {
+                        return temphead.getEntity();
+                    }
+                    temphead = temphead.getNextItem();
+                }
+                return temphead.getEntity();
+            }
+        };
 
     }
 
