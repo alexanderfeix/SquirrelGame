@@ -2,6 +2,8 @@ package hs.augsburg.squirrelgame.entity;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.NoSuchElementException;
+import java.util.Random;
 
 public class EntitySet {
 
@@ -72,17 +74,16 @@ public class EntitySet {
 
             @Override
             public Object nextElement() {
+                if(tempTail == null){
+                    throw new NoSuchElementException("No elements in list!");
+                }
                 if (!tempTail.hasPrev()) {
-                    return tempTail.getEntity();
+                    return tempTail;
                 }
-                while (tempTail.hasPrev()) {
-                    ListElement newTempTail = tempTail.getPrevItem();
-                    if(tempTail.getEntity() != null){
-                        return tempTail.getEntity();
-                    }
-                    tempTail = newTempTail;
-                }
-                return tempTail.getEntity();
+                ListElement newTempTail = tempTail.getPrevItem();
+                ListElement output = tempTail;
+                tempTail = newTempTail;
+                return output;
             }
         }
         return new E();
@@ -129,7 +130,6 @@ public class EntitySet {
     public Enumeration enumerateForward() {
         return new Enumeration() {
             ListElement temphead = head;
-
             @Override
             public boolean hasMoreElements() {
                 return temphead != null;
@@ -137,20 +137,40 @@ public class EntitySet {
 
             @Override
             public Object nextElement() {
+                if(temphead == null){
+                    throw new NoSuchElementException("No elements in list!");
+                }
                 if (!temphead.hasNext()) {
-                    return temphead.getEntity();
+                    return temphead;
                 }
-                while (temphead.hasNext()) {
-                    if (temphead.getEntity() != null) {
-                        return temphead.getEntity();
-                    }
-                    temphead = temphead.getNextItem();
-                }
-                return temphead.getEntity();
+                ListElement newTempHead = temphead.getNextItem();
+                ListElement output = temphead;
+                temphead = newTempHead;
+                return output;
             }
         };
-
     }
+
+    private Enumeration enumerateRandom(){
+        class E implements Enumeration{
+            Entity[] entities;
+            ListElement tempTail = tail;
+            @Override
+            public boolean hasMoreElements() {
+                return tempTail != null;
+            }
+
+            @Override
+            public Object nextElement() {
+                if(tempTail == null){
+                    throw new NoSuchElementException("No more elements!");
+                }
+                Random random = new Random();
+
+            }
+        }
+    }
+
 
     public boolean entityExists(Entity entity) {
         ListElement tempTail = tail;
