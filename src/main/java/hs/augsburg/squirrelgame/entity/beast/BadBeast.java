@@ -1,6 +1,5 @@
 package hs.augsburg.squirrelgame.entity.beast;
 
-import hs.augsburg.squirrelgame.board.Board;
 import hs.augsburg.squirrelgame.entity.*;
 
 public class BadBeast extends MovableEntity {
@@ -18,16 +17,21 @@ public class BadBeast extends MovableEntity {
             System.out.println("Current MoveCounter Bad Beast: " + getMoveCounter());
             return;
         }
-        entityContext.move(getEntity(), getPosition().getRandomPosition());
+        entityContext.move(getEntity(), getPosition().getRandomNearbyPosition());
         setMoveCounter(4);
     }
 
-    public void onCollision(Entity enemy, Board board){
+    public void onCollision(Entity enemy){
 
     }
 
     @Override
     public void move(Entity entity, hs.augsburg.squirrelgame.util.XY randomPosition) {
 
+    }
+
+    @Override
+    public hs.augsburg.squirrelgame.util.XY getNearbySquirrelPosition(Entity entity) {
+        return null;
     }
 }

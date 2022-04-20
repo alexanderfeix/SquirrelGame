@@ -19,7 +19,7 @@ public class BadPlant extends Entity {
 
     }
 
-    public void onCollision(Entity enemy, Board board){
+    public void onCollision(Entity enemy){
 
     }
 

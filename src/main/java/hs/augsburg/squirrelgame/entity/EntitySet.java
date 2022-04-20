@@ -1,17 +1,46 @@
 package hs.augsburg.squirrelgame.entity;
 
-import hs.augsburg.squirrelgame.board.Board;
-import hs.augsburg.squirrelgame.board.BoardConfig;
-import hs.augsburg.squirrelgame.entity.plant.BadPlant;
-import hs.augsburg.squirrelgame.util.XY;
-
 import java.util.ArrayList;
-import java.util.Random;
 
 public class EntitySet {
 
+    private static class ListElement{
+        private final Entity entity;
+        private ListElement prevItem;
+        private ListElement nextItem;
+
+        public ListElement(Entity entity) {
+            this.entity = entity;
+            nextItem = null;
+        }
+
+        public Entity getEntity() {
+            return entity;
+        }
+
+        public ListElement getPrevItem() {
+            return prevItem;
+        }
+
+        public void setPrevItem(ListElement prevItem) {
+            this.prevItem = prevItem;
+        }
+
+        public ListElement getNextItem() {
+            return nextItem;
+        }
+
+        public void setNextItem(ListElement nextItem) {
+            this.nextItem = nextItem;
+        }
+
+        public boolean hasPrev() {
+            return this.prevItem != null;
+        }
+    }
+
+
     private ListElement tail;
-    private Entity removedEntity;
 
     public void addEntity(Entity entity) {
         if (entityExists(entity)) {
@@ -94,18 +123,13 @@ public class EntitySet {
         ListElement temptail = tail;
         temptail.getEntity().nextStep(entityContext);
         while (temptail.hasPrev()){
-            temptail.getPrevItem().getEntity().nextStep(entityContext);
+            if(temptail.getPrevItem().getEntity().isAlive()){
+                temptail.getPrevItem().getEntity().nextStep(entityContext);
+            }
             temptail = temptail.getPrevItem();
-
         }
     }
-    public void respawnEntity(Entity removedEntity){
-        Random random = new Random();
-        int spawnX = random.nextInt(BoardConfig.COLUMNS - 2) + 1;
-        int spawnY = random.nextInt(BoardConfig.ROWS - 2) + 1;
-        XY spawnPosition = new XY(spawnX, spawnY);
-        removedEntity.updatePosition(spawnPosition);  //define new Position for the Entity
-    }
+
     /**
      * @return ArrayList with all entities in the linked list
      * commonly used to get all entities that are currently on the board
@@ -118,7 +142,9 @@ public class EntitySet {
         ListElement tempTail = getTail();
         entities.add(tempTail.getEntity());
         while (tempTail.hasPrev()) {
-            entities.add(tempTail.getPrevItem().getEntity());
+            if(tempTail.getPrevItem().getEntity().isAlive()){
+                entities.add(tempTail.getPrevItem().getEntity());
+            }
             tempTail = tempTail.getPrevItem();
         }
         return entities;
@@ -137,8 +163,9 @@ public class EntitySet {
 
     /**
      * @return the amount of items in the list
+     * @param allEntities return all entities or only alive entities?
      */
-    public int countItems() {
+    public int countItems(boolean allEntities) {
         ListElement temptail = tail;
         int counter = 0;
         if (temptail == null) {

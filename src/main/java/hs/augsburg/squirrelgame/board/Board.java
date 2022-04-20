@@ -8,7 +8,9 @@ import hs.augsburg.squirrelgame.entity.beast.GoodBeast;
 import hs.augsburg.squirrelgame.entity.plant.BadPlant;
 import hs.augsburg.squirrelgame.entity.plant.GoodPlant;
 import hs.augsburg.squirrelgame.entity.squirrel.HandOperatedMasterSquirrel;
+import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.entity.util.Wall;
+import hs.augsburg.squirrelgame.test.entity.*;
 import hs.augsburg.squirrelgame.util.XY;
 
 import java.util.ArrayList;
@@ -24,7 +26,8 @@ public class Board {
         this.board = this;
         this.entitySet = new EntitySet();
         spawnBoarderWalls();
-        spawnEntitiesRandomly();
+        //spawnEntitiesRandomly();
+        spawnEntities();
     }
 
     /**
@@ -73,6 +76,15 @@ public class Board {
                 }
             }
         }
+    }
+
+
+    private void spawnEntities(){
+        //getEntitySet().addEntity(new TestGoodBeast());
+        getEntitySet().addEntity(new TestBadBeast());
+        //getEntitySet().addEntity(new TestBadPlant());
+        //getEntitySet().addEntity(new TestGoodPlant());
+        getEntitySet().addEntity(new TestMasterSquirrel());
     }
 
     /**

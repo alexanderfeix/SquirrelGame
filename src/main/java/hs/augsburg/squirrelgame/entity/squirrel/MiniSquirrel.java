@@ -2,6 +2,7 @@ package hs.augsburg.squirrelgame.entity.squirrel;
 
 import hs.augsburg.squirrelgame.board.Board;
 import hs.augsburg.squirrelgame.entity.*;
+import hs.augsburg.squirrelgame.util.XY;
 
 public class MiniSquirrel extends MovableEntity {
 
@@ -15,11 +16,20 @@ public class MiniSquirrel extends MovableEntity {
 
     }
 
-    public void nextStep(EntityContext entityContext){
-        entityContext.move(getEntity(), getPosition().getRandomPosition());
+    @Override
+    public hs.augsburg.squirrelgame.util.XY getNearbySquirrelPosition(Entity entity) {
+        return null;
     }
 
-    public void onCollision(Entity enemy, Board board){
+    public void nextStep(EntityContext entityContext){
+        entityContext.move(getEntity(), getPosition().getRandomNearbyPosition());
+    }
 
+    public void onCollision(Entity enemy){
+        if (enemy.getEntityType() == EntityType.WALL) {
+            getEntity().updateEnergy(-10);
+            setMoveCounter(3);
+            System.out.println("Collided with Wall!");
+        }
     }
 }

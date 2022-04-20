@@ -36,13 +36,13 @@ class EntitySetTest {
     @Test
     void checkIfRemoveOnlyRemovesWhatNeedsToBeRemoved() {
         EntitySet entitySet = new EntitySet();
-        int itemsInListStart = entitySet.countItems();
+        int itemsInListStart = entitySet.countItems(true);
         Entity test = new BadPlant(new XY(3, 3));
         entitySet.addEntity(test);
-        int itemsInListAfterAdd = entitySet.countItems();
+        int itemsInListAfterAdd = entitySet.countItems(true);
         assertNotEquals(itemsInListStart, itemsInListAfterAdd);
         entitySet.removeEntity(test);
-        int itemsInListAfterRemove = entitySet.countItems();
+        int itemsInListAfterRemove = entitySet.countItems(true);
         assertEquals(itemsInListStart, itemsInListAfterRemove);
     }
 

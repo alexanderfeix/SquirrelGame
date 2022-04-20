@@ -10,11 +10,11 @@ public class BoardConfig {
     public static int ROWS = 18;
     public static int GAME_SIZE = COLUMNS * ROWS;
     public static HashMap<EntityType, Integer> SPAWN_RATES = new HashMap<>() {{
-        put(EntityType.MASTER_SQUIRREL, 1);
+        put(EntityType.MASTER_SQUIRREL, 0);
         put(EntityType.GOOD_BEAST, 0);
         put(EntityType.BAD_BEAST, 0);
         put(EntityType.GOOD_PLANT, 0);
-        put(EntityType.BAD_PLANT, 1);
+        put(EntityType.BAD_PLANT, 0);
     }};
 
 }

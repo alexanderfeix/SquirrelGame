@@ -2,6 +2,7 @@ package hs.augsburg.squirrelgame.entity.beast;
 
 import hs.augsburg.squirrelgame.board.Board;
 import hs.augsburg.squirrelgame.entity.*;
+import hs.augsburg.squirrelgame.util.XY;
 
 public class GoodBeast extends MovableEntity {
 
@@ -18,11 +19,11 @@ public class GoodBeast extends MovableEntity {
             System.out.println("Current MoveCounter Good Beast: " + getMoveCounter());
             return;
         }
-        entityContext.move(getEntity(), getPosition().getRandomPosition());
+        entityContext.move(getEntity(), getPosition().getRandomNearbyPosition());
         setMoveCounter(4);
     }
 
-    public void onCollision(Entity enemy, Board board){
+    public void onCollision(Entity enemy){
 
     }
 
@@ -30,4 +31,10 @@ public class GoodBeast extends MovableEntity {
     public void move(Entity entity, hs.augsburg.squirrelgame.util.XY movePosition) {
 
     }
+
+    @Override
+    public hs.augsburg.squirrelgame.util.XY getNearbySquirrelPosition(Entity entity) {
+        return null;
+    }
+
 }
