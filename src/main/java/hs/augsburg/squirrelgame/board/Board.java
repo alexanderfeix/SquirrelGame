@@ -8,9 +8,7 @@ import hs.augsburg.squirrelgame.entity.beast.GoodBeast;
 import hs.augsburg.squirrelgame.entity.plant.BadPlant;
 import hs.augsburg.squirrelgame.entity.plant.GoodPlant;
 import hs.augsburg.squirrelgame.entity.squirrel.HandOperatedMasterSquirrel;
-import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.entity.util.Wall;
-import hs.augsburg.squirrelgame.test.entity.*;
 import hs.augsburg.squirrelgame.util.XY;
 
 import java.util.ArrayList;
@@ -26,8 +24,8 @@ public class Board {
         this.board = this;
         this.entitySet = new EntitySet();
         spawnBoarderWalls();
-        //spawnEntitiesRandomly();
-        spawnEntities();
+        spawnEntitiesRandomly();
+        //spawnEntities();
     }
 
     /**
@@ -80,11 +78,11 @@ public class Board {
 
 
     private void spawnEntities(){
-        //getEntitySet().addEntity(new TestGoodBeast());
-        getEntitySet().addEntity(new TestBadBeast());
-        //getEntitySet().addEntity(new TestBadPlant());
-        //getEntitySet().addEntity(new TestGoodPlant());
-        getEntitySet().addEntity(new TestMasterSquirrel());
+        getEntitySet().addEntity(new GoodBeast(new XY(2, 3)));
+        //getEntitySet().addEntity(new BadBeast(new XY(1, 1)));
+        //getEntitySet().addEntity(new BadPlant(new XY(3, 1)));
+        //getEntitySet().addEntity(new GoodPlant(new XY(2,2)));
+        getEntitySet().addEntity(new HandOperatedMasterSquirrel(new XY(2, 1)));
     }
 
     /**

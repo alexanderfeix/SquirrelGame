@@ -1,7 +1,6 @@
 package hs.augsburg.squirrelgame.entity.squirrel;
 
 import hs.augsburg.squirrelgame.entity.*;
-import hs.augsburg.squirrelgame.test.entity.TestMiniSquirrel;
 import hs.augsburg.squirrelgame.util.XY;
 
 public class MiniSquirrel extends MovableEntity {
@@ -24,13 +23,13 @@ public class MiniSquirrel extends MovableEntity {
 
     public void onCollision(Entity enemy){
         if(enemy.getEntityType() == EntityType.MASTER_SQUIRREL){
-            TestMiniSquirrel enemySquirrel = (TestMiniSquirrel) enemy;
+            MiniSquirrel enemySquirrel = (MiniSquirrel) enemy;
             if(enemySquirrel.getMasterSquirrelId() == getMasterSquirrelId()){
                 enemy.updateEnergy(getEnergy());
             }
             setAlive(false);
         }else if (enemy.getEntityType() == EntityType.MINI_SQUIRREL){
-            TestMiniSquirrel enemySquirrel = (TestMiniSquirrel) enemy;
+            MiniSquirrel enemySquirrel = (MiniSquirrel) enemy;
             if(enemySquirrel.getMasterSquirrelId() != getMasterSquirrelId()){
                 enemy.setAlive(false);
                 setAlive(false);
