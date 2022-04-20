@@ -63,7 +63,7 @@ public class EntitySet {
     }
 
     public Enumeration enumerateBackwards(){
-        return new Enumeration() {
+        class E implements Enumeration{
             ListElement tempTail = tail;
             @Override
             public boolean hasMoreElements() {
@@ -84,8 +84,8 @@ public class EntitySet {
                 }
                 return tempTail.getEntity();
             }
-        };
-
+        }
+        return new E();
     }
     public void removeEntity(Entity entity) {
         if (!entityExists(entity)) throw new IllegalStateException("The entity doesn't exists!");
