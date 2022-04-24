@@ -167,7 +167,7 @@ public class EntitySet {
             }
 
             @Override
-            public ListElement nextElement() {
+            public ListElement nextElement() { //maybe remove "dead" Entities in arraylist. Or check living entities.
                 int randomIndex = 0;
                 Random indexGenerator = new Random();
                 if (this.hasMoreElements()) {
@@ -210,7 +210,11 @@ public class EntitySet {
     /**
      * Calls the nextStep() method on all entities
      */
-    public void nextStep(EntityContext entityContext) {
+    public void nextStep(Object entityContext) {
+        while(enumerateRandom().hasMoreElements()){
+            nextStep(enumerateRandom().nextElement());
+        }
+        /*
         ListElement temptail = tail;
         temptail.getEntity().nextStep(entityContext);
         while (temptail.hasPrev()){
@@ -218,7 +222,7 @@ public class EntitySet {
                 temptail.getPrevItem().getEntity().nextStep(entityContext);
             }
             temptail = temptail.getPrevItem();
-        }
+        }*/
     }
 
     /**
