@@ -211,14 +211,13 @@ public class EntitySet {
      * Calls the nextStep() method on all entities
      */
     public void nextStep(EntityContext entityContext) {
-
-        ListElement temptail = tail;
-        temptail.getEntity().nextStep(entityContext);
+        ListElement current = enumerateRandom().nextElement();
+        current.getEntity().nextStep(entityContext);
         while (enumerateRandom().hasMoreElements()){
-            if(temptail.getPrevItem().getEntity().isAlive()){
-                temptail.getPrevItem().getEntity().nextStep(entityContext);
+            if(current.getEntity().isAlive()){
+                current.getEntity().nextStep(entityContext);
             }
-            temptail = enumerateRandom().nextElement();
+            current = enumerateRandom().nextElement();
         }
     }
 
