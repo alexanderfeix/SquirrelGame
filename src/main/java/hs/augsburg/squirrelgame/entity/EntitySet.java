@@ -4,7 +4,7 @@ import java.util.*;
 
 public class EntitySet {
 
-    private static class ListElement{
+    public static class ListElement{
         private final Entity entity;
         private ListElement prevItem;
         private ListElement nextItem;
