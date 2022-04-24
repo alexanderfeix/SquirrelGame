@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Enumeration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class EnumerationTest {
 
@@ -47,6 +48,7 @@ public class EnumerationTest {
         }
     }
 
+    @Test
     public void checkIfEnumerateRandomEnumeratesRandom (){
         EntitySet entitySet = new EntitySet();
         entitySet.addEntity(new BadPlant(new XY(3, 3)) );
@@ -54,9 +56,13 @@ public class EnumerationTest {
         entitySet.addEntity(new GoodBeast(new XY(8, 9)) );
         entitySet.addEntity(new GoodBeast(new XY(10, 7)) );
         entitySet.addEntity(new GoodBeast(new XY(9, 10)) );
-
-        for(int i = 2; i >= 0 ; i--) {
-            assertEquals(i, ((EntitySet.ListElement) enu.nextElement()).getEntity().getId());
+        Enumeration enu = entitySet.enumerateRandom();
+        for(int i = 0; i < 5 ; i++) {
+            assertNotEquals(i, ((EntitySet.ListElement) enu.nextElement()).getEntity().getId());
+        }
+        Enumeration enuZwei = entitySet.enumerateRandom();
+        for(int i = 4; i >= 0 ; i--) {
+            assertNotEquals(i, ((EntitySet.ListElement) enuZwei.nextElement()).getEntity().getId());
         }
     }
 }
