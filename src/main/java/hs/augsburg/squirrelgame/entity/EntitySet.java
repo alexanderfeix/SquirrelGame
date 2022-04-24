@@ -72,7 +72,7 @@ public class EntitySet {
             }
 
             @Override
-            public Object nextElement() {
+            public ListElement nextElement() {
                 if(tempTail == null){
                     throw new NoSuchElementException("No elements in list!");
                 }
@@ -125,7 +125,6 @@ public class EntitySet {
         }
 
     }
-
     public Enumeration enumerateForward() {
         return new Enumeration() {
             ListElement temphead = head;
@@ -135,7 +134,7 @@ public class EntitySet {
             }
 
             @Override
-            public Object nextElement() {
+            public ListElement nextElement() {
                 if(temphead == null){
                     throw new NoSuchElementException("No elements in list!");
                 }
@@ -149,43 +148,44 @@ public class EntitySet {
             }
         };
     }
-    public class EnumerateRandomClass implements java.util.Enumeration {
-        HashSet <Integer> usedIndex = new HashSet<>();
-        boolean checkUsedIndex = false;
-        ListElement currentElement;
-        ListElement[] arrayTemp = new ListElement[entityCounter];
-
-        public java.util.Enumeration enumerateRandom() {
-            currentElement = head;
-            for (int j = 0; j < entityCounter; j++) {
-                arrayTemp[j] = currentElement;
-                currentElement = currentElement.getNextItem();
-            }
-            return new EnumerateRandomClass();
-        }
-
-        @Override
-        public boolean hasMoreElements() {
-            return usedIndex.size() < entityCounter;
-        }
-
-        @Override
-        public Object nextElement() {
-            int randomIndex = 0;
-            Random indexGenerator = new Random();
-            if(this.hasMoreElements()) {
-                while (!checkUsedIndex) {
-                    randomIndex = indexGenerator.nextInt(entityCounter);
-                    checkUsedIndex = usedIndex.add(randomIndex);
+    public Enumeration enumerateRandom() {
+        class EnumerateRandomClass implements java.util.Enumeration {
+            HashSet<Integer> usedIndex = new HashSet<>();
+            boolean checkUsedIndex = false;
+            ListElement currentElement;
+            ListElement[] arrayTemp = new ListElement[entityCounter];
+            public EnumerateRandomClass(){
+                currentElement = head;
+                for (int j = 0; j < entityCounter; j++) {
+                    arrayTemp[j] = currentElement;
+                    currentElement = currentElement.getNextItem();
                 }
-                checkUsedIndex = false;
-                currentElement = arrayTemp[randomIndex];
-                return currentElement;
-            }else{
-                throw new NoSuchElementException("No more elements in list");
+            }
+            @Override
+            public boolean hasMoreElements() {
+                return usedIndex.size() < entityCounter;
+            }
+
+            @Override
+            public ListElement nextElement() { //maybe remove "dead" Entities in arraylist. Or check living entities.
+                int randomIndex = 0;
+                Random indexGenerator = new Random();
+                if (this.hasMoreElements()) {
+                    while (!checkUsedIndex) {
+                        randomIndex = indexGenerator.nextInt(entityCounter);
+                        checkUsedIndex = usedIndex.add(randomIndex);
+                    }
+                    checkUsedIndex = false;
+                    currentElement = arrayTemp[randomIndex];
+                    return currentElement;
+                } else {
+                    throw new NoSuchElementException("No more elements in list");
+                }
             }
         }
+        return new EnumerateRandomClass();
     }
+
 
 
     public boolean entityExists(Entity entity) {
@@ -211,13 +211,13 @@ public class EntitySet {
      * Calls the nextStep() method on all entities
      */
     public void nextStep(EntityContext entityContext) {
-        ListElement temptail = tail;
-        temptail.getEntity().nextStep(entityContext);
-        while (temptail.hasPrev()){
-            if(temptail.getPrevItem().getEntity().isAlive()){
-                temptail.getPrevItem().getEntity().nextStep(entityContext);
+        ListElement current = enumerateRandom().nextElement();
+        current.getEntity().nextStep(entityContext);
+        while (enumerateRandom().hasMoreElements()){
+            if(current.getEntity().isAlive()){
+                current.getEntity().nextStep(entityContext);
             }
-            temptail = temptail.getPrevItem();
+            current = enumerateRandom().nextElement();
         }
     }
 
