@@ -4,7 +4,7 @@ import java.util.*;
 
 public class EntitySet {
 
-    public static class ListElement{
+    private static class ListElement{
         private final Entity entity;
         private ListElement prevItem;
         private ListElement nextItem;
@@ -43,7 +43,7 @@ public class EntitySet {
 
     private ListElement tail;
     private ListElement head;
-    public static int entityCounter = 0;
+    private int entityCounter = 0;
 
     public void addEntity(Entity entity) {
         if (entityExists(entity)) {
@@ -72,17 +72,17 @@ public class EntitySet {
             }
 
             @Override
-            public ListElement nextElement() {
+            public Entity nextElement() {
                 if(tempTail == null){
                     throw new NoSuchElementException("No elements in list!");
                 }
                 if (!tempTail.hasPrev()) {
-                    return tempTail;
+                    return tempTail.getEntity();
                 }
                 ListElement newTempTail = tempTail.getPrevItem();
                 ListElement output = tempTail;
                 tempTail = newTempTail;
-                return output;
+                return output.getEntity();
             }
         }
         return new E();
@@ -134,17 +134,17 @@ public class EntitySet {
             }
 
             @Override
-            public ListElement nextElement() {
+            public Entity nextElement() {
                 if(temphead == null){
                     throw new NoSuchElementException("No elements in list!");
                 }
                 if (!temphead.hasNext()) {
-                    return temphead;
+                    return temphead.getEntity();
                 }
                 ListElement newTempHead = temphead.getNextItem();
                 ListElement output = temphead;
                 temphead = newTempHead;
-                return output;
+                return output.getEntity();
             }
         };
     }
@@ -167,7 +167,7 @@ public class EntitySet {
             }
 
             @Override
-            public ListElement nextElement() { //maybe remove "dead" Entities in arraylist. Or check living entities.
+            public Entity nextElement() { //maybe remove "dead" Entities in arraylist. Or check living entities.
                 int randomIndex = 0;
                 Random indexGenerator = new Random();
                 if (this.hasMoreElements()) {
@@ -177,7 +177,7 @@ public class EntitySet {
                     }
                     checkUsedIndex = false;
                     currentElement = arrayTemp[randomIndex];
-                    return currentElement;
+                    return currentElement.getEntity();
                 } else {
                     throw new NoSuchElementException("No more elements in list");
                 }
@@ -273,4 +273,5 @@ public class EntitySet {
     public ListElement getTail() {
         return tail;
     }
+
 }
