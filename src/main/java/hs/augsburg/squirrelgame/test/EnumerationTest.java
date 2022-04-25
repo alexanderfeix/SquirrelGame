@@ -28,13 +28,6 @@ public class EnumerationTest {
             assertEquals(i, ((EntitySet.ListElement) enu.nextElement()).getEntity().getId());
 
         }
-
-
-
-
-
-
-
     }
     @Test
     public void checkIfEnumerateBackwardsEnumeratesBackwards (){
