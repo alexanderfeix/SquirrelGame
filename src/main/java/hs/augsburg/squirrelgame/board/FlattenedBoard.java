@@ -9,6 +9,7 @@ import hs.augsburg.squirrelgame.util.Direction;
 import hs.augsburg.squirrelgame.util.XY;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Random;
 
 public class FlattenedBoard implements BoardView, EntityContext {
@@ -54,11 +55,13 @@ public class FlattenedBoard implements BoardView, EntityContext {
      * Sets the entities to their positions on the gameBoard
      */
     private void fillGameBoard() {
-        ArrayList<Entity> entities = getEntitySet().getEntities();
-        for (Entity entity : entities) {
+        Enumeration enumeration = getEntitySet().enumerateRandom();
+        while (enumeration.hasMoreElements()){
+            Entity entity = (Entity) enumeration.nextElement();
             XY position = entity.getPosition();
             gameBoard[position.getX()][position.getY()] = entity;
         }
+
     }
 
     @Override

@@ -17,6 +17,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CollisionTest {
 
+    /**
+     * This class tests all collisions between squirrel and other entities.
+     */
     @Test
     void checkWallCollision(){
         Board board = new Board();

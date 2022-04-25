@@ -12,6 +12,7 @@ import hs.augsburg.squirrelgame.entity.util.Wall;
 import hs.augsburg.squirrelgame.util.XY;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Random;
 
 public class Board {
@@ -104,8 +105,10 @@ public class Board {
      */
     public void getEntityInformation() {
         System.out.println("\n----------\n");
-        for (Entity entity : getEntitySet().getEntities()) {
-            if (entity.getEntityType() != EntityType.WALL) {
+        Enumeration enumeration = getEntitySet().enumerateBackwards();
+        while (enumeration.hasMoreElements()){
+            Entity entity = (Entity) enumeration.nextElement();
+            if(entity.getEntityType() != EntityType.WALL){
                 System.out.println("ID: " + entity.getId() + ", Energy: " + entity.getEnergy() + ", Position: " + entity.getPosition().getX() + ", " + entity.getPosition().getY() + " | " + entity.getEntityType());
             }
         }
