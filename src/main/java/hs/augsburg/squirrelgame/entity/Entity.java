@@ -11,6 +11,8 @@ public abstract class Entity implements EntityInterface {
     private int energy;
     private XY XY;
     private Entity entity;
+    private int moveCounter = 0;
+    private boolean alive;
 
 
     public Entity(EntityType entityType, XY position, int energy) {
@@ -18,19 +20,20 @@ public abstract class Entity implements EntityInterface {
         this.energy = energy;
         this.entityType = entityType;
         this.id = idCount;
+        this.alive = true;
         idCount++;
     }
-
     public void updateEnergy(int energy) {
         this.energy += energy;
     }
+
+    public void onCollision(Entity enemy){}
 
     public void updatePosition(XY position) {
         this.XY = position;
     }
 
-    public void nextStep() {
-    }
+    public void nextStep(EntityContext entityContext) {}
 
     public boolean equals(Entity entity) {
         return getId() == entity.getId();
@@ -62,5 +65,17 @@ public abstract class Entity implements EntityInterface {
 
     public EntityType getEntityType() {
         return entityType;
+    }
+
+    public int getMoveCounter() { return moveCounter;}
+
+    public void setMoveCounter(int moveCounter) { this.moveCounter = moveCounter;}
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 }

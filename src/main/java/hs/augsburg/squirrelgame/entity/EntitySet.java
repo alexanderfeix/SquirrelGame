@@ -1,35 +1,74 @@
 package hs.augsburg.squirrelgame.entity;
 
-import hs.augsburg.squirrelgame.entity.beast.BadBeast;
-import hs.augsburg.squirrelgame.entity.beast.GoodBeast;
-import hs.augsburg.squirrelgame.entity.plant.BadPlant;
-import hs.augsburg.squirrelgame.entity.plant.GoodPlant;
-import hs.augsburg.squirrelgame.entity.util.Wall;
-import hs.augsburg.squirrelgame.util.XY;
+import java.util.*;
 
 public class EntitySet {
+    /**
+     * This class is used to manage the entities. Every instance of EntitySet could contain a different set of entities.
+     */
 
-    private static ListElement tail;
 
-    public static void initializeExamples() {
-        addEntity(new BadPlant(new XY(1, 3)));
-        addEntity(new GoodPlant(new XY(2, 4)));
-        addEntity(new BadBeast(new XY(0, 0)));
-        addEntity(new GoodBeast(new XY(4, 6)));
-        addEntity(new Wall(new XY(5, 7)));
-        //MasterSquirrel masterSquirrel = new MasterSquirrel(new XY(6, -8));
-        //addEntity(masterSquirrel);
-        //Creating a mini-squirrel
-        //addEntity(masterSquirrel.createMiniSquirrel(new XY(0, -1), 200));
+    /**
+     * This class must be private static!
+     */
+    private static class ListElement{
+        private final Entity entity;
+        private ListElement prevItem;
+        private ListElement nextItem;
+
+        public ListElement(Entity entity) {
+            this.entity = entity;
+            nextItem = null;
+        }
+
+        public Entity getEntity() {
+            return entity;
+        }
+
+        public ListElement getPrevItem() {
+            return prevItem;
+        }
+
+        public void setPrevItem(ListElement prevItem) {
+            this.prevItem = prevItem;
+        }
+
+        public ListElement getNextItem() {
+            return nextItem;
+        }
+
+        public void setNextItem(ListElement nextItem) {
+            this.nextItem = nextItem;
+        }
+
+        public boolean hasPrev() {
+            return this.prevItem != null;
+        }
+
+        public boolean hasNext() { return this.nextItem != null;}
     }
 
-    public static void addEntity(Entity entity) {
+    private ListElement tail;
+    private ListElement head;
+    /**
+     * Counts the entities in the EntitySet. Do not confuse with the idCounter in Entity. The id in Entity-Class
+     * is a real identifier for every entity created. The entityCounter in EntitySet identifies only counts the entities
+     * in this EntitySet. So, the actual number of entities created can vary from the integer value below.
+     */
+    private int entityCounter = 0;
 
+
+    /**
+     * Adds an entity to the EntitySet.
+     * @param entity
+     */
+    public void addEntity(Entity entity) {
         if (entityExists(entity)) {
-            throw new IllegalStateException();
+            throw new IllegalStateException("An entity with this id already exists!");
         } else {
             ListElement newItem = new ListElement(entity);
             if (tail == null) {
+                head = newItem;
                 tail = newItem;
             } else {
                 ListElement prevTail = tail;
@@ -37,19 +76,19 @@ public class EntitySet {
                 tail = newItem;
                 tail.setPrevItem(prevTail);
             }
+            entityCounter++;
         }
     }
 
-
-    public static void removeEntity(Entity entity) {
-        if (!entityExists(entity)) throw new IllegalStateException();
-
+    public void removeEntity(Entity entity) {
+        if (!entityExists(entity)) throw new IllegalStateException("The entity doesn't exists!");
         ListElement tempTail = tail;
         if (tempTail == null) {
             return;
         }
         if (!tempTail.hasPrev() && tempTail.getEntity() == entity) {
             tail = null;
+            head = null;
             return;
         }
         while (tempTail.hasPrev()) {
@@ -80,7 +119,115 @@ public class EntitySet {
 
     }
 
-    public static boolean entityExists(Entity entity) {
+    /**
+     * Enumerates the set of entities from head to tail.
+     * @return
+     */
+    public Enumeration enumerateForward() {
+        return new Enumeration() {
+            ListElement temphead = head;
+            @Override
+            public boolean hasMoreElements() {
+                return temphead != null;
+            }
+
+            @Override
+            public Entity nextElement() {
+                if(temphead == null){
+                    throw new NoSuchElementException("No elements in list!");
+                }
+                if (!temphead.hasNext()) {
+                    return temphead.getEntity();
+                }
+                ListElement newTempHead = temphead.getNextItem();
+                ListElement output = temphead;
+                temphead = newTempHead;
+                return output.getEntity();
+            }
+        };
+    }
+
+    /**
+     * Enumerates the set of entities from tail to head.
+     * @return
+     */
+    public Enumeration enumerateBackwards(){
+        class E implements Enumeration{
+            ListElement tempTail = tail;
+            @Override
+            public boolean hasMoreElements() {
+                return tempTail != null;
+            }
+
+            @Override
+            public Entity nextElement() {
+                if(tempTail == null){
+                    throw new NoSuchElementException("No elements in list!");
+                }
+                if (!tempTail.hasPrev()) {
+                    ListElement output = tempTail;
+                    tempTail = null;
+                    return output.getEntity();
+                }
+                ListElement newTempTail = tempTail.getPrevItem();
+                ListElement output = tempTail;
+                tempTail = newTempTail;
+                return output.getEntity();
+            }
+        }
+        return new E();
+    }
+
+    /**
+     * Enumerates the set of entities randomly.
+     * The method is working with indices and checks that no index can show up a second time.
+     * Maybe check this method for cleaner code.
+     * @return
+     */
+    public Enumeration enumerateRandom() {
+        class EnumerateRandomClass implements java.util.Enumeration {
+            HashSet<Integer> usedIndex = new HashSet<>();
+            boolean checkUsedIndex = false;
+            ListElement currentElement;
+            ListElement[] arrayTemp = new ListElement[entityCounter];
+            public EnumerateRandomClass(){
+                currentElement = head;
+                for (int j = 0; j < entityCounter; j++) {
+                    arrayTemp[j] = currentElement;
+                    currentElement = currentElement.getNextItem();
+                }
+            }
+            @Override
+            public boolean hasMoreElements() {
+                return usedIndex.size() < entityCounter;
+            }
+
+            @Override
+            public Entity nextElement() { //maybe remove "dead" Entities in arraylist. Or check living entities.
+                int randomIndex = 0;
+                Random indexGenerator = new Random();
+                if (this.hasMoreElements()) {
+                    while (!checkUsedIndex) {
+                        randomIndex = indexGenerator.nextInt(entityCounter);
+                        checkUsedIndex = usedIndex.add(randomIndex);
+                    }
+                    checkUsedIndex = false;
+                    currentElement = arrayTemp[randomIndex];
+                    return currentElement.getEntity();
+                } else {
+                    throw new NoSuchElementException("No more elements in list");
+                }
+            }
+        }
+        return new EnumerateRandomClass();
+    }
+
+    /**
+     * Checks if the set of entities contains a specific entity
+     * @param entity
+     * @return
+     */
+    public boolean entityExists(Entity entity) {
         ListElement tempTail = tail;
         if (tempTail == null) {
             return false;
@@ -98,36 +245,36 @@ public class EntitySet {
         return tempTail.getEntity().equals(entity);
     }
 
-    public static void nextStep() {
-        ListElement temptail = tail;
-        temptail.getEntity().nextStep();
-        while (temptail.hasPrev()) {
-            temptail.getPrevItem().getEntity().nextStep();
-            temptail = temptail.getPrevItem();
-        }
-    }
 
-    public static void getEntityInformations() {
-        ListElement temptail = tail;
-        if (temptail != null) {
-            if (temptail.getEntity().getEntityType() != EntityType.WALL) {
-                System.out.println("ID: " + temptail.getEntity().getId() + ", Energy: " + temptail.getEntity().getEnergy() + ", Position: " + temptail.getEntity().getPosition().getX() + ", " + temptail.getEntity().getPosition().getY() + " | " + temptail.getEntity().getEntityType());
+    /**
+     * Calls the nextStep() method on all entities
+     */
+    public void nextStep(EntityContext entityContext) {
+        Enumeration enumeration = enumerateRandom();
+        while (enumeration.hasMoreElements()){
+            Entity current = (Entity) enumeration.nextElement();
+            if(current.isAlive()){
+                current.nextStep(entityContext);
             }
         }
-        while (temptail != null && temptail.hasPrev()) {
-            if (temptail.getPrevItem().getEntity().getEntityType() != EntityType.WALL) {
-                System.out.println("ID: " + temptail.getPrevItem().getEntity().getId() + ", Energy: " + temptail.getPrevItem().getEntity().getEnergy() + ", Position: " + temptail.getPrevItem().getEntity().getPosition().getX() + ", " + temptail.getPrevItem().getEntity().getPosition().getY() + " | " + temptail.getPrevItem().getEntity().getEntityType());
-            }
-            temptail = temptail.getPrevItem();
+    }
+
+    /**
+     * @return the id of the tail. When tail == null, then return -1 flag.
+     */
+    public int returnLastID() {
+        if (tail == null) {
+            return -1;
+        } else {
+            return tail.getEntity().getId();
         }
-        System.out.println("\n----------\n");
     }
 
-    public static int returnLastID() {
-        return tail.getEntity().getId();
-    }
-
-    public static int countItems() {
+    /**
+     * @return the amount of items in the list
+     * @param allEntities return all entities or only alive entities?
+     */
+    public int countItems(boolean allEntities) {
         ListElement temptail = tail;
         int counter = 0;
         if (temptail == null) {
@@ -141,7 +288,8 @@ public class EntitySet {
         return counter;
     }
 
-    public static ListElement getTail() {
+    public ListElement getTail() {
         return tail;
     }
+
 }

@@ -3,7 +3,6 @@ package hs.augsburg.squirrelgame.board;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.entity.EntityType;
-import hs.augsburg.squirrelgame.entity.ListElement;
 import hs.augsburg.squirrelgame.entity.beast.BadBeast;
 import hs.augsburg.squirrelgame.entity.beast.GoodBeast;
 import hs.augsburg.squirrelgame.entity.plant.BadPlant;
@@ -13,44 +12,30 @@ import hs.augsburg.squirrelgame.entity.util.Wall;
 import hs.augsburg.squirrelgame.util.XY;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.Random;
 
 public class Board {
 
+    private EntitySet entitySet;
+    private final Board board;
     private FlattenedBoard flattenedBoard;
 
     public Board() {
+        this.board = this;
+        this.entitySet = new EntitySet();
         spawnBoarderWalls();
         spawnEntitiesRandomly();
-        flatten();
+        //spawnEntities();
     }
 
     /**
-     * @return ArrayList with all entities in the linked list
-     * commonly used to get all entities that are currently on the board
+     * Creates the FlattenedBoard
      */
-    public ArrayList<Entity> getEntities() {
-        ArrayList<Entity> entities = new ArrayList<>();
-        if (EntitySet.getTail() == null) {
-            return entities;
-        }
-        ListElement tempTail = EntitySet.getTail();
-        entities.add(tempTail.getEntity());
-        while (tempTail.hasPrev()) {
-            entities.add(tempTail.getPrevItem().getEntity());
-            tempTail = tempTail.getPrevItem();
-        }
-        return entities;
-    }
-
-    /**
-     * Creates the FlattenedBoard by defining an array of entites
-     */
-    public void flatten() {
-        Entity[][] gameBoard = new Entity[BoardConfig.COLUMNS][BoardConfig.ROWS];
-        refreshGameBoard(gameBoard);
-        setFlattenedBoard(new FlattenedBoard(gameBoard));
+    public FlattenedBoard flatten() {
+        FlattenedBoard flattenedBoard = new FlattenedBoard(getBoard(), getEntitySet());
+        this.flattenedBoard = flattenedBoard;
+        return flattenedBoard;
     }
 
     /**
@@ -85,11 +70,20 @@ public class Board {
                 } else {
                     Object entityType = BoardConfig.SPAWN_RATES.keySet().toArray()[i];
                     Entity entity = getNewEntityFromType(spawnPosition, (EntityType) entityType);
-                    EntitySet.addEntity(entity);
+                    getEntitySet().addEntity(entity);
                     spawnPositions.add(spawnPosition);
                 }
             }
         }
+    }
+
+
+    private void spawnEntities(){
+        getEntitySet().addEntity(new GoodBeast(new XY(2, 3)));
+        //getEntitySet().addEntity(new BadBeast(new XY(1, 1)));
+        //getEntitySet().addEntity(new BadPlant(new XY(3, 1)));
+        //getEntitySet().addEntity(new GoodPlant(new XY(2,2)));
+        getEntitySet().addEntity(new HandOperatedMasterSquirrel(new XY(2, 1)));
     }
 
     /**
@@ -97,34 +91,39 @@ public class Board {
      */
     private void spawnBoarderWalls() {
         for (int column = 0; column < BoardConfig.COLUMNS; column++) {
-            EntitySet.addEntity(new Wall(new XY(column, 0)));
-            EntitySet.addEntity(new Wall(new XY(column, BoardConfig.ROWS - 1)));
+            getEntitySet().addEntity(new Wall(new XY(column, 0)));
+            getEntitySet().addEntity(new Wall(new XY(column, BoardConfig.ROWS - 1)));
         }
         for (int row = 0; row < BoardConfig.ROWS; row++) {
-            EntitySet.addEntity(new Wall(new XY(0, row)));
-            EntitySet.addEntity(new Wall(new XY(BoardConfig.COLUMNS - 1, row)));
+            getEntitySet().addEntity(new Wall(new XY(0, row)));
+            getEntitySet().addEntity(new Wall(new XY(BoardConfig.COLUMNS - 1, row)));
         }
     }
 
     /**
-     * Refresh/updates the gameboard after the Entities.next() call
+     * Comparable to a toString() method
      */
-    public void refreshGameBoard(Entity[][] gameBoard) {
-        //First clear the gameBoard
-        for (Entity[] value : gameBoard) Arrays.fill(value, null);
-        //Then refill the gameBoard with the new positions
-        ArrayList<Entity> entities = getEntities();
-        for (Entity entity : entities) {
-            XY position = entity.getPosition();
-            gameBoard[position.getX()][position.getY()] = entity;
+    public void getEntityInformation() {
+        System.out.println("\n----------\n");
+        Enumeration enumeration = getEntitySet().enumerateBackwards();
+        while (enumeration.hasMoreElements()){
+            Entity entity = (Entity) enumeration.nextElement();
+            if(entity.getEntityType() != EntityType.WALL){
+                System.out.println("ID: " + entity.getId() + ", Energy: " + entity.getEnergy() + ", Position: " + entity.getPosition().getX() + ", " + entity.getPosition().getY() + " | " + entity.getEntityType());
+            }
         }
+        System.out.println("\n----------\n");
+    }
+
+    public EntitySet getEntitySet() {
+        return entitySet;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     public FlattenedBoard getFlattenedBoard() {
         return flattenedBoard;
-    }
-
-    public void setFlattenedBoard(FlattenedBoard flattenedBoard) {
-        this.flattenedBoard = flattenedBoard;
     }
 }

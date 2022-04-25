@@ -11,4 +11,9 @@ public class Wall extends Entity {
         super(EntityType.WALL, position, startEnergy);
         setEntity(this);
     }
+
+    public void onCollision(Entity enemy){
+
+    }
+
 }

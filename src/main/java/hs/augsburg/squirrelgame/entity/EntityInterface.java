@@ -8,7 +8,9 @@ public interface EntityInterface {
 
     void updatePosition(XY position);
 
-    void nextStep();
+    void nextStep(EntityContext entityContext);
 
     boolean equals(Entity entity);
+
+
 }

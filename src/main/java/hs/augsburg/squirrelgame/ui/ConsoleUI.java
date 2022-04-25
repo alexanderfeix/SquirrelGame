@@ -1,7 +1,6 @@
 package hs.augsburg.squirrelgame.ui;
 
 import hs.augsburg.squirrelgame.entity.Entity;
-import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.util.Direction;
 
 import java.awt.event.KeyEvent;
@@ -13,8 +12,7 @@ public class ConsoleUI implements UI, KeyListener {
 
     @Override
     public void render(BoardView view) {
-        //Get entity by view.getEntity(x, y)
-        EntitySet.getEntityInformations();
+        view.getBoard().getEntityInformation();
         printBoard(view.getGameBoard());
     }
 
@@ -58,6 +56,10 @@ public class ConsoleUI implements UI, KeyListener {
         for (int row = 0; row < gameBoard[0].length; row++) {
             for (int col = 0; col < gameBoard.length; col++) {
                 if (gameBoard[col][row] == null) {
+                    System.out.print("   ");
+                    continue;
+                }
+                if(!gameBoard[col][row].getEntity().isAlive()){
                     System.out.print("   ");
                     continue;
                 }

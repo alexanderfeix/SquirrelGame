@@ -11,4 +11,9 @@ public class GoodPlant extends Entity {
         super(EntityType.GOOD_PLANT, position, startEnergy);
         setEntity(this);
     }
+
+    public void onCollision(Entity enemy){
+
+    }
+
 }
