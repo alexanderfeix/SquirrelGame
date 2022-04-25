@@ -64,17 +64,30 @@ public class FlattenedBoard implements BoardView, EntityContext {
 
     }
 
+    /**
+     * Gets the nearest master or mini squirrel in six block radius.
+     * @param entity
+     * @return
+     */
     @Override
     public XY getNearbySquirrelPosition(Entity entity){
         XY position = entity.getPosition();
-        for (int col = position.getX() - 6; col < position.getX() + 6; col++) {
-            for (int row = position.getY() - 6; row < position.getY() + 6; row++) {
-                try {
-                    Entity enemy = getEntity(col, row);
-                    if (enemy.getEntityType() == EntityType.MASTER_SQUIRREL || enemy.getEntityType() == EntityType.MINI_SQUIRREL) {
-                        return enemy.getPosition();
+        ArrayList<String> checkedPositions = new ArrayList<>();
+        checkedPositions.add(position.toString());
+        for(int radius = 1; radius <= 6; radius++){
+            for(int row = position.getY() - radius; row <= position.getY() + radius; row++){
+                for(int col = position.getX() - radius; col <= position.getX() + radius; col++){
+                    XY currentPosition = new XY(col, row);
+                    if(!checkedPositions.contains(currentPosition.toString())){
+                        checkedPositions.add(currentPosition.toString());
+                        try {
+                            Entity enemy = getEntity(col, row);
+                            if (enemy.getEntityType() == EntityType.MASTER_SQUIRREL || enemy.getEntityType() == EntityType.MINI_SQUIRREL) {
+                                return enemy.getPosition();
+                            }
+                        } catch (Exception e) {}
+                        System.out.println("Id: " + entity.getId() + "Checked field: " + currentPosition.toString());
                     }
-                } catch (Exception e) {
                 }
             }
         }
