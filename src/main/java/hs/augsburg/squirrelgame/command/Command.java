@@ -1,5 +1,7 @@
 package hs.augsburg.squirrelgame.command;
 
+import hs.augsburg.squirrelgame.game.GameImpl;
+
 public class Command {
 
     private Object[] params;
@@ -16,6 +18,10 @@ public class Command {
 
     public CommandTypeInfo getCommandType() {
         return commandType;
+    }
+
+    public void handle(GameImpl game, Command command){
+
     }
 
 }
