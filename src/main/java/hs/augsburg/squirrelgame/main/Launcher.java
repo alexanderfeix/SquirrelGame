@@ -13,7 +13,7 @@ public class Launcher {
     public static void main(String[] args) {
         registerKeyListener();
         State state = new State(new Board());
-        Game game = new GameImpl(state);
+        Game game = new GameImpl(state, new ConsoleUI());
         game.run();
     }
 

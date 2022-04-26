@@ -3,12 +3,20 @@ package hs.augsburg.squirrelgame.ui;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import hs.augsburg.squirrelgame.command.Command;
+import hs.augsburg.squirrelgame.command.CommandScanner;
+import hs.augsburg.squirrelgame.command.GameCommandType;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.util.Direction;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class ConsoleUI implements UI, NativeKeyListener {
 
     private static Direction nextDirection;
+
+    private BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
+    private CommandScanner commandScanner = new CommandScanner(GameCommandType.values(), inputReader);
 
     @Override
     public void render(BoardView view) {
@@ -23,7 +31,7 @@ public class ConsoleUI implements UI, NativeKeyListener {
 
     @Override
     public Command getCommand() {
-        return null;
+        return commandScanner.next();
     }
 
     public void setNextDirection(Direction nextDirection) {

@@ -1,11 +1,15 @@
 package hs.augsburg.squirrelgame.game;
 
+import hs.augsburg.squirrelgame.ui.UI;
+
 public abstract class Game {
 
     private final State state;
+    private final UI ui;
 
-    public Game(State state) {
+    public Game(State state, UI ui) {
         this.state = state;
+        this.ui = ui;
     }
 
     /**
@@ -43,5 +47,9 @@ public abstract class Game {
 
     public State getState() {
         return state;
+    }
+
+    public UI getUi() {
+        return ui;
     }
 }
