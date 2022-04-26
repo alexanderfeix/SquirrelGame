@@ -2,6 +2,7 @@ package hs.augsburg.squirrelgame.ui;
 
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
+import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.util.Direction;
 
@@ -20,10 +21,19 @@ public class ConsoleUI implements UI, NativeKeyListener {
         return nextDirection;
     }
 
+    @Override
+    public Command getCommand() {
+        return null;
+    }
+
     public void setNextDirection(Direction nextDirection) {
         ConsoleUI.nextDirection = nextDirection;
     }
 
+    /**
+     * Works overall the same as the normal KeyListener
+     * @param e
+     */
     public void nativeKeyPressed(NativeKeyEvent e){
         if (e.getKeyCode() == NativeKeyEvent.VC_UP || e.getKeyCode() == NativeKeyEvent.VC_W) {
             setNextDirection(Direction.UP);
