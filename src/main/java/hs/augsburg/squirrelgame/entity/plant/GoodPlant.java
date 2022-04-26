@@ -12,7 +12,7 @@ public class GoodPlant extends Entity {
         setEntity(this);
     }
 
-    public void onCollision(Entity enemy){
+    public void onCollision(Entity enemy) {
 
     }
 

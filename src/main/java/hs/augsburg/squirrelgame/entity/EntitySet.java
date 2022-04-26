@@ -1,52 +1,15 @@
 package hs.augsburg.squirrelgame.entity;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.NoSuchElementException;
+import java.util.Random;
 
 public class EntitySet {
     /**
      * This class is used to manage the entities. Every instance of EntitySet could contain a different set of entities.
      */
 
-
-    /**
-     * This class must be private static!
-     */
-    private static class ListElement{
-        private final Entity entity;
-        private ListElement prevItem;
-        private ListElement nextItem;
-
-        public ListElement(Entity entity) {
-            this.entity = entity;
-            nextItem = null;
-        }
-
-        public Entity getEntity() {
-            return entity;
-        }
-
-        public ListElement getPrevItem() {
-            return prevItem;
-        }
-
-        public void setPrevItem(ListElement prevItem) {
-            this.prevItem = prevItem;
-        }
-
-        public ListElement getNextItem() {
-            return nextItem;
-        }
-
-        public void setNextItem(ListElement nextItem) {
-            this.nextItem = nextItem;
-        }
-
-        public boolean hasPrev() {
-            return this.prevItem != null;
-        }
-
-        public boolean hasNext() { return this.nextItem != null;}
-    }
 
     private ListElement tail;
     private ListElement head;
@@ -57,9 +20,9 @@ public class EntitySet {
      */
     private int entityCounter = 0;
 
-
     /**
      * Adds an entity to the EntitySet.
+     *
      * @param entity
      */
     public void addEntity(Entity entity) {
@@ -121,11 +84,13 @@ public class EntitySet {
 
     /**
      * Enumerates the set of entities from head to tail.
+     *
      * @return
      */
     public Enumeration enumerateForward() {
         return new Enumeration() {
             ListElement temphead = head;
+
             @Override
             public boolean hasMoreElements() {
                 return temphead != null;
@@ -133,7 +98,7 @@ public class EntitySet {
 
             @Override
             public Entity nextElement() {
-                if(temphead == null){
+                if (temphead == null) {
                     throw new NoSuchElementException("No elements in list!");
                 }
                 if (!temphead.hasNext()) {
@@ -149,11 +114,13 @@ public class EntitySet {
 
     /**
      * Enumerates the set of entities from tail to head.
+     *
      * @return
      */
-    public Enumeration enumerateBackwards(){
-        class E implements Enumeration{
+    public Enumeration enumerateBackwards() {
+        class E implements Enumeration {
             ListElement tempTail = tail;
+
             @Override
             public boolean hasMoreElements() {
                 return tempTail != null;
@@ -161,7 +128,7 @@ public class EntitySet {
 
             @Override
             public Entity nextElement() {
-                if(tempTail == null){
+                if (tempTail == null) {
                     throw new NoSuchElementException("No elements in list!");
                 }
                 if (!tempTail.hasPrev()) {
@@ -182,21 +149,24 @@ public class EntitySet {
      * Enumerates the set of entities randomly.
      * The method is working with indices and checks that no index can show up a second time.
      * Maybe check this method for cleaner code.
+     *
      * @return
      */
     public Enumeration enumerateRandom() {
         class EnumerateRandomClass implements java.util.Enumeration {
-            HashSet<Integer> usedIndex = new HashSet<>();
+            final HashSet<Integer> usedIndex = new HashSet<>();
             boolean checkUsedIndex = false;
             ListElement currentElement;
-            ListElement[] arrayTemp = new ListElement[entityCounter];
-            public EnumerateRandomClass(){
+            final ListElement[] arrayTemp = new ListElement[entityCounter];
+
+            public EnumerateRandomClass() {
                 currentElement = head;
                 for (int j = 0; j < entityCounter; j++) {
                     arrayTemp[j] = currentElement;
                     currentElement = currentElement.getNextItem();
                 }
             }
+
             @Override
             public boolean hasMoreElements() {
                 return usedIndex.size() < entityCounter;
@@ -224,6 +194,7 @@ public class EntitySet {
 
     /**
      * Checks if the set of entities contains a specific entity
+     *
      * @param entity
      * @return
      */
@@ -245,15 +216,14 @@ public class EntitySet {
         return tempTail.getEntity().equals(entity);
     }
 
-
     /**
      * Calls the nextStep() method on all entities
      */
     public void nextStep(EntityContext entityContext) {
         Enumeration enumeration = enumerateRandom();
-        while (enumeration.hasMoreElements()){
+        while (enumeration.hasMoreElements()) {
             Entity current = (Entity) enumeration.nextElement();
-            if(current.isAlive()){
+            if (current.isAlive()) {
                 current.nextStep(entityContext);
             }
         }
@@ -271,8 +241,8 @@ public class EntitySet {
     }
 
     /**
-     * @return the amount of items in the list
      * @param allEntities return all entities or only alive entities?
+     * @return the amount of items in the list
      */
     public int countItems(boolean allEntities) {
         ListElement temptail = tail;
@@ -290,6 +260,48 @@ public class EntitySet {
 
     public ListElement getTail() {
         return tail;
+    }
+
+    /**
+     * This class must be private static!
+     */
+    private static class ListElement {
+        private final Entity entity;
+        private ListElement prevItem;
+        private ListElement nextItem;
+
+        public ListElement(Entity entity) {
+            this.entity = entity;
+            nextItem = null;
+        }
+
+        public Entity getEntity() {
+            return entity;
+        }
+
+        public ListElement getPrevItem() {
+            return prevItem;
+        }
+
+        public void setPrevItem(ListElement prevItem) {
+            this.prevItem = prevItem;
+        }
+
+        public ListElement getNextItem() {
+            return nextItem;
+        }
+
+        public void setNextItem(ListElement nextItem) {
+            this.nextItem = nextItem;
+        }
+
+        public boolean hasPrev() {
+            return this.prevItem != null;
+        }
+
+        public boolean hasNext() {
+            return this.nextItem != null;
+        }
     }
 
 }

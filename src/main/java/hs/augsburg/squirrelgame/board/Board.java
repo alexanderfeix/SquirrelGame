@@ -17,8 +17,8 @@ import java.util.Random;
 
 public class Board {
 
-    private EntitySet entitySet;
     private final Board board;
+    private final EntitySet entitySet;
     private FlattenedBoard flattenedBoard;
 
     public Board() {
@@ -78,7 +78,7 @@ public class Board {
     }
 
 
-    private void spawnEntities(){
+    private void spawnEntities() {
         getEntitySet().addEntity(new GoodBeast(new XY(2, 3)));
         //getEntitySet().addEntity(new BadBeast(new XY(1, 1)));
         //getEntitySet().addEntity(new BadPlant(new XY(3, 1)));
@@ -106,9 +106,9 @@ public class Board {
     public void getEntityInformation() {
         System.out.println("\n----------\n");
         Enumeration enumeration = getEntitySet().enumerateBackwards();
-        while (enumeration.hasMoreElements()){
+        while (enumeration.hasMoreElements()) {
             Entity entity = (Entity) enumeration.nextElement();
-            if(entity.getEntityType() != EntityType.WALL){
+            if (entity.getEntityType() != EntityType.WALL) {
                 System.out.println("ID: " + entity.getId() + ", Energy: " + entity.getEnergy() + ", Position: " + entity.getPosition().getX() + ", " + entity.getPosition().getY() + " | " + entity.getEntityType());
             }
         }

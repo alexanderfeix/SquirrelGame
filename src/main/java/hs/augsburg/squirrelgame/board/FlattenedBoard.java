@@ -5,12 +5,10 @@ import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.ui.BoardView;
-import hs.augsburg.squirrelgame.util.Direction;
 import hs.augsburg.squirrelgame.util.XY;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Random;
 
 public class FlattenedBoard implements BoardView, EntityContext {
 
@@ -32,7 +30,7 @@ public class FlattenedBoard implements BoardView, EntityContext {
     @Override
     public Entity getEntity(int x, int y) {
         if (getGameBoard()[x][y] != null) {
-            if(getGameBoard()[x][y].isAlive()){
+            if (getGameBoard()[x][y].isAlive()) {
                 return getGameBoard()[x][y];
             }
         }
@@ -56,7 +54,7 @@ public class FlattenedBoard implements BoardView, EntityContext {
      */
     private void fillGameBoard() {
         Enumeration enumeration = getEntitySet().enumerateRandom();
-        while (enumeration.hasMoreElements()){
+        while (enumeration.hasMoreElements()) {
             Entity entity = (Entity) enumeration.nextElement();
             XY position = entity.getPosition();
             gameBoard[position.getX()][position.getY()] = entity;
@@ -66,27 +64,33 @@ public class FlattenedBoard implements BoardView, EntityContext {
 
     /**
      * Gets the nearest master or mini squirrel in six block radius.
+     * Working of the method: 3-times nestes loop:
+     * First loop for the number of circles around the entity.
+     * Second and third loop for x and y positions.
+     * The ArrayList "checkedPositions" is used for caching the already checked positions.
+     *
      * @param entity
      * @return
      */
     @Override
-    public XY getNearbySquirrelPosition(Entity entity){
+    public XY getNearbySquirrelPosition(Entity entity) {
         XY position = entity.getPosition();
         ArrayList<String> checkedPositions = new ArrayList<>();
         checkedPositions.add(position.toString());
-        for(int radius = 1; radius <= 6; radius++){
-            for(int row = position.getY() - radius; row <= position.getY() + radius; row++){
-                for(int col = position.getX() - radius; col <= position.getX() + radius; col++){
+        for (int radius = 1; radius <= 6; radius++) {
+            for (int row = position.getY() - radius; row <= position.getY() + radius; row++) {
+                for (int col = position.getX() - radius; col <= position.getX() + radius; col++) {
                     XY currentPosition = new XY(col, row);
-                    if(!checkedPositions.contains(currentPosition.toString())){
+                    if (!checkedPositions.contains(currentPosition.toString())) {
                         checkedPositions.add(currentPosition.toString());
                         try {
                             Entity enemy = getEntity(col, row);
                             if (enemy.getEntityType() == EntityType.MASTER_SQUIRREL || enemy.getEntityType() == EntityType.MINI_SQUIRREL) {
                                 return enemy.getPosition();
                             }
-                        } catch (Exception e) {}
-                        System.out.println("Id: " + entity.getId() + "Checked field: " + currentPosition.toString());
+                        } catch (Exception e) {
+                        }
+                        System.out.println("Id: " + entity.getId() + "Checked field: " + currentPosition);
                     }
                 }
             }

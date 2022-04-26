@@ -1,8 +1,6 @@
 package hs.augsburg.squirrelgame.entity.squirrel;
 
-import hs.augsburg.squirrelgame.board.Board;
 import hs.augsburg.squirrelgame.entity.Entity;
-import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.util.XY;
 
@@ -18,7 +16,7 @@ public class MasterSquirrel extends Entity {
     }
 
 
-    public void onCollision(Entity enemy){
+    public void onCollision(Entity enemy) {
         System.out.println("Squirrel collided with " + enemy.getEntity());
         System.out.println("----------");
         System.out.println("Energy of MasterSquirrel BEFORE collision: " + getEnergy());
@@ -32,20 +30,20 @@ public class MasterSquirrel extends Entity {
         } else if (enemy.getEntityType() == EntityType.BAD_PLANT || enemy.getEntityType() == EntityType.GOOD_PLANT) {
             updateEnergy(enemy.getEnergy());
             XY currentPosition = enemy.getPosition();
-            while(currentPosition == enemy.getPosition()){
+            while (currentPosition == enemy.getPosition()) {
                 enemy.updatePosition(enemy.getPosition().getRandomPosition());
             }
             updatePosition(currentPosition);
         } else if (enemy.getEntityType() == EntityType.BAD_BEAST || enemy.getEntityType() == EntityType.GOOD_BEAST) {
             updateEnergy(enemy.getEnergy());
             XY currentPosition = enemy.getPosition();
-            while(currentPosition == enemy.getPosition()){
+            while (currentPosition == enemy.getPosition()) {
                 enemy.updatePosition(enemy.getPosition().getRandomPosition());
             }
             updatePosition(currentPosition);
         } else if (enemy.getEntityType() == EntityType.MINI_SQUIRREL) {
             MiniSquirrel enemySquirrel = (MiniSquirrel) enemy;
-            if(enemySquirrel.getMasterSquirrelId() == getId()){
+            if (enemySquirrel.getMasterSquirrelId() == getId()) {
                 updateEnergy(enemy.getEnergy());
             }
             enemy.setAlive(false);
@@ -59,9 +57,9 @@ public class MasterSquirrel extends Entity {
 
 
     public Entity createMiniSquirrel(XY position, int energy) {
-        if(energy < 100){
+        if (energy < 100) {
             return null;
-        }else{
+        } else {
             MiniSquirrel miniSquirrel = new MiniSquirrel(position, energy);
             miniSquirrel.setMasterSquirrelId(getId());
             this.updateEnergy(-energy);

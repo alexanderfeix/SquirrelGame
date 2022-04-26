@@ -38,10 +38,10 @@ public class XY {
         };
     }
 
-    public XY getRandomNearbyPosition(){
+    public XY getRandomNearbyPosition() {
         Random random = new Random();
         int directionInt = random.nextInt(8);
-        return switch (directionInt){
+        return switch (directionInt) {
             case 0 -> //Move left-up
                     new XY(getX() - 1, getY() - 1);
             case 1 -> //Move up
@@ -62,14 +62,14 @@ public class XY {
         };
     }
 
-    public XY getRandomPosition(){
+    public XY getRandomPosition() {
         Random random = new Random();
         int spawnX = random.nextInt(BoardConfig.COLUMNS - 2) + 1;
         int spawnY = random.nextInt(BoardConfig.ROWS - 2) + 1;
         return new XY(spawnX, spawnY);
     }
 
-    public String toString(){
+    public String toString() {
         return getX() + ", " + getY();
     }
 

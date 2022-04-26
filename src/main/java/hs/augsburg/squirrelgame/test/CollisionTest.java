@@ -21,7 +21,7 @@ public class CollisionTest {
      * This class tests all collisions between squirrel and other entities.
      */
     @Test
-    void checkWallCollision(){
+    void checkWallCollision() {
         Board board = new Board();
         EntitySet entitySet = new EntitySet();
         board.flatten();
@@ -33,9 +33,9 @@ public class CollisionTest {
     }
 
     @Test
-    void checkMasterSquirrelWithBadBeastCollision(){
+    void checkMasterSquirrelWithBadBeastCollision() {
         Board board = new Board();
-        HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2,1));
+        HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2, 1));
         BadBeast badBeast = new BadBeast(new XY(1, 1));
         board.getEntitySet().addEntity(masterSquirrel);
         board.getEntitySet().addEntity(badBeast);
@@ -49,9 +49,9 @@ public class CollisionTest {
     }
 
     @Test
-    void checkMasterSquirrelWithGoodBeastCollision(){
+    void checkMasterSquirrelWithGoodBeastCollision() {
         Board board = new Board();
-        HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2,1));
+        HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2, 1));
         GoodBeast goodBeast = new GoodBeast(new XY(2, 2));
         board.getEntitySet().addEntity(masterSquirrel);
         board.getEntitySet().addEntity(goodBeast);
@@ -65,10 +65,10 @@ public class CollisionTest {
     }
 
     @Test
-    void checkMasterSquirrelWithGoodPlantCollision(){
+    void checkMasterSquirrelWithGoodPlantCollision() {
         Board board = new Board();
-        HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2,1));
-        GoodPlant goodPlant = new GoodPlant(new XY(1,1));
+        HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2, 1));
+        GoodPlant goodPlant = new GoodPlant(new XY(1, 1));
         board.getEntitySet().addEntity(masterSquirrel);
         board.getEntitySet().addEntity(goodPlant);
         board.flatten();
@@ -81,10 +81,10 @@ public class CollisionTest {
     }
 
     @Test
-    void checkMasterSquirrelWithBadPlantCollision(){
+    void checkMasterSquirrelWithBadPlantCollision() {
         Board board = new Board();
-        HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2,1));
-        BadPlant badPlant = new BadPlant(new XY(3,1));
+        HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2, 1));
+        BadPlant badPlant = new BadPlant(new XY(3, 1));
         board.getEntitySet().addEntity(masterSquirrel);
         board.getEntitySet().addEntity(badPlant);
         board.flatten();
@@ -97,9 +97,9 @@ public class CollisionTest {
     }
 
     @Test
-    void checkMasterSquirrelWithMiniSquirrelCollision(){
+    void checkMasterSquirrelWithMiniSquirrelCollision() {
         Board board = new Board();
-        HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2,1));
+        HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2, 1));
         MiniSquirrel miniSquirrel = (MiniSquirrel) masterSquirrel.createMiniSquirrel(new XY(3, 1), 150);
         board.getEntitySet().addEntity(masterSquirrel);
         board.getEntitySet().addEntity(miniSquirrel);
