@@ -8,13 +8,6 @@ public class Command {
     public Command(CommandTypeInfo commandTypeInfo, Object[] params){
         this.commandType = commandTypeInfo;
         this.params = params;
-        handle();
-    }
-
-    public void handle(){
-        if(commandType.getName().equalsIgnoreCase("spawn_mini")){
-            //Do something?
-        }
     }
 
     public Object[] getParams() {
@@ -24,4 +17,5 @@ public class Command {
     public CommandTypeInfo getCommandType() {
         return commandType;
     }
+
 }

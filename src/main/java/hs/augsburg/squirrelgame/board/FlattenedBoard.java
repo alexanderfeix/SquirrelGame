@@ -1,11 +1,15 @@
 package hs.augsburg.squirrelgame.board;
 
+import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.entity.EntityType;
+import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
+import hs.augsburg.squirrelgame.entity.squirrel.MiniSquirrel;
 import hs.augsburg.squirrelgame.ui.BoardView;
 import hs.augsburg.squirrelgame.util.XY;
+import hs.augsburg.squirrelgame.util.exception.NotEnoughEnergyException;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -45,6 +49,33 @@ public class FlattenedBoard implements BoardView, EntityContext {
             entity.onCollision(getEntity(movePosition.getX(), movePosition.getY()));
         } else {
             entity.updatePosition(movePosition);
+        }
+    }
+
+    @Override
+    public void createStandardMiniSquirrel(MasterSquirrel masterSquirrel, Command command) {
+        try {
+            int energy = Integer.parseInt((String) command.getParams()[0]);
+            if(energy > 0){
+                if(energy > masterSquirrel.getEnergy()){
+                    throw new NotEnoughEnergyException();
+                }
+                if (energy < 100) {
+                    try {
+                        throw new Exception("Energy to create a new mini squirrel must be over a hundred!");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    MiniSquirrel miniSquirrel = new MiniSquirrel(masterSquirrel.getPosition().getRandomNearbyPosition(), energy);
+                    miniSquirrel.setMasterSquirrelId(masterSquirrel.getId());
+                    masterSquirrel.updateEnergy(-energy);
+                    entitySet.addEntity(miniSquirrel);
+                }
+            }
+        }catch (NumberFormatException e){
+            System.out.println("Please correct your input!");
+            System.out.println(command.getCommandType().getHelpText());
         }
     }
 
@@ -90,7 +121,6 @@ public class FlattenedBoard implements BoardView, EntityContext {
                             }
                         } catch (Exception e) {
                         }
-                        System.out.println("Id: " + entity.getId() + "Checked field: " + currentPosition);
                     }
                 }
             }

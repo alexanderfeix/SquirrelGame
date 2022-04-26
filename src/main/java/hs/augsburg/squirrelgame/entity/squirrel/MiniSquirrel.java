@@ -1,9 +1,7 @@
 package hs.augsburg.squirrelgame.entity.squirrel;
 
-import hs.augsburg.squirrelgame.entity.Entity;
-import hs.augsburg.squirrelgame.entity.EntityContext;
-import hs.augsburg.squirrelgame.entity.EntityType;
-import hs.augsburg.squirrelgame.entity.MovableEntity;
+import hs.augsburg.squirrelgame.command.Command;
+import hs.augsburg.squirrelgame.entity.*;
 import hs.augsburg.squirrelgame.util.XY;
 
 public class MiniSquirrel extends MovableEntity {
@@ -17,7 +15,7 @@ public class MiniSquirrel extends MovableEntity {
 
     public void nextStep(EntityContext entityContext) {
         entityContext.move(getEntity(), getPosition().getRandomNearbyPosition());
-        updateEnergy(getEnergy() - 1);
+        updateEnergy(-1);
         if (getEnergy() <= 0) {
             setAlive(false);
         }
@@ -26,8 +24,8 @@ public class MiniSquirrel extends MovableEntity {
 
     public void onCollision(Entity enemy) {
         if (enemy.getEntityType() == EntityType.MASTER_SQUIRREL) {
-            MiniSquirrel enemySquirrel = (MiniSquirrel) enemy;
-            if (enemySquirrel.getMasterSquirrelId() == getMasterSquirrelId()) {
+            MasterSquirrel enemySquirrel = (MasterSquirrel) enemy;
+            if (enemySquirrel.getId() == getMasterSquirrelId()) {
                 enemy.updateEnergy(getEnergy());
             }
             setAlive(false);
@@ -43,7 +41,7 @@ public class MiniSquirrel extends MovableEntity {
             while (currentPosition == enemy.getPosition()) {
                 enemy.updatePosition(enemy.getPosition().getRandomPosition());
             }
-            getEntity().updatePosition(currentPosition);
+            updatePosition(currentPosition);
         } else if (enemy.getEntityType() == EntityType.WALL) {
             updateEnergy(enemy.getEnergy());
             setMoveCounter(3);
@@ -64,6 +62,11 @@ public class MiniSquirrel extends MovableEntity {
 
     @Override
     public void move(Entity entity, hs.augsburg.squirrelgame.util.XY randomPosition) {
+
+    }
+
+    @Override
+    public void createStandardMiniSquirrel(MasterSquirrel masterSquirrel, Command command) {
 
     }
 

@@ -1,9 +1,8 @@
 package hs.augsburg.squirrelgame.entity.beast;
 
-import hs.augsburg.squirrelgame.entity.Entity;
-import hs.augsburg.squirrelgame.entity.EntityContext;
-import hs.augsburg.squirrelgame.entity.EntityType;
-import hs.augsburg.squirrelgame.entity.MovableEntity;
+import hs.augsburg.squirrelgame.command.Command;
+import hs.augsburg.squirrelgame.entity.*;
+import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.util.XY;
 
 public class BadBeast extends MovableEntity {
@@ -73,6 +72,11 @@ public class BadBeast extends MovableEntity {
 
     @Override
     public void move(Entity entity, hs.augsburg.squirrelgame.util.XY randomPosition) {
+
+    }
+
+    @Override
+    public void createStandardMiniSquirrel(MasterSquirrel masterSquirrel, Command command) {
 
     }
 

@@ -19,8 +19,11 @@ public class CommandScanner {
     public Command next(){
         try {
             String lineInput = inputReader.readLine();
+            if(lineInput == null){
+                return null;
+            }
             for(CommandTypeInfo commandTypeInfo : commandTypeInfos){
-                if(commandTypeInfo.getName().equalsIgnoreCase(lineInput)){
+                if(lineInput.toLowerCase().startsWith(commandTypeInfo.getName())){
                     Object[] objects = lineInput.split(" ");
                     reorderArray(objects);
                     return new Command(commandTypeInfo, objects);

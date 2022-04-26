@@ -108,7 +108,7 @@ public class Board {
         Enumeration enumeration = getEntitySet().enumerateBackwards();
         while (enumeration.hasMoreElements()) {
             Entity entity = (Entity) enumeration.nextElement();
-            if (entity.getEntityType() != EntityType.WALL) {
+            if (entity.getEntityType() != EntityType.WALL && entity.isAlive()) {
                 System.out.println("ID: " + entity.getId() + ", Energy: " + entity.getEnergy() + ", Position: " + entity.getPosition().getX() + ", " + entity.getPosition().getY() + " | " + entity.getEntityType());
             }
         }
