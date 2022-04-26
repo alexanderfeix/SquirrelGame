@@ -1,6 +1,9 @@
 package hs.augsburg.squirrelgame.entity.beast;
 
-import hs.augsburg.squirrelgame.entity.*;
+import hs.augsburg.squirrelgame.entity.Entity;
+import hs.augsburg.squirrelgame.entity.EntityContext;
+import hs.augsburg.squirrelgame.entity.EntityType;
+import hs.augsburg.squirrelgame.entity.MovableEntity;
 import hs.augsburg.squirrelgame.util.XY;
 
 public class GoodBeast extends MovableEntity {
@@ -12,9 +15,9 @@ public class GoodBeast extends MovableEntity {
         setEntity(this);
     }
 
-    public void nextStep(EntityContext entityContext){
-        if(getMoveCounter() != 0){
-            setMoveCounter(getMoveCounter()-1);
+    public void nextStep(EntityContext entityContext) {
+        if (getMoveCounter() != 0) {
+            setMoveCounter(getMoveCounter() - 1);
             System.out.println("Current MoveCounter Good Beast: " + getMoveCounter());
             return;
         }
@@ -22,10 +25,10 @@ public class GoodBeast extends MovableEntity {
         setMoveCounter(4);
     }
 
-    public void onCollision(Entity enemy){;
-        if(enemy.getEntityType() == EntityType.MASTER_SQUIRREL || enemy.getEntityType() == EntityType.MINI_SQUIRREL){
+    public void onCollision(Entity enemy) {
+        if (enemy.getEntityType() == EntityType.MASTER_SQUIRREL || enemy.getEntityType() == EntityType.MINI_SQUIRREL) {
             XY currentPosition = getPosition();
-            while(currentPosition == getPosition()){
+            while (currentPosition == getPosition()) {
                 updatePosition(getPosition().getRandomPosition());
             }
             enemy.updatePosition(currentPosition);

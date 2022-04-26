@@ -1,12 +1,11 @@
 package hs.augsburg.squirrelgame.ui;
 
+import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
+import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.util.Direction;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
-public class ConsoleUI implements UI, KeyListener {
+public class ConsoleUI implements UI, NativeKeyListener {
 
     private static Direction nextDirection;
 
@@ -25,28 +24,17 @@ public class ConsoleUI implements UI, KeyListener {
         ConsoleUI.nextDirection = nextDirection;
     }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (e.getKeyChar() == 'w' || e.getKeyCode() == KeyEvent.VK_UP) {
+    public void nativeKeyPressed(NativeKeyEvent e){
+        if (e.getKeyCode() == NativeKeyEvent.VC_UP || e.getKeyCode() == NativeKeyEvent.VC_W) {
             setNextDirection(Direction.UP);
-        } else if (e.getKeyChar() == 'a' || e.getKeyCode() == KeyEvent.VK_LEFT) {
+        } else if (e.getKeyCode() == NativeKeyEvent.VC_LEFT || e.getKeyCode() == NativeKeyEvent.VC_A) {
             setNextDirection(Direction.LEFT);
-        } else if (e.getKeyChar() == 's' || e.getKeyCode() == KeyEvent.VK_DOWN) {
+        } else if (e.getKeyCode() == NativeKeyEvent.VC_DOWN || e.getKeyCode() == NativeKeyEvent.VC_S) {
             setNextDirection(Direction.DOWN);
-        } else if (e.getKeyChar() == 'd' || e.getKeyCode() == KeyEvent.VK_RIGHT) {
+        } else if (e.getKeyCode() == NativeKeyEvent.VC_RIGHT || e.getKeyCode() == NativeKeyEvent.VC_D) {
             setNextDirection(Direction.RIGHT);
         }
     }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-    }
-
 
     /**
      * Prints the gameBoard to the console.
@@ -59,7 +47,7 @@ public class ConsoleUI implements UI, KeyListener {
                     System.out.print("   ");
                     continue;
                 }
-                if(!gameBoard[col][row].getEntity().isAlive()){
+                if (!gameBoard[col][row].getEntity().isAlive()) {
                     System.out.print("   ");
                     continue;
                 }
