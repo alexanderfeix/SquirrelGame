@@ -1,9 +1,6 @@
 package hs.augsburg.squirrelgame.entity;
 
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.NoSuchElementException;
-import java.util.Random;
+import java.util.*;
 
 public class EntitySet {
     /**
@@ -26,14 +23,14 @@ public class EntitySet {
      * @param entity
      */
     public void addEntity(Entity entity) {
-        if (entityExists(entity)) {
+        if (entityExists(entity.getId())) {
             throw new IllegalStateException("An entity with this id already exists!");
         } else {
             ListElement newItem = new ListElement(entity);
-            if (tail == null) {
+            if (tail == null || head == null) {
                 head = newItem;
                 tail = newItem;
-            } else {
+            }else {
                 ListElement prevTail = tail;
                 tail.setNextItem(newItem);
                 tail = newItem;
@@ -44,7 +41,7 @@ public class EntitySet {
     }
 
     public void removeEntity(Entity entity) {
-        if (!entityExists(entity)) throw new IllegalStateException("The entity doesn't exists!");
+        if (!entityExists(entity.getId())) throw new IllegalStateException("The entity doesn't exists!");
         ListElement tempTail = tail;
         if (tempTail == null) {
             return;
@@ -195,25 +192,25 @@ public class EntitySet {
     /**
      * Checks if the set of entities contains a specific entity
      *
-     * @param entity
+     * @param entityId
      * @return
      */
-    public boolean entityExists(Entity entity) {
+    public boolean entityExists(int entityId) {
         ListElement tempTail = tail;
         if (tempTail == null) {
             return false;
         }
-        if (!tempTail.hasPrev() && tempTail.getEntity().equals(entity)) {
+        if (!tempTail.hasPrev() && tempTail.getEntity().getId() == entityId) {
             return true;
         }
         while (tempTail.hasPrev()) {
             ListElement newTempTail = tempTail.getPrevItem();
-            if (tempTail.getEntity().equals(entity)) {
+            if (tempTail.getEntity().getId() == entityId) {
                 return true;
             }
             tempTail = newTempTail;
         }
-        return tempTail.getEntity().equals(entity);
+        return tempTail.getEntity().getId() == entityId;
     }
 
     /**
@@ -227,6 +224,26 @@ public class EntitySet {
                 current.nextStep(entityContext);
             }
         }
+    }
+
+    /**
+     * @return ArrayList with all entities in the linked list
+     * commonly used to get all entities that are currently on the board
+     */
+    public ArrayList<Entity> getEntities() {
+        ArrayList<Entity> entities = new ArrayList<>();
+        if (getTail() == null) {
+            return entities;
+        }
+        ListElement tempTail = getTail();
+        entities.add(tempTail.getEntity());
+        while (tempTail.hasPrev()) {
+            if(tempTail.getPrevItem().getEntity().isAlive()){
+                entities.add(tempTail.getPrevItem().getEntity());
+            }
+            tempTail = tempTail.getPrevItem();
+        }
+        return entities;
     }
 
     /**

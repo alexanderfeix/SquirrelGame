@@ -12,12 +12,12 @@ public class HelpCommand extends Command {
         super(commandTypeInfo, params);
     }
 
-    public void handle(GameImpl game){
+    @Override
+    public void handle(GameImpl game) {
         game.getOutputStream().println("\n");
         for(GameCommandType gameCommandType : GameCommandType.values()){
             game.getOutputStream().println(gameCommandType.getName() + " | " + gameCommandType.getHelpText() + " | " + Arrays.toString(gameCommandType.getParamTypes()));
         }
         game.getOutputStream().println("\n");
     }
-
 }

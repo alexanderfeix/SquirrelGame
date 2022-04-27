@@ -1,9 +1,6 @@
 package hs.augsburg.squirrelgame.util;
 
-import hs.augsburg.squirrelgame.board.Board;
 import hs.augsburg.squirrelgame.board.BoardConfig;
-import hs.augsburg.squirrelgame.entity.Entity;
-import hs.augsburg.squirrelgame.ui.BoardView;
 
 import java.util.Random;
 
@@ -69,8 +66,7 @@ public class XY{
         Random random = new Random();
         int spawnX = random.nextInt(BoardConfig.COLUMNS - 2) + 1;
         int spawnY = random.nextInt(BoardConfig.ROWS - 2) + 1;
-        XY position = new XY(spawnX, spawnY);
-        return position;
+        return new XY(spawnX, spawnY);
     }
 
     public String toString() {

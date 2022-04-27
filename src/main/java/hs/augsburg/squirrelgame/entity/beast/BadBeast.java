@@ -37,6 +37,7 @@ public class BadBeast extends MovableEntity {
         }
     }
 
+
     private hs.augsburg.squirrelgame.util.XY checkNearbyRadius(EntityContext entityContext, Entity entity) {
         XY position = entity.getPosition();
         if (entityContext.getNearbySquirrelPosition(entity) != null) {

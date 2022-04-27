@@ -1,6 +1,5 @@
 package hs.augsburg.squirrelgame.entity;
 
-
 import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.util.XY;

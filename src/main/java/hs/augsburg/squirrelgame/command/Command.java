@@ -2,10 +2,10 @@ package hs.augsburg.squirrelgame.command;
 
 import hs.augsburg.squirrelgame.game.GameImpl;
 
-public class Command {
+public class Command implements CommandImpl {
 
-    private Object[] params;
-    private CommandTypeInfo commandType;
+    private final Object[] params;
+    private final CommandTypeInfo commandType;
 
     public Command(CommandTypeInfo commandTypeInfo, Object[] params){
         this.commandType = commandTypeInfo;
@@ -20,8 +20,10 @@ public class Command {
         return commandType;
     }
 
-    public void handle(GameImpl game, Command command){
+    @Override
+    public void handle(GameImpl game) {
 
     }
+
 
 }

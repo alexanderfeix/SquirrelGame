@@ -16,9 +16,9 @@ import java.lang.reflect.Method;
 
 public class GameImpl extends Game {
 
-    private UI ui;
-    private PrintStream outputStream = System.out;
-    private HandOperatedMasterSquirrel handOperatedMasterSquirrel = new HandOperatedMasterSquirrel(new XY(10, 10));
+    private final UI ui;
+    private final PrintStream outputStream = System.out;
+    private final HandOperatedMasterSquirrel handOperatedMasterSquirrel = new HandOperatedMasterSquirrel(new XY(10, 10));
 
 
     public GameImpl(State state, UI ui) {

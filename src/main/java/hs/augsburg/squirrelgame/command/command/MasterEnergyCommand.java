@@ -9,7 +9,8 @@ public class MasterEnergyCommand extends Command {
         super(commandTypeInfo, params);
     }
 
-    public void handle(GameImpl game){
-
+    @Override
+    public void handle(GameImpl game) {
+        game.getOutputStream().println("Energy of MasterSquirrel: " + game.getHandOperatedMasterSquirrel().getEnergy());
     }
 }

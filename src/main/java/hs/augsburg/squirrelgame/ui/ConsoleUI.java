@@ -15,8 +15,8 @@ public class ConsoleUI implements UI, NativeKeyListener {
 
     private static Direction nextDirection;
 
-    private BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
-    private CommandScanner commandScanner = new CommandScanner(GameCommandType.values(), inputReader);
+    private final BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
+    private final CommandScanner commandScanner = new CommandScanner(GameCommandType.values(), inputReader);
 
     @Override
     public void render(BoardView view) {

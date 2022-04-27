@@ -20,11 +20,7 @@ public abstract class Game {
             render();
             processInput();
             update();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            //sleep(1000);
         }
     }
 
@@ -51,5 +47,13 @@ public abstract class Game {
 
     public UI getUi() {
         return ui;
+    }
+
+    private void sleep(int milliSeconds){
+        try {
+            Thread.sleep(milliSeconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

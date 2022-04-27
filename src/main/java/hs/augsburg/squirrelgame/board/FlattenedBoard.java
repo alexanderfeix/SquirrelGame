@@ -17,7 +17,7 @@ import java.util.Enumeration;
 public class FlattenedBoard implements BoardView, EntityContext {
 
     private final Entity[][] gameBoard;
-    private final EntitySet entitySet;
+    private EntitySet entitySet;
     private final Board board;
 
     public FlattenedBoard(Board board, EntitySet entitySet) {
@@ -43,9 +43,8 @@ public class FlattenedBoard implements BoardView, EntityContext {
 
     @Override
     public void move(Entity entity, XY movePosition) {
-        System.out.println("move call");
         if (getEntity(movePosition.getX(), movePosition.getY()) != null && getEntity(movePosition.getX(), movePosition.getY()).getId() != entity.getId()) {
-            System.out.println("on collision call");
+            System.out.println("on collision call [" + entity.getId() + " with " + getEntity(movePosition.getX(), movePosition.getY()).getId() + "]");
             entity.onCollision(getEntity(movePosition.getX(), movePosition.getY()));
         } else {
             entity.updatePosition(movePosition);
@@ -70,7 +69,10 @@ public class FlattenedBoard implements BoardView, EntityContext {
                     MiniSquirrel miniSquirrel = new MiniSquirrel(masterSquirrel.getPosition().getRandomNearbyPosition(), energy);
                     miniSquirrel.setMasterSquirrelId(masterSquirrel.getId());
                     masterSquirrel.updateEnergy(-energy);
-                    entitySet.addEntity(miniSquirrel);
+                    while(getEntity(miniSquirrel.getPosition().getX(), miniSquirrel.getPosition().getY()) != null){
+                        miniSquirrel.updatePosition(masterSquirrel.getPosition().getRandomNearbyPosition());
+                    }
+                    getBoard().getEntitySet().addEntity(miniSquirrel);
                 }
             }
         }catch (NumberFormatException e){
@@ -119,8 +121,7 @@ public class FlattenedBoard implements BoardView, EntityContext {
                             if (enemy.getEntityType() == EntityType.MASTER_SQUIRREL || enemy.getEntityType() == EntityType.MINI_SQUIRREL) {
                                 return enemy.getPosition();
                             }
-                        } catch (Exception e) {
-                        }
+                        } catch (Exception ignored) {}
                     }
                 }
             }

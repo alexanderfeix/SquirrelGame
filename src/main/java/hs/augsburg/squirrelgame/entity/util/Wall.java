@@ -12,8 +12,4 @@ public class Wall extends Entity {
         setEntity(this);
     }
 
-    public void onCollision(Entity enemy) {
-
-    }
-
 }
