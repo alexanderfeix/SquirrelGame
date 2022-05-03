@@ -1,16 +1,22 @@
 package hs.augsburg.squirrelgame.entity.squirrel;
 
 
+import hs.augsburg.squirrelgame.board.Board;
+import hs.augsburg.squirrelgame.command.Command;
+import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
+import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.ui.ConsoleUI;
 import hs.augsburg.squirrelgame.util.Direction;
+import hs.augsburg.squirrelgame.util.exception.NotEnoughEnergyException;
 
-public class HandOperatedMasterSquirrel extends MasterSquirrel {
-
+public class HandOperatedMasterSquirrel extends MasterSquirrel implements EntityContext{
 
     public HandOperatedMasterSquirrel(hs.augsburg.squirrelgame.util.XY position) {
         super(position);
     }
+
+    private int createNewMiniSquirrelEnergy = 0;
 
     @Override
     public void nextStep(EntityContext entityContext) {
@@ -37,6 +43,21 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel {
             System.out.println("LEFT");
             entityContext.move(getEntity(), getPosition().getRandomNearbyPosition(Direction.LEFT));
         }
+    }
+
+    @Override
+    public void move(Entity entity, hs.augsburg.squirrelgame.util.XY randomPosition) {
+
+    }
+
+    @Override
+    public void createStandardMiniSquirrel(MasterSquirrel masterSquirrel, Command command) {
+
+    }
+
+    @Override
+    public hs.augsburg.squirrelgame.util.XY getNearbySquirrelPosition(Entity entity) {
+        return null;
     }
 }
 

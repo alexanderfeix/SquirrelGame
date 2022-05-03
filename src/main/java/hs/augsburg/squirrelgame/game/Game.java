@@ -1,11 +1,15 @@
 package hs.augsburg.squirrelgame.game;
 
+import hs.augsburg.squirrelgame.ui.UI;
+
 public abstract class Game {
 
     private final State state;
+    private final UI ui;
 
-    public Game(State state) {
+    public Game(State state, UI ui) {
         this.state = state;
+        this.ui = ui;
     }
 
     /**
@@ -16,11 +20,7 @@ public abstract class Game {
             render();
             processInput();
             update();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            //sleep(1000);
         }
     }
 
@@ -43,5 +43,17 @@ public abstract class Game {
 
     public State getState() {
         return state;
+    }
+
+    public UI getUi() {
+        return ui;
+    }
+
+    private void sleep(int milliSeconds){
+        try {
+            Thread.sleep(milliSeconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -2,12 +2,21 @@ package hs.augsburg.squirrelgame.ui;
 
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
+import hs.augsburg.squirrelgame.command.Command;
+import hs.augsburg.squirrelgame.command.CommandScanner;
+import hs.augsburg.squirrelgame.command.GameCommandType;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.util.Direction;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class ConsoleUI implements UI, NativeKeyListener {
 
     private static Direction nextDirection;
+
+    private final BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
+    private final CommandScanner commandScanner = new CommandScanner(GameCommandType.values(), inputReader);
 
     @Override
     public void render(BoardView view) {
@@ -20,10 +29,19 @@ public class ConsoleUI implements UI, NativeKeyListener {
         return nextDirection;
     }
 
+    @Override
+    public Command getCommand() {
+        return commandScanner.next();
+    }
+
     public void setNextDirection(Direction nextDirection) {
         ConsoleUI.nextDirection = nextDirection;
     }
 
+    /**
+     * Works overall the same as the normal KeyListener
+     * @param e
+     */
     public void nativeKeyPressed(NativeKeyEvent e){
         if (e.getKeyCode() == NativeKeyEvent.VC_UP || e.getKeyCode() == NativeKeyEvent.VC_W) {
             setNextDirection(Direction.UP);

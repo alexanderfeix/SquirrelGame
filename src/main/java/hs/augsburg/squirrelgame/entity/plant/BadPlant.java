@@ -13,12 +13,4 @@ public class BadPlant extends Entity {
         setEntity(this);
     }
 
-    public void nextStep(EntityContext entityContext) {
-
-    }
-
-    public void onCollision(Entity enemy) {
-
-    }
-
 }

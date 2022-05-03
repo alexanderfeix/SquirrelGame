@@ -4,7 +4,7 @@ import hs.augsburg.squirrelgame.board.BoardConfig;
 
 import java.util.Random;
 
-public class XY {
+public class XY{
 
     private final int x;
     private final int y;

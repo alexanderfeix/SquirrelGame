@@ -1,11 +1,15 @@
 package hs.augsburg.squirrelgame.board;
 
+import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.entity.EntityType;
+import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
+import hs.augsburg.squirrelgame.entity.squirrel.MiniSquirrel;
 import hs.augsburg.squirrelgame.ui.BoardView;
 import hs.augsburg.squirrelgame.util.XY;
+import hs.augsburg.squirrelgame.util.exception.NotEnoughEnergyException;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -13,7 +17,7 @@ import java.util.Enumeration;
 public class FlattenedBoard implements BoardView, EntityContext {
 
     private final Entity[][] gameBoard;
-    private final EntitySet entitySet;
+    private EntitySet entitySet;
     private final Board board;
 
     public FlattenedBoard(Board board, EntitySet entitySet) {
@@ -39,12 +43,41 @@ public class FlattenedBoard implements BoardView, EntityContext {
 
     @Override
     public void move(Entity entity, XY movePosition) {
-        System.out.println("move call");
         if (getEntity(movePosition.getX(), movePosition.getY()) != null && getEntity(movePosition.getX(), movePosition.getY()).getId() != entity.getId()) {
-            System.out.println("on collision call");
+            System.out.println("on collision call [" + entity.getId() + " with " + getEntity(movePosition.getX(), movePosition.getY()).getId() + "]");
             entity.onCollision(getEntity(movePosition.getX(), movePosition.getY()));
         } else {
             entity.updatePosition(movePosition);
+        }
+    }
+
+    @Override
+    public void createStandardMiniSquirrel(MasterSquirrel masterSquirrel, Command command) {
+        try {
+            int energy = Integer.parseInt((String) command.getParams()[0]);
+            if(energy > 0){
+                if(energy > masterSquirrel.getEnergy()){
+                    throw new NotEnoughEnergyException();
+                }
+                if (energy < 100) {
+                    try {
+                        throw new Exception("Energy to create a new mini squirrel must be over a hundred!");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    MiniSquirrel miniSquirrel = new MiniSquirrel(masterSquirrel.getPosition().getRandomNearbyPosition(), energy);
+                    miniSquirrel.setMasterSquirrelId(masterSquirrel.getId());
+                    masterSquirrel.updateEnergy(-energy);
+                    while(getEntity(miniSquirrel.getPosition().getX(), miniSquirrel.getPosition().getY()) != null){
+                        miniSquirrel.updatePosition(masterSquirrel.getPosition().getRandomNearbyPosition());
+                    }
+                    getBoard().getEntitySet().addEntity(miniSquirrel);
+                }
+            }
+        }catch (NumberFormatException e){
+            System.out.println("Please correct your input!");
+            System.out.println(command.getCommandType().getHelpText());
         }
     }
 
@@ -88,9 +121,7 @@ public class FlattenedBoard implements BoardView, EntityContext {
                             if (enemy.getEntityType() == EntityType.MASTER_SQUIRREL || enemy.getEntityType() == EntityType.MINI_SQUIRREL) {
                                 return enemy.getPosition();
                             }
-                        } catch (Exception e) {
-                        }
-                        System.out.println("Id: " + entity.getId() + "Checked field: " + currentPosition);
+                        } catch (Exception ignored) {}
                     }
                 }
             }

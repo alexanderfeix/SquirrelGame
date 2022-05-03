@@ -18,7 +18,7 @@ import java.util.Random;
 public class Board {
 
     private final Board board;
-    private final EntitySet entitySet;
+    private EntitySet entitySet;
     private FlattenedBoard flattenedBoard;
 
     public Board() {
@@ -26,7 +26,6 @@ public class Board {
         this.entitySet = new EntitySet();
         spawnBoarderWalls();
         spawnEntitiesRandomly();
-        //spawnEntities();
     }
 
     /**
@@ -77,15 +76,6 @@ public class Board {
         }
     }
 
-
-    private void spawnEntities() {
-        getEntitySet().addEntity(new GoodBeast(new XY(2, 3)));
-        //getEntitySet().addEntity(new BadBeast(new XY(1, 1)));
-        //getEntitySet().addEntity(new BadPlant(new XY(3, 1)));
-        //getEntitySet().addEntity(new GoodPlant(new XY(2,2)));
-        getEntitySet().addEntity(new HandOperatedMasterSquirrel(new XY(2, 1)));
-    }
-
     /**
      * Creates the surrounding walls
      */
@@ -108,7 +98,7 @@ public class Board {
         Enumeration enumeration = getEntitySet().enumerateBackwards();
         while (enumeration.hasMoreElements()) {
             Entity entity = (Entity) enumeration.nextElement();
-            if (entity.getEntityType() != EntityType.WALL) {
+            if (entity.getEntityType() != EntityType.WALL && entity.isAlive()) {
                 System.out.println("ID: " + entity.getId() + ", Energy: " + entity.getEnergy() + ", Position: " + entity.getPosition().getX() + ", " + entity.getPosition().getY() + " | " + entity.getEntityType());
             }
         }
