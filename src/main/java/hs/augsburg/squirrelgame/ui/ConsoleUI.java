@@ -22,6 +22,7 @@ public class ConsoleUI implements UI, NativeKeyListener {
     public void render(BoardView view) {
         view.getBoard().getEntityInformation();
         printBoard(view.getGameBoard());
+        setNextDirection(null);
     }
 
     @Override

@@ -7,6 +7,7 @@ import hs.augsburg.squirrelgame.util.XY;
 public class MiniSquirrel extends MovableEntity {
 
     private int masterSquirrelId;
+    private boolean invulnerable = true;
 
     public MiniSquirrel(hs.augsburg.squirrelgame.util.XY position, int energy) {
         super(EntityType.MINI_SQUIRREL, position, energy);
@@ -14,10 +15,14 @@ public class MiniSquirrel extends MovableEntity {
     }
 
     public void nextStep(EntityContext entityContext) {
-        entityContext.move(getEntity(), getPosition().getRandomNearbyPosition());
-        updateEnergy(-1);
-        if (getEnergy() <= 0) {
-            setAlive(false);
+        if(!invulnerable){
+            entityContext.move(getEntity(), getPosition().getRandomNearbyPosition());
+            updateEnergy(-1);
+            if (getEnergy() <= 0) {
+                setAlive(false);
+            }
+        }else{
+            setInvulnerable(false);
         }
     }
 
@@ -54,6 +59,10 @@ public class MiniSquirrel extends MovableEntity {
 
     public int getMasterSquirrelId() {
         return masterSquirrelId;
+    }
+
+    public void setInvulnerable(boolean invulnerable) {
+        this.invulnerable = invulnerable;
     }
 
     public void setMasterSquirrelId(int masterSquirrelId) {

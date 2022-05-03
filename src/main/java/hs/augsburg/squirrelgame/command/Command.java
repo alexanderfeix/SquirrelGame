@@ -21,9 +21,7 @@ public class Command implements CommandImpl {
     }
 
     @Override
-    public void handle(GameImpl game) {
-
-    }
+    public void handle(GameImpl game) {}
 
 
 }

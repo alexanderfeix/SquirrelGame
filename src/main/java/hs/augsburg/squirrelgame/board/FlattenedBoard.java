@@ -55,25 +55,19 @@ public class FlattenedBoard implements BoardView, EntityContext {
     public void createStandardMiniSquirrel(MasterSquirrel masterSquirrel, Command command) {
         try {
             int energy = Integer.parseInt((String) command.getParams()[0]);
-            if(energy > 0){
-                if(energy > masterSquirrel.getEnergy()){
-                    throw new NotEnoughEnergyException();
+            if(energy > masterSquirrel.getEnergy()){
+                throw new NotEnoughEnergyException();
+            }
+            if (energy < 100) {
+                throw new RuntimeException("Energy to create a new mini squirrel must be over a hundred!");
+            } else {
+                MiniSquirrel miniSquirrel = new MiniSquirrel(masterSquirrel.getPosition().getRandomNearbyPosition(), energy);
+                miniSquirrel.setMasterSquirrelId(masterSquirrel.getId());
+                masterSquirrel.updateEnergy(-energy);
+                while(getEntity(miniSquirrel.getPosition().getX(), miniSquirrel.getPosition().getY()) != null){
+                    miniSquirrel.updatePosition(masterSquirrel.getPosition().getRandomNearbyPosition());
                 }
-                if (energy < 100) {
-                    try {
-                        throw new Exception("Energy to create a new mini squirrel must be over a hundred!");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    MiniSquirrel miniSquirrel = new MiniSquirrel(masterSquirrel.getPosition().getRandomNearbyPosition(), energy);
-                    miniSquirrel.setMasterSquirrelId(masterSquirrel.getId());
-                    masterSquirrel.updateEnergy(-energy);
-                    while(getEntity(miniSquirrel.getPosition().getX(), miniSquirrel.getPosition().getY()) != null){
-                        miniSquirrel.updatePosition(masterSquirrel.getPosition().getRandomNearbyPosition());
-                    }
-                    getBoard().getEntitySet().addEntity(miniSquirrel);
-                }
+                getBoard().getEntitySet().addEntity(miniSquirrel);
             }
         }catch (NumberFormatException e){
             System.out.println("Please correct your input!");
