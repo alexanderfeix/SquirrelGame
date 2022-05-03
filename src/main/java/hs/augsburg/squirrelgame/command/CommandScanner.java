@@ -36,7 +36,7 @@ public class CommandScanner {
     }
 
     /**
-     * Slits the first object away by swapping the elements one element forward
+     * Splits the first object away by swapping the elements one element forward
      * @param array
      */
     private void reorderArray(Object[] array){
