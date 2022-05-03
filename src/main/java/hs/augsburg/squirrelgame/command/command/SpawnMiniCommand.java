@@ -11,6 +11,6 @@ public class SpawnMiniCommand extends Command {
 
     @Override
     public void handle(GameImpl game) {
-        game.getState().getFlattenedBoard().createStandardMiniSquirrel(game.getHandOperatedMasterSquirrel(), this);
+        game.getState().getFlattenedBoard().createStandardMiniSquirrel(game.getHandOperatedMasterSquirrel(), (Integer) getParams()[0]);
     }
 }

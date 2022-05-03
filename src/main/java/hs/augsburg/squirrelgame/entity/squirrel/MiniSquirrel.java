@@ -75,7 +75,7 @@ public class MiniSquirrel extends MovableEntity {
     }
 
     @Override
-    public void createStandardMiniSquirrel(MasterSquirrel masterSquirrel, Command command) {
+    public void createStandardMiniSquirrel(MasterSquirrel masterSquirrel, int energy) {
 
     }
 
