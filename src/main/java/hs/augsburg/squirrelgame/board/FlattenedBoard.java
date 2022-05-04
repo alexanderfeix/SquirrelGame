@@ -52,9 +52,7 @@ public class FlattenedBoard implements BoardView, EntityContext {
     }
 
     @Override
-    public void createStandardMiniSquirrel(MasterSquirrel masterSquirrel, Command command) {
-        try {
-            int energy = Integer.parseInt((String) command.getParams()[0]);
+    public void createStandardMiniSquirrel(MasterSquirrel masterSquirrel, int energy) {
             if(energy > masterSquirrel.getEnergy()){
                 throw new NotEnoughEnergyException();
             }
@@ -69,10 +67,6 @@ public class FlattenedBoard implements BoardView, EntityContext {
                 }
                 getBoard().getEntitySet().addEntity(miniSquirrel);
             }
-        }catch (NumberFormatException e){
-            System.out.println("Please correct your input!");
-            System.out.println(command.getCommandType().getHelpText());
-        }
     }
 
 

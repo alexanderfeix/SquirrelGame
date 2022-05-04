@@ -51,7 +51,7 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel implements Entity
     }
 
     @Override
-    public void createStandardMiniSquirrel(MasterSquirrel masterSquirrel, Command command) {
+    public void createStandardMiniSquirrel(MasterSquirrel masterSquirrel, int energy) {
 
     }
 
