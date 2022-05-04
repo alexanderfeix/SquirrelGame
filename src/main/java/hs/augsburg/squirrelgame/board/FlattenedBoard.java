@@ -1,6 +1,5 @@
 package hs.augsburg.squirrelgame.board;
 
-import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.entity.EntitySet;
@@ -8,6 +7,7 @@ import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.entity.squirrel.MiniSquirrel;
 import hs.augsburg.squirrelgame.ui.BoardView;
+import hs.augsburg.squirrelgame.util.MathUtils;
 import hs.augsburg.squirrelgame.util.XY;
 import hs.augsburg.squirrelgame.util.exception.NotEnoughEnergyException;
 
@@ -84,37 +84,39 @@ public class FlattenedBoard implements BoardView, EntityContext {
     }
 
     /**
-     * Gets the nearest master or mini squirrel in six block radius.
-     * Working of the method: 3-times nestes loop:
-     * First loop for the number of circles around the entity.
-     * Second and third loop for x and y positions.
-     * The ArrayList "checkedPositions" is used for caching the already checked positions.
-     *
+     * Gets the nearest squirrel in 6 block radius.
+     * Working of the method: Searching out all blocks in six block radius in order to find squirrels.
+     * When a squirrel gets found, the distance of the two entities gets calculated and further on compared
+     * to the latest measured distance. When the distance is smaller, then the nearest squirrel variable gets
+     * replaced, because we have found a squirrel that is nearer than the last one.
      * @param entity
      * @return
      */
     @Override
-    public XY getNearbySquirrelPosition(Entity entity) {
-        XY position = entity.getPosition();
-        ArrayList<String> checkedPositions = new ArrayList<>();
-        checkedPositions.add(position.toString());
-        for (int radius = 1; radius <= 6; radius++) {
-            for (int row = position.getY() - radius; row <= position.getY() + radius; row++) {
-                for (int col = position.getX() - radius; col <= position.getX() + radius; col++) {
-                    XY currentPosition = new XY(col, row);
-                    if (!checkedPositions.contains(currentPosition.toString())) {
-                        checkedPositions.add(currentPosition.toString());
-                        try {
-                            Entity enemy = getEntity(col, row);
-                            if (enemy.getEntityType() == EntityType.MASTER_SQUIRREL || enemy.getEntityType() == EntityType.MINI_SQUIRREL) {
-                                return enemy.getPosition();
-                            }
-                        } catch (Exception ignored) {}
+    public XY getNearbySquirrelPosition(Entity entity){
+        XY entityPosition = entity.getPosition();
+        Entity nearestSquirrel = null;
+        double distanceToSquirrel = Integer.MAX_VALUE;
+        for(int row = entityPosition.getY() - 6; row <= entityPosition.getY() + 6; row++){
+            for(int col = entityPosition.getX() - 6; col <= entityPosition.getX() + 6; col++){
+                try {
+                    Entity currentEntity = getEntity(col, row);
+                    if (currentEntity.getEntityType() == EntityType.MASTER_SQUIRREL || currentEntity.getEntityType() == EntityType.MINI_SQUIRREL) {
+                        XY currentSquirrelPosition = currentEntity.getPosition();
+                        double currentDistance = MathUtils.getDistanceFromTwoPoints(entityPosition.getX(), entityPosition.getY(), currentSquirrelPosition.getX(), currentSquirrelPosition.getY());
+                        if(currentDistance < distanceToSquirrel){
+                            distanceToSquirrel = currentDistance;
+                            nearestSquirrel = currentEntity;
+                        }
                     }
-                }
+                }catch (Exception ignored){}
             }
         }
-        return null;
+        if(nearestSquirrel != null){
+            return nearestSquirrel.getPosition();
+        }else{
+            return null;
+        }
     }
 
     public EntitySet getEntitySet() {
