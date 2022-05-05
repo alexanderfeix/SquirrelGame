@@ -14,7 +14,7 @@ public class Launcher {
         registerKeyListener();
         State state = new State(new Board());
         Game game = new GameImpl(state, new ConsoleUI());
-        game.run();
+        startGame(game);
     }
 
 
@@ -25,6 +25,15 @@ public class Launcher {
             e.printStackTrace();
         }
         GlobalScreen.addNativeKeyListener(new ConsoleUI());
+    }
+
+    private static void startGame(Game game){
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        game.run();
     }
 
 }

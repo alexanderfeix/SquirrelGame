@@ -6,9 +6,11 @@ import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.command.CommandScanner;
 import hs.augsburg.squirrelgame.command.GameCommandType;
 import hs.augsburg.squirrelgame.entity.Entity;
+import hs.augsburg.squirrelgame.game.Game;
 import hs.augsburg.squirrelgame.util.Direction;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class ConsoleUI implements UI, NativeKeyListener {
@@ -32,7 +34,18 @@ public class ConsoleUI implements UI, NativeKeyListener {
 
     @Override
     public Command getCommand() {
-        return commandScanner.next();
+        if(Game.FPS_MODE){
+            try {
+                if(inputReader.ready()){
+                    return commandScanner.next();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }else{
+            return commandScanner.next();
+        }
     }
 
     public void setNextDirection(Direction nextDirection) {

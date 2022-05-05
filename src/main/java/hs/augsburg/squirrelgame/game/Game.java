@@ -6,6 +6,8 @@ public abstract class Game {
 
     private final State state;
     private final UI ui;
+    public static final int FPS = 1000;
+    public static boolean FPS_MODE = true;
 
     public Game(State state, UI ui) {
         this.state = state;
@@ -20,7 +22,7 @@ public abstract class Game {
             render();
             processInput();
             update();
-            //sleep(1000);
+            sleep();
         }
     }
 
@@ -49,11 +51,13 @@ public abstract class Game {
         return ui;
     }
 
-    private void sleep(int milliSeconds){
-        try {
-            Thread.sleep(milliSeconds);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    private void sleep(){
+        if(FPS_MODE){
+            try {
+                Thread.sleep(Game.FPS);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
