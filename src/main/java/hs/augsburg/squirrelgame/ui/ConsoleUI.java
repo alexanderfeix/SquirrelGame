@@ -1,7 +1,5 @@
 package hs.augsburg.squirrelgame.ui;
 
-import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
-import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.command.CommandScanner;
 import hs.augsburg.squirrelgame.command.GameCommandType;
@@ -13,7 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class ConsoleUI implements UI, NativeKeyListener {
+public class ConsoleUI implements UI {
 
     private static Direction nextDirection;
 
@@ -33,6 +31,11 @@ public class ConsoleUI implements UI, NativeKeyListener {
     }
 
     @Override
+    public void setNextDirection(Direction direction) {
+        nextDirection = direction;
+    }
+
+    @Override
     public Command getCommand() {
         if(Game.FPS_MODE){
             try {
@@ -45,26 +48,6 @@ public class ConsoleUI implements UI, NativeKeyListener {
             return null;
         }else{
             return commandScanner.next();
-        }
-    }
-
-    public void setNextDirection(Direction nextDirection) {
-        ConsoleUI.nextDirection = nextDirection;
-    }
-
-    /**
-     * Works overall the same as the normal KeyListener
-     * @param e
-     */
-    public void nativeKeyPressed(NativeKeyEvent e){
-        if (e.getKeyCode() == NativeKeyEvent.VC_UP || e.getKeyCode() == NativeKeyEvent.VC_W) {
-            setNextDirection(Direction.UP);
-        } else if (e.getKeyCode() == NativeKeyEvent.VC_LEFT || e.getKeyCode() == NativeKeyEvent.VC_A) {
-            setNextDirection(Direction.LEFT);
-        } else if (e.getKeyCode() == NativeKeyEvent.VC_DOWN || e.getKeyCode() == NativeKeyEvent.VC_S) {
-            setNextDirection(Direction.DOWN);
-        } else if (e.getKeyCode() == NativeKeyEvent.VC_RIGHT || e.getKeyCode() == NativeKeyEvent.VC_D) {
-            setNextDirection(Direction.RIGHT);
         }
     }
 
