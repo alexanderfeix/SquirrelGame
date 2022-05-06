@@ -20,9 +20,9 @@ public abstract class Game {
     public void run() {
         while (true) {
             render();
+            sleep();
             processInput();
             update();
-            sleep();
         }
     }
 
