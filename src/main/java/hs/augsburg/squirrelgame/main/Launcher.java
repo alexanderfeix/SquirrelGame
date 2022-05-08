@@ -9,8 +9,8 @@ import hs.augsburg.squirrelgame.ui.FxUI;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuBar;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -59,12 +59,26 @@ public class Launcher extends Application {
     }
 
     private MenuBar createMenuBar() {
+        MenuItem pauseMenu = new Menu("pause");
+        pauseMenu.setAccelerator(KeyCombination.keyCombination("Ctrl+P"));
+
+        MenuItem continueMenu = new Menu("continue");
+
+        MenuItem quitMenu = new Menu("Quit");
+        quitMenu.setAccelerator(KeyCombination.keyCombination("Alt+F4"));
+
+        Menu fileMenu = new Menu("File");
+        fileMenu.getItems().addAll(pauseMenu, continueMenu, new SeparatorMenuItem(), quitMenu);
+
         MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().addAll(fileMenu);
         return menuBar;
     }
 
     private HBox createStatusBar() {
         HBox statusBar = new HBox();
+        Label statusLabel = new Label("StatusBar funktioniert!");
+        statusBar.getChildren().add(statusLabel);
         return statusBar;
     }
 
