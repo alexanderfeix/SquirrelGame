@@ -2,8 +2,11 @@ package hs.augsburg.squirrelgame.ui;
 
 import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.util.Direction;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 
 public class FxUI implements UI{
+
 
 
     @Override

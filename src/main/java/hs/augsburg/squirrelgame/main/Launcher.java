@@ -10,6 +10,11 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuBar;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Launcher extends Application {
@@ -34,10 +39,44 @@ public class Launcher extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Group root = new Group();
+
+        Pane renderingPane = createRenderingPane();
+        VBox vBox = createVBox();
+        HBox statusBar = createStatusBar();
+        MenuBar menuBar = createMenuBar();
+
+
+        BorderPane root = new BorderPane();
+        root.setTop(menuBar);
+        root.setLeft(vBox);
+        root.setBottom(statusBar);
+        root.setCenter(renderingPane);
+
         Scene scene = new Scene(root, 800, 700);
         stage.setTitle("Squirrel Game");
         stage.setScene(scene);
         stage.show();
+    }
+
+    private MenuBar createMenuBar() {
+        MenuBar menuBar = new MenuBar();
+        return menuBar;
+    }
+
+    private HBox createStatusBar() {
+        HBox statusBar = new HBox();
+        return statusBar;
+    }
+
+    private VBox createVBox() {
+        VBox vBox = new VBox();
+        return vBox;
+    }
+
+    private Pane createRenderingPane() {
+        Pane renderingPane = new Pane();
+
+
+        return renderingPane;
     }
 }
