@@ -59,13 +59,11 @@ public class Launcher extends Application {
     }
 
     private MenuBar createMenuBar() {
-        MenuItem pauseMenu = new Menu("pause");
-        pauseMenu.setAccelerator(KeyCombination.keyCombination("Ctrl+P"));
-
-        MenuItem continueMenu = new Menu("continue");
-
-        MenuItem quitMenu = new Menu("Quit");
-        quitMenu.setAccelerator(KeyCombination.keyCombination("Alt+F4"));
+        MenuItem pauseMenu = new MenuItem("pause");
+            pauseMenu.setAccelerator(KeyCombination.keyCombination("Ctrl+P"));
+        MenuItem quitMenu = new MenuItem("Quit");
+            quitMenu.setAccelerator(KeyCombination.keyCombination("Alt+F4"));
+        MenuItem continueMenu = new MenuItem("continue");
 
         Menu fileMenu = new Menu("File");
         fileMenu.getItems().addAll(pauseMenu, continueMenu, new SeparatorMenuItem(), quitMenu);
