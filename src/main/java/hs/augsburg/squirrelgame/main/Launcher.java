@@ -7,14 +7,15 @@ import hs.augsburg.squirrelgame.game.State;
 import hs.augsburg.squirrelgame.ui.ConsoleUI;
 import hs.augsburg.squirrelgame.ui.FxUI;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Launcher extends Application {
@@ -41,14 +42,16 @@ public class Launcher extends Application {
     public void start(Stage stage) throws Exception {
 
         Pane renderingPane = createRenderingPane();
-        VBox vBox = createVBox();
+        VBox squirrelInfoBar = createSquirrelInfoBar();
+        GridPane legendBar = createLegendBar();
         HBox statusBar = createStatusBar();
         MenuBar menuBar = createMenuBar();
 
 
         BorderPane root = new BorderPane();
         root.setTop(menuBar);
-        root.setLeft(vBox);
+        root.setLeft(legendBar);
+        root.setRight(squirrelInfoBar);
         root.setBottom(statusBar);
         root.setCenter(renderingPane);
 
@@ -56,6 +59,26 @@ public class Launcher extends Application {
         stage.setTitle("Squirrel Game");
         stage.setScene(scene);
         stage.show();
+    }
+
+    private GridPane createLegendBar() {
+        GridPane legendBar = new GridPane();
+        Button pauseButton = new Button("pause");
+        Button resumeButton = new Button("resume");
+        Text controlTitle = new Text("Controls:");
+            controlTitle.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+
+
+        legendBar.setHgap(10);
+        legendBar.setVgap(0);
+        legendBar.setPadding(new Insets(0, 10, 0, 10));
+
+        //.add(Node, column, row, )
+        legendBar.add(controlTitle,2, 5);
+        legendBar.add(pauseButton, 2, 6);
+        legendBar.add(resumeButton, 2, 7);
+
+        return legendBar;
     }
 
     private MenuBar createMenuBar() {
@@ -80,9 +103,16 @@ public class Launcher extends Application {
         return statusBar;
     }
 
-    private VBox createVBox() {
-        VBox vBox = new VBox();
-        return vBox;
+    private VBox createSquirrelInfoBar() {
+        VBox squirrelInfoBar = new VBox();
+        squirrelInfoBar.setPadding(new Insets(10));
+        squirrelInfoBar.setSpacing(8);
+
+        Text title = new Text("Squirrel Energie:");
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        squirrelInfoBar.getChildren().add(title);
+
+        return squirrelInfoBar;
     }
 
     private Pane createRenderingPane() {
