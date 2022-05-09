@@ -59,6 +59,10 @@ public class GameImpl extends Game {
             }
         }
     }
+    public static void setPause(boolean pause){
+        PAUSE_MODE = pause;
+    }
+
 
     public HandOperatedMasterSquirrel getHandOperatedMasterSquirrel() {
         return handOperatedMasterSquirrel;

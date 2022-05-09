@@ -3,6 +3,7 @@ package hs.augsburg.squirrelgame.ui;
 import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
+import hs.augsburg.squirrelgame.game.GameImpl;
 import hs.augsburg.squirrelgame.util.Direction;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -121,7 +122,13 @@ public class FxUI implements UI{
         GridPane gridPane = new GridPane();
         //Buttons
         Button pauseButton = new Button("Pause");
+            pauseButton.setOnAction((ActionEvent event) ->{
+                GameImpl.setPause(true);
+            });
         Button resumeButton = new Button("Resume");
+            resumeButton.setOnAction((ActionEvent event) ->{
+                GameImpl.setPause(false);
+            });
         //Titles
         Text controlTitle = new Text("Controls");
         controlTitle.setFont(Font.font("Arial", FontWeight.BOLD, 14));
@@ -234,7 +241,7 @@ public class FxUI implements UI{
         MenuItem pauseMenu = new MenuItem("Pause");
         pauseMenu.setAccelerator(KeyCombination.keyCombination("Ctrl+P"));
             pauseMenu.setOnAction((ActionEvent event) ->{
-                //pauseGame(true);
+                GameImpl.setPause(true);
             });
         MenuItem quitMenu = new MenuItem("Quit");
         quitMenu.setAccelerator(KeyCombination.keyCombination("Alt+F4"));
@@ -242,8 +249,8 @@ public class FxUI implements UI{
                 System.exit(0);
             });
         MenuItem continueMenu = new MenuItem("Continue");
-            continueMenu.setOnAction((ActionEvent even) ->{
-                //pauseGame(false);
+            continueMenu.setOnAction((ActionEvent event) ->{
+                GameImpl.setPause(false);
             });
 
 

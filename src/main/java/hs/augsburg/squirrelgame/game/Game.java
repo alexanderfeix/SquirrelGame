@@ -8,6 +8,8 @@ public abstract class Game {
     private final UI ui;
     public static final int FPS = 1000;
     public static boolean FPS_MODE = true;
+    public static boolean PAUSE_MODE;
+
 
     public Game(State state, UI ui) {
         this.state = state;
@@ -18,11 +20,16 @@ public abstract class Game {
      * This method is the game loop
      */
     public void run() {
+        PAUSE_MODE = false;
         while (true) {
-            render();
-            sleep();
-            processInput();
-            update();
+            if(!PAUSE_MODE){
+                render();
+                sleep();
+                processInput();
+                update();
+            }else{
+                System.out.print("");
+            }
         }
     }
 

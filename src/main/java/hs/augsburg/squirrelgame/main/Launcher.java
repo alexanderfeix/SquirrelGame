@@ -28,10 +28,11 @@ public class Launcher extends Application {
     private final FxUI fxUI = new FxUI();
 
     public static void main(String[] args) {
-        launch(args);
+
         State state = new State(new Board());
         Game game = new GameImpl(state, new ConsoleUI());
         startGame(game);
+        launch(args);
     }
 
     private static void startGame(Game game){
@@ -40,7 +41,8 @@ public class Launcher extends Application {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        game.run();
+        Thread gameLoop = new Thread(() -> game.run());
+        gameLoop.start();
     }
 
     @Override
