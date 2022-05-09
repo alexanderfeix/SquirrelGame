@@ -127,13 +127,18 @@ public class FxUI implements UI{
         VBox legendBar = new VBox();
         GridPane gridPane = new GridPane();
         //Buttons
+        Button resumeButton = new Button("Resume");
         Button pauseButton = new Button("Pause");
             pauseButton.setOnAction((ActionEvent event) ->{
                 getController().setPause(true);
+                pauseButton.setDisable(true);
+                resumeButton.setDisable(false);
+
             });
-        Button resumeButton = new Button("Resume");
             resumeButton.setOnAction((ActionEvent event) ->{
                 getController().setPause(false);
+                resumeButton.setDisable(true);
+                pauseButton.setDisable(false);
             });
         //Titles
         Text controlTitle = new Text("Controls");
@@ -248,6 +253,7 @@ public class FxUI implements UI{
         pauseMenu.setAccelerator(KeyCombination.keyCombination("Ctrl+P"));
             pauseMenu.setOnAction((ActionEvent event) ->{
                 getController().setPause(true);
+
             });
         MenuItem quitMenu = new MenuItem("Quit");
         quitMenu.setAccelerator(KeyCombination.keyCombination("Alt+F4"));
