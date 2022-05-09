@@ -4,6 +4,8 @@ import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.util.Direction;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -231,9 +233,19 @@ public class FxUI implements UI{
     public MenuBar createMenuBar() {
         MenuItem pauseMenu = new MenuItem("Pause");
         pauseMenu.setAccelerator(KeyCombination.keyCombination("Ctrl+P"));
+            pauseMenu.setOnAction((ActionEvent event) ->{
+                //pauseGame(true);
+            });
         MenuItem quitMenu = new MenuItem("Quit");
         quitMenu.setAccelerator(KeyCombination.keyCombination("Alt+F4"));
+            quitMenu.setOnAction((ActionEvent event) ->{
+                System.exit(0);
+            });
         MenuItem continueMenu = new MenuItem("Continue");
+            continueMenu.setOnAction((ActionEvent even) ->{
+                //pauseGame(false);
+            });
+
 
         Menu fileMenu = new Menu("File");
         fileMenu.getItems().addAll(pauseMenu, continueMenu, new SeparatorMenuItem(), quitMenu);
