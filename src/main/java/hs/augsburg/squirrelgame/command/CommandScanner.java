@@ -57,9 +57,11 @@ public class CommandScanner {
      * @return
      */
     private boolean areParametersValid(Class<?>[] definedObjectTypes, Object[] convertedInputObjects){
-        for(int i = 0; i < definedObjectTypes.length; i++){
-            if(!definedObjectTypes[i].getTypeName().equalsIgnoreCase(convertedInputObjects[i].getClass().getTypeName())){
-                return false;
+        if(definedObjectTypes != null){
+            for(int i = 0; i < definedObjectTypes.length; i++){
+                if(!definedObjectTypes[i].getTypeName().equalsIgnoreCase(convertedInputObjects[i].getClass().getTypeName())){
+                    return false;
+                }
             }
         }
         return true;

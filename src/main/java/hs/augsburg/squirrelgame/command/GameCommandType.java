@@ -5,7 +5,11 @@ public enum GameCommandType implements CommandTypeInfo{
     SPAWN_MINI("spawn_mini", " <energy> * spawns a new mini squirrel", Integer.class, "hs.augsburg.squirrelgame.command.command.SpawnMiniCommand"),
     MASTER_ENERGY("master_energy", " * returns the current energy of the master squirrel","hs.augsburg.squirrelgame.command.command.MasterEnergyCommand"),
     HELP("help", " * list all commands","hs.augsburg.squirrelgame.command.command.HelpCommand"),
-    EXIT("exit", " * exit program", "hs.augsburg.squirrelgame.command.command.ExitCommand");
+    EXIT("exit", " * exit program", "hs.augsburg.squirrelgame.command.command.ExitCommand"),
+    DIRECTION_UP("w", " * moves the squirrel up", "hs.augsburg.squirrelgame.command.command.direction.DirectionUpCommand"),
+    DIRECTION_DOWN("s", " * moves the squirrel down", "hs.augsburg.squirrelgame.command.command.direction.DirectionDownCommand"),
+    DIRECTION_LEFT("a", " * moves the squirrel left", "hs.augsburg.squirrelgame.command.command.direction.DirectionLeftCommand"),
+    DIRECTION_RIGHT("d", " * moves the squirrel right", "hs.augsburg.squirrelgame.command.command.direction.DirectionRightCommand");
 
     private final String name;
     private final String helpText;

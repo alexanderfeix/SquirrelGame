@@ -7,6 +7,16 @@
     <groupId>hs.augsburg</groupId>
     <artifactId>SquirrelGame</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -15,9 +25,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.kwhat</groupId>
-            <artifactId>jnativehook</artifactId>
-            <version>2.2.2</version>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>17.0.1</version>
         </dependency>
     </dependencies>
 
@@ -25,5 +35,4 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
-
 </project>

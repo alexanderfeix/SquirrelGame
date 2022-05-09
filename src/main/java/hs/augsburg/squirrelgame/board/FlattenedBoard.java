@@ -11,7 +11,6 @@ import hs.augsburg.squirrelgame.util.MathUtils;
 import hs.augsburg.squirrelgame.util.XY;
 import hs.augsburg.squirrelgame.util.exception.NotEnoughEnergyException;
 
-import java.util.ArrayList;
 import java.util.Enumeration;
 
 public class FlattenedBoard implements BoardView, EntityContext {

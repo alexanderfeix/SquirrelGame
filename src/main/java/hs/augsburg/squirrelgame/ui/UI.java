@@ -9,6 +9,8 @@ public interface UI {
 
     Direction getNextDirection();
 
+    void setNextDirection(Direction direction);
+
     Command getCommand();
 
 }

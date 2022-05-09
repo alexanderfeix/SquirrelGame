@@ -29,6 +29,15 @@ public class GameImpl extends Game {
 
     @Override
     public void processInput() {
+        callCommandClasses();
+    }
+
+    @Override
+    public void render() {
+        ui.render(getState().getFlattenedBoard());
+    }
+
+    private void callCommandClasses(){
         Command command = ui.getCommand();
         GameCommandType commandType = null;
         if(command != null){
@@ -49,13 +58,6 @@ public class GameImpl extends Game {
                 e.printStackTrace();
             }
         }
-
-
-    }
-
-    @Override
-    public void render() {
-        ui.render(getState().getFlattenedBoard());
     }
 
     public HandOperatedMasterSquirrel getHandOperatedMasterSquirrel() {
