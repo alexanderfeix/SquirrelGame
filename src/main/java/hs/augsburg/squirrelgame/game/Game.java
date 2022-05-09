@@ -27,8 +27,6 @@ public abstract class Game {
                 sleep();
                 processInput();
                 update();
-            }else{
-                System.out.print("");
             }
         }
     }

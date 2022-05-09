@@ -59,10 +59,12 @@ public class GameImpl extends Game {
             }
         }
     }
-    public static void setPause(boolean pause){
+    public void setPause(boolean pause){
+        if(!pause && PAUSE_MODE){
+            this.run();
+        }
         PAUSE_MODE = pause;
     }
-
 
     public HandOperatedMasterSquirrel getHandOperatedMasterSquirrel() {
         return handOperatedMasterSquirrel;

@@ -25,13 +25,15 @@ import javafx.stage.Stage;
 
 public class Launcher extends Application {
 
-    private final FxUI fxUI = new FxUI();
+    private static FxUI fxUI;
+    private static BorderPane rootPane;
+    private static GameImpl controller;
 
     public static void main(String[] args) {
-
         State state = new State(new Board());
-        Game game = new GameImpl(state, new ConsoleUI());
-        startGame(game);
+        controller = new GameImpl(state, new ConsoleUI());
+        fxUI = new FxUI(controller);
+        startGame(controller);
         launch(args);
     }
 
@@ -41,26 +43,26 @@ public class Launcher extends Application {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Thread gameLoop = new Thread(() -> game.run());
+        Thread gameLoop = new Thread(game::run);
         gameLoop.start();
     }
 
     @Override
     public void start(Stage stage) throws Exception {
+        rootPane = new BorderPane();
         VBox squirrelInfoBar = getFxUI().createSquirrelInfoBar();
         VBox legendBar = getFxUI().createLegendBar();
         HBox statusBar = getFxUI().createStatusBar();
         MenuBar menuBar = getFxUI().createMenuBar();
-        GridPane gameBoard = new FxUI().getGameBoardPane();
+        GridPane gameBoard = getFxUI().getGameBoardPane();
 
-        BorderPane root = new BorderPane();
-        root.setTop(menuBar);
-        root.setLeft(legendBar);
-        root.setRight(squirrelInfoBar);
-        root.setCenter(gameBoard);
-        root.setBottom(statusBar);
+        getRootPane().setTop(menuBar);
+        getRootPane().setLeft(legendBar);
+        getRootPane().setRight(squirrelInfoBar);
+        getRootPane().setCenter(gameBoard);
+        getRootPane().setBottom(statusBar);
 
-        Scene scene = new Scene(root, 800, 700);
+        Scene scene = new Scene(getRootPane(), 800, 700);
         stage.setTitle("Squirrel Game");
         stage.setScene(scene);
         stage.show();
@@ -68,5 +70,13 @@ public class Launcher extends Application {
 
     public FxUI getFxUI() {
         return fxUI;
+    }
+
+    public static BorderPane getRootPane() {
+        return rootPane;
+    }
+
+    public static GameImpl getController() {
+        return controller;
     }
 }

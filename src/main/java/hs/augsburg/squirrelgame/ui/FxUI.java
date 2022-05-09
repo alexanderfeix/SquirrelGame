@@ -3,6 +3,7 @@ package hs.augsburg.squirrelgame.ui;
 import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
+import hs.augsburg.squirrelgame.game.Game;
 import hs.augsburg.squirrelgame.game.GameImpl;
 import hs.augsburg.squirrelgame.util.Direction;
 import javafx.application.Platform;
@@ -26,6 +27,11 @@ import javafx.scene.text.Text;
 public class FxUI implements UI{
 
     private GridPane gameBoardPane;
+    private final GameImpl controller;
+
+    public FxUI(GameImpl controller){
+        this.controller = controller;
+    }
 
     @Override
     public void render(BoardView view) {
@@ -123,11 +129,11 @@ public class FxUI implements UI{
         //Buttons
         Button pauseButton = new Button("Pause");
             pauseButton.setOnAction((ActionEvent event) ->{
-                GameImpl.setPause(true);
+                getController().setPause(true);
             });
         Button resumeButton = new Button("Resume");
             resumeButton.setOnAction((ActionEvent event) ->{
-                GameImpl.setPause(false);
+                getController().setPause(false);
             });
         //Titles
         Text controlTitle = new Text("Controls");
@@ -241,7 +247,7 @@ public class FxUI implements UI{
         MenuItem pauseMenu = new MenuItem("Pause");
         pauseMenu.setAccelerator(KeyCombination.keyCombination("Ctrl+P"));
             pauseMenu.setOnAction((ActionEvent event) ->{
-                GameImpl.setPause(true);
+                getController().setPause(true);
             });
         MenuItem quitMenu = new MenuItem("Quit");
         quitMenu.setAccelerator(KeyCombination.keyCombination("Alt+F4"));
@@ -250,7 +256,7 @@ public class FxUI implements UI{
             });
         MenuItem continueMenu = new MenuItem("Continue");
             continueMenu.setOnAction((ActionEvent event) ->{
-                GameImpl.setPause(false);
+                getController().setPause(false);
             });
 
 
@@ -279,5 +285,9 @@ public class FxUI implements UI{
         squirrelInfoBar.getChildren().add(title);
 
         return squirrelInfoBar;
+    }
+
+    public GameImpl getController() {
+        return controller;
     }
 }
