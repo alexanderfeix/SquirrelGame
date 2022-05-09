@@ -12,10 +12,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -61,7 +58,9 @@ public class FxUI implements UI{
     }
 
     public GridPane getGridPane(BoardView view){
-        gameBoardPane.getChildren().clear();
+        if(gameBoardPane != null){
+            gameBoardPane.getChildren().clear();
+        }
         for(int col = 0; col < view.getGameBoard().length; col++){
             for(int row = 0; row < view.getGameBoard()[col].length; row++){
                 try {
@@ -128,6 +127,8 @@ public class FxUI implements UI{
     public GridPane getGameBoardPane() {
         if(gameBoardPane == null){
             gameBoardPane = new GridPane();
+            gameBoardPane.setAlignment(Pos.CENTER);
+            gameBoardPane.setPadding(new Insets(10, 10, 10, 10));
         }
         return gameBoardPane;
     }

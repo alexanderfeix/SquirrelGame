@@ -1,5 +1,6 @@
 package hs.augsburg.squirrelgame.game;
 
+import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.ui.UI;
 
 public abstract class Game {
@@ -20,7 +21,6 @@ public abstract class Game {
      * This method is the game loop
      */
     public void run() {
-        PAUSE_MODE = false;
         while (true) {
             if(!PAUSE_MODE){
                 render();

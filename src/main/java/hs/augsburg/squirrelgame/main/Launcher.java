@@ -28,6 +28,7 @@ public class Launcher extends Application {
     private static FxUI fxUI;
     private static BorderPane rootPane;
     private static GameImpl controller;
+    private static Thread gameThread;
 
     public static void main(String[] args) {
         State state = new State(new Board());
@@ -44,8 +45,8 @@ public class Launcher extends Application {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Thread gameLoop = new Thread(game::run);
-        gameLoop.start();
+        gameThread = new Thread(game::run);
+        gameThread.start();
     }
 
     @Override
@@ -61,7 +62,6 @@ public class Launcher extends Application {
         getRootPane().setRight(squirrelInfoBar);
         getRootPane().setCenter(gameBoard);
         getRootPane().setBottom(statusBar);
-
         Scene scene = new Scene(getRootPane(), 800, 700);
         stage.setTitle("Squirrel Game");
         stage.setScene(scene);
@@ -78,5 +78,13 @@ public class Launcher extends Application {
 
     public static GameImpl getController() {
         return controller;
+    }
+
+    public static Thread getGameThread() {
+        return gameThread;
+    }
+
+    public static void setGameThread(Thread gameThread) {
+        Launcher.gameThread = gameThread;
     }
 }

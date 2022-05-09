@@ -3,10 +3,8 @@ package hs.augsburg.squirrelgame.game;
 import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.command.CommandTypeInfo;
 import hs.augsburg.squirrelgame.command.GameCommandType;
-import hs.augsburg.squirrelgame.command.command.ExitCommand;
-import hs.augsburg.squirrelgame.command.command.HelpCommand;
-import hs.augsburg.squirrelgame.command.command.SpawnMiniCommand;
 import hs.augsburg.squirrelgame.entity.squirrel.HandOperatedMasterSquirrel;
+import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.ui.UI;
 import hs.augsburg.squirrelgame.util.XY;
 
@@ -61,9 +59,13 @@ public class GameImpl extends Game {
     }
     public void setPause(boolean pause){
         if(!pause && PAUSE_MODE){
-            this.run();
+            PAUSE_MODE = false;
+            Launcher.setGameThread(new Thread(this::run));
+            Launcher.getGameThread().start();
+        }else{
+            PAUSE_MODE = pause;
+            Launcher.getGameThread().stop();
         }
-        PAUSE_MODE = pause;
     }
 
     public HandOperatedMasterSquirrel getHandOperatedMasterSquirrel() {
