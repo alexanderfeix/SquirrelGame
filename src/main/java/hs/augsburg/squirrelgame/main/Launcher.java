@@ -46,7 +46,6 @@ public class Launcher extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        Pane renderingPane = createRenderingPane();
         VBox squirrelInfoBar = createSquirrelInfoBar();
         VBox legendBar = createLegendBar();
         HBox statusBar = createStatusBar();
@@ -58,7 +57,6 @@ public class Launcher extends Application {
         root.setLeft(legendBar);
         root.setRight(squirrelInfoBar);
         root.setBottom(statusBar);
-        root.setCenter(renderingPane);
 
         Scene scene = new Scene(root, 800, 700);
         stage.setTitle("Squirrel Game");
@@ -212,12 +210,5 @@ public class Launcher extends Application {
         squirrelInfoBar.getChildren().add(title);
 
         return squirrelInfoBar;
-    }
-
-    private Pane createRenderingPane() {
-        Pane renderingPane = new Pane();
-
-
-        return renderingPane;
     }
 }
