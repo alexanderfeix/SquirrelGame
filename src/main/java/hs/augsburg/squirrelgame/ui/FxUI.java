@@ -251,18 +251,23 @@ public class FxUI implements UI{
     public MenuBar createMenuBar() {
         MenuItem pauseMenu = new MenuItem("Pause");
         pauseMenu.setAccelerator(KeyCombination.keyCombination("Ctrl+P"));
+        MenuItem continueMenu = new MenuItem("Continue");
             pauseMenu.setOnAction((ActionEvent event) ->{
                 getController().setPause(true);
+                pauseMenu.setDisable(true);
+                continueMenu.setDisable(false);
 
             });
+            continueMenu.setOnAction((ActionEvent event) ->{
+                getController().setPause(false);
+                continueMenu.setDisable(true);
+                pauseMenu.setDisable(false);
+            });
+
         MenuItem quitMenu = new MenuItem("Quit");
         quitMenu.setAccelerator(KeyCombination.keyCombination("Alt+F4"));
             quitMenu.setOnAction((ActionEvent event) ->{
                 System.exit(0);
-            });
-        MenuItem continueMenu = new MenuItem("Continue");
-            continueMenu.setOnAction((ActionEvent event) ->{
-                getController().setPause(false);
             });
 
 
