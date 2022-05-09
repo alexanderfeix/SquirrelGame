@@ -24,6 +24,7 @@ import javafx.scene.text.Text;
 public class FxUI implements UI{
 
     private GridPane gameBoardPane;
+    private VBox squirrelInfoBar;
     private GameImpl controller;
     Label statusLabel = new Label("Game is running!");
     private String statusText;
@@ -35,7 +36,10 @@ public class FxUI implements UI{
 
     @Override
     public void render(BoardView view) {
-        Platform.runLater(() -> refreshGameBoard(view));
+        Platform.runLater(() -> {
+            refreshGameBoard(view);
+            refreshSquirrelInfoBar(view);
+        });
     }
 
     @Override
@@ -309,15 +313,37 @@ public class FxUI implements UI{
         VBox squirrelInfoBar = new VBox();
         squirrelInfoBar.setPadding(new Insets(10));
         squirrelInfoBar.setSpacing(8);
-
-        Text title = new Text("Squirrel Energie:");
-        title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        squirrelInfoBar.getChildren().add(title);
-
+        setSquirrelInfoBar(squirrelInfoBar);
         return squirrelInfoBar;
+    }
+
+    private void refreshSquirrelInfoBar(BoardView view){
+        if(getSquirrelInfoBar() != null){
+            getSquirrelInfoBar().getChildren().clear();
+            for(int col = 0; col < view.getGameBoard().length; col++){
+                for(int row = 0; row < view.getGameBoard()[col].length; row++){
+                    try {
+                        Entity entity = view.getEntity(col, row);
+                        if(entity.getEntityType() == EntityType.MASTER_SQUIRREL || entity.getEntityType() == EntityType.MINI_SQUIRREL){
+                            Text text = new Text(entity.getEntityType().toString() + ": " + entity.getEnergy());
+                            text.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
+                            getSquirrelInfoBar().getChildren().add(text);
+                        }
+                    }catch (Exception ignored){}
+                }
+            }
+        }
     }
 
     public GameImpl getController() {
         return controller;
+    }
+
+    public VBox getSquirrelInfoBar() {
+        return squirrelInfoBar;
+    }
+
+    public void setSquirrelInfoBar(VBox squirrelInfoBar) {
+        this.squirrelInfoBar = squirrelInfoBar;
     }
 }
