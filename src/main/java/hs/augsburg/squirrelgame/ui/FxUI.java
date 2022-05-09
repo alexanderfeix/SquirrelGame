@@ -26,7 +26,7 @@ import javafx.scene.text.Text;
 
 public class FxUI implements UI{
 
-    private GridPane gameBoardPane = new GridPane();
+    private GridPane gameBoardPane;
     private GameImpl controller;
     Label statusLabel = new Label("Game is running!");
     private String statusText;
@@ -38,12 +38,7 @@ public class FxUI implements UI{
 
     @Override
     public void render(BoardView view) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                refreshGameBoard(view);
-            }
-        });
+        Platform.runLater(() -> refreshGameBoard(view));
     }
 
     @Override
@@ -66,9 +61,7 @@ public class FxUI implements UI{
     }
 
     public GridPane getGridPane(BoardView view){
-        if(gameBoardPane != null){
-            gameBoardPane.getChildren().clear();
-        }
+        gameBoardPane.getChildren().clear();
         for(int col = 0; col < view.getGameBoard().length; col++){
             for(int row = 0; row < view.getGameBoard()[col].length; row++){
                 try {
@@ -133,6 +126,9 @@ public class FxUI implements UI{
     }
 
     public GridPane getGameBoardPane() {
+        if(gameBoardPane == null){
+            gameBoardPane = new GridPane();
+        }
         return gameBoardPane;
     }
 
