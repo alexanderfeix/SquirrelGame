@@ -132,7 +132,6 @@ public class FxUI implements UI{
         if(gameBoardPane == null){
             gameBoardPane = new GridPane();
             gameBoardPane.setAlignment(Pos.CENTER);
-            gameBoardPane.setPadding(new Insets(10, 10, 10, 10));
         }
         return gameBoardPane;
     }

@@ -1,13 +1,12 @@
 package hs.augsburg.squirrelgame.game;
 
-import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.ui.UI;
 
 public abstract class Game {
 
     private final State state;
     private final UI ui;
-    public static final int FPS = 1000;
+    public static final int FPS = 300;
     public static boolean FPS_MODE = true;
     public static boolean PAUSE_MODE;
 
