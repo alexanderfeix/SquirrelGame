@@ -31,8 +31,9 @@ public class Launcher extends Application {
 
     public static void main(String[] args) {
         State state = new State(new Board());
-        controller = new GameImpl(state, new ConsoleUI());
-        fxUI = new FxUI(controller);
+        fxUI = new FxUI();
+        controller = new GameImpl(state, fxUI);
+        fxUI.setController(controller);
         startGame(controller);
         launch(args);
     }
@@ -55,7 +56,6 @@ public class Launcher extends Application {
         HBox statusBar = getFxUI().createStatusBar();
         MenuBar menuBar = getFxUI().createMenuBar();
         GridPane gameBoard = getFxUI().getGameBoardPane();
-
         getRootPane().setTop(menuBar);
         getRootPane().setLeft(legendBar);
         getRootPane().setRight(squirrelInfoBar);

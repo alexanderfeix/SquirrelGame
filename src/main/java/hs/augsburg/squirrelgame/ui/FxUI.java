@@ -26,20 +26,24 @@ import javafx.scene.text.Text;
 
 public class FxUI implements UI{
 
-    private GridPane gameBoardPane;
-    private final GameImpl controller;
+    private GridPane gameBoardPane = new GridPane();
+    private GameImpl controller;
     Label statusLabel = new Label("Game is running!");
     private String statusText;
 
 
-    public FxUI(GameImpl controller){
-        this.controller = controller;
+    public void setController(GameImpl game){
+        this.controller = game;
     }
 
     @Override
     public void render(BoardView view) {
-        //Print pane in the center of the view here
-        gameBoardPane = getGridPane(view);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                refreshGameBoard(view);
+            }
+        });
     }
 
     @Override
@@ -57,13 +61,21 @@ public class FxUI implements UI{
         return null;
     }
 
+    public void refreshGameBoard(BoardView view){
+        gameBoardPane = getGridPane(view);
+    }
+
     public GridPane getGridPane(BoardView view){
-        gameBoardPane = new GridPane();
+        if(gameBoardPane != null){
+            gameBoardPane.getChildren().clear();
+        }
         for(int col = 0; col < view.getGameBoard().length; col++){
             for(int row = 0; row < view.getGameBoard()[col].length; row++){
-                Entity entity = view.getEntity(col, row);
-                Shape shape = getRenderedEntityItem(entity.getEntityType());
-                gameBoardPane.add(shape, col, row);
+                try {
+                    Entity entity = view.getEntity(col, row);
+                    Shape shape = getRenderedEntityItem(entity.getEntityType());
+                    gameBoardPane.add(shape, col, row);
+                }catch (Exception ignored){}
             }
         }
         return gameBoardPane;
@@ -113,12 +125,10 @@ public class FxUI implements UI{
                 wall.setFill(Color.ORANGE);
                 return wall;
             }
-            default -> {
-            }
         }
         Rectangle empty = new Rectangle(10, 10, 10, 10);
-        empty.setStroke(Color.WHITE);
-        empty.setFill(Color.WHITE);
+        empty.setStroke(Color.BLUE);
+        empty.setFill(Color.BLUE);
         return empty;
     }
 
