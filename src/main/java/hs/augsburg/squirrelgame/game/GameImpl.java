@@ -60,11 +60,8 @@ public class GameImpl extends Game {
     public void setPause(boolean pause){
         if(!pause && PAUSE_MODE){
             PAUSE_MODE = false;
-            Launcher.setGameThread(new Thread(this::run));
-            Launcher.getGameThread().start();
         }else{
             PAUSE_MODE = pause;
-            Launcher.getGameThread().stop();
         }
     }
 

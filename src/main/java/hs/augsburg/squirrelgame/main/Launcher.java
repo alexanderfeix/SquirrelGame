@@ -26,7 +26,7 @@ public class Launcher extends Application {
         setupGame(state, args);
     }
 
-    private static void setupGame(State state, String args[]){
+    private static void setupGame(State state, String[] args){
         if(args.length > 0){
             if (args[0].equalsIgnoreCase(GameMode.SINGLEPLAYER_GUI.toString())) {
                 setupGUI(state, args);
@@ -93,10 +93,6 @@ public class Launcher extends Application {
 
     public static BorderPane getRootPane() {
         return rootPane;
-    }
-
-    public static GameImpl getController() {
-        return controller;
     }
 
     public static Thread getGameThread() {

@@ -3,11 +3,9 @@ package hs.augsburg.squirrelgame.ui;
 import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
-import hs.augsburg.squirrelgame.game.Game;
 import hs.augsburg.squirrelgame.game.GameImpl;
 import hs.augsburg.squirrelgame.util.Direction;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -322,8 +320,6 @@ public class FxUI implements UI{
         return squirrelInfoBar;
     }
 
-
-    //TODO: Rewrite this method with using an ArrayList to get all entities (performance is n^2)
     private void refreshSquirrelInfoBar(BoardView view){
         if(getSquirrelInfoBar() != null){
             getSquirrelInfoBar().getChildren().clear();

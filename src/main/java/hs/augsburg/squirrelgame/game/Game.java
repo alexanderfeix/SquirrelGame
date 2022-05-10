@@ -28,6 +28,8 @@ public abstract class Game {
                 sleep();
                 processInput();
                 update();
+            }else{
+                processInput();
             }
         }
     }

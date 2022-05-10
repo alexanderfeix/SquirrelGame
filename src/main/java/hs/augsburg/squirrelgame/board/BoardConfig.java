@@ -8,7 +8,6 @@ public class BoardConfig {
 
     public static int COLUMNS = 60;
     public static int ROWS = 60;
-    public static int GAME_SIZE = COLUMNS * ROWS;
     public static HashMap<EntityType, Integer> SPAWN_RATES = new HashMap<>() {{
         put(EntityType.GOOD_BEAST, 16);
         put(EntityType.BAD_BEAST, 6);
