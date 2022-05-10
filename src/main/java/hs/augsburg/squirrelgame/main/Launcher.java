@@ -3,7 +3,9 @@ package hs.augsburg.squirrelgame.main;
 import hs.augsburg.squirrelgame.board.Board;
 import hs.augsburg.squirrelgame.game.Game;
 import hs.augsburg.squirrelgame.game.GameImpl;
+import hs.augsburg.squirrelgame.game.GameMode;
 import hs.augsburg.squirrelgame.game.State;
+import hs.augsburg.squirrelgame.ui.ConsoleUI;
 import hs.augsburg.squirrelgame.ui.FxUI;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -14,21 +16,44 @@ import javafx.stage.Stage;
 public class Launcher extends Application {
 
     private static FxUI fxUI;
+    private static ConsoleUI consoleUI;
     private static BorderPane rootPane;
     private static GameImpl controller;
     private static Thread gameThread;
 
     public static void main(String[] args) {
         State state = new State(new Board());
-        setupGUI(state, args);
+        setupGame(state, args);
+    }
+
+    private static void setupGame(State state, String args[]){
+        if(args.length > 0){
+            if (args[0].equalsIgnoreCase(GameMode.SINGLEPLAYER_GUI.toString())) {
+                setupGUI(state, args);
+            }else if(args[0].equalsIgnoreCase(GameMode.SINGLEPLAYER_CONSOLE.toString())){
+                setupConsole(state);
+            }else{
+                throw new RuntimeException("Can not interpret gameMode. Please correct your arguments!");
+            }
+        }else{
+            throw new RuntimeException("Please correct your arguments in the run configuration to select a gamemode.");
+        }
     }
 
     private static void setupGUI(State state, String[] args){
         fxUI = new FxUI();
         controller = new GameImpl(state, fxUI);
         fxUI.setController(controller);
+        Game.setGameMode(GameMode.SINGLEPLAYER_GUI);
         startGame(controller);
         launch(args);
+    }
+
+    private static void setupConsole(State state){
+        consoleUI = new ConsoleUI();
+        controller = new GameImpl(state, consoleUI);
+        Game.setGameMode(GameMode.SINGLEPLAYER_CONSOLE);
+        startGame(controller);
     }
 
     private static void startGame(Game game){
