@@ -56,7 +56,7 @@ public class Launcher extends Application {
         getRootPane().setCenter(gameBoard);
         getRootPane().setBottom(statusBar);
 
-        Scene scene = new Scene(getRootPane(), 800, 700);
+        Scene scene = new Scene(getRootPane(), 1000, 900);
         stage.setTitle("Squirrel Game");
         stage.setScene(scene);
         stage.show();
