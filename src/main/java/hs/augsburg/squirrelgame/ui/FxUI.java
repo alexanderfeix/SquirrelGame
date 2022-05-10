@@ -77,6 +77,7 @@ public class FxUI implements UI{
         return gameBoardPane;
     }
 
+    //TODO: Rewrite this method using reflection and generics
     private Shape getRenderedEntityItem(EntityType entityType){
         switch (entityType) {
             case MASTER_SQUIRREL -> {
@@ -131,9 +132,13 @@ public class FxUI implements UI{
     public GridPane getGameBoardPane() {
         if(gameBoardPane == null){
             gameBoardPane = new GridPane();
-            gameBoardPane.setAlignment(Pos.CENTER);
+            styleGameBoardPane();
         }
         return gameBoardPane;
+    }
+
+    private void styleGameBoardPane(){
+        gameBoardPane.setAlignment(Pos.CENTER);
     }
 
     public VBox createLegendBar() {
@@ -143,7 +148,7 @@ public class FxUI implements UI{
         Button resumeButton = new Button("Resume");
             resumeButton.setDisable(true);
         Button pauseButton = new Button("Pause");
-            pauseButton.setOnAction((ActionEvent event) ->{
+            pauseButton.setOnAction(e -> {
                 getController().setPause(true);
                 pauseButton.setDisable(true);
                 resumeButton.setDisable(false);
@@ -151,7 +156,7 @@ public class FxUI implements UI{
                 statusLabel.setText(statusText);
 
             });
-            resumeButton.setOnAction((ActionEvent event) ->{
+            resumeButton.setOnAction(e -> {
                 getController().setPause(false);
                 resumeButton.setDisable(true);
                 pauseButton.setDisable(false);
@@ -270,8 +275,9 @@ public class FxUI implements UI{
         MenuItem pauseMenu = new MenuItem("Pause");
         pauseMenu.setAccelerator(KeyCombination.keyCombination("Ctrl+P"));
         MenuItem continueMenu = new MenuItem("Continue");
+        continueMenu.setAccelerator(KeyCombination.keyCombination("Ctrl+R"));
         continueMenu.setDisable(true);
-            pauseMenu.setOnAction((ActionEvent event) ->{
+            pauseMenu.setOnAction(e -> {
                 getController().setPause(true);
                 pauseMenu.setDisable(true);
                 continueMenu.setDisable(false);
@@ -279,7 +285,7 @@ public class FxUI implements UI{
                 statusLabel.setText(statusText);
 
             });
-            continueMenu.setOnAction((ActionEvent event) ->{
+            continueMenu.setOnAction(e -> {
                 getController().setPause(false);
                 continueMenu.setDisable(true);
                 pauseMenu.setDisable(false);
@@ -289,7 +295,7 @@ public class FxUI implements UI{
 
         MenuItem quitMenu = new MenuItem("Quit");
         quitMenu.setAccelerator(KeyCombination.keyCombination("Alt+F4"));
-            quitMenu.setOnAction((ActionEvent event) ->{
+            quitMenu.setOnAction(e-> {
                 System.exit(0);
             });
 
@@ -316,6 +322,8 @@ public class FxUI implements UI{
         return squirrelInfoBar;
     }
 
+
+    //TODO: Rewrite this method with using an ArrayList to get all entities (performance is n^2)
     private void refreshSquirrelInfoBar(BoardView view){
         if(getSquirrelInfoBar() != null){
             getSquirrelInfoBar().getChildren().clear();

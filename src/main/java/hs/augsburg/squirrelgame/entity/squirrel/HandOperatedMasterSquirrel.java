@@ -22,7 +22,7 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel implements Entity
         }
         if (getMoveCounter() != 0) {
             setMoveCounter(getMoveCounter() - 1);
-            System.out.println("Current MoveCounter: " + getMoveCounter());
+            System.out.println("Current MoveCounter HandOperatedMasterSquirrel: " + getMoveCounter());
             return;
         }
         ConsoleUI consoleUI = new ConsoleUI();

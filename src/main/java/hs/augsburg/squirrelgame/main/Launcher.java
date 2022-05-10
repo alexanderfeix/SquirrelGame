@@ -4,23 +4,11 @@ import hs.augsburg.squirrelgame.board.Board;
 import hs.augsburg.squirrelgame.game.Game;
 import hs.augsburg.squirrelgame.game.GameImpl;
 import hs.augsburg.squirrelgame.game.State;
-import hs.augsburg.squirrelgame.ui.ConsoleUI;
 import hs.augsburg.squirrelgame.ui.FxUI;
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Launcher extends Application {
@@ -32,6 +20,10 @@ public class Launcher extends Application {
 
     public static void main(String[] args) {
         State state = new State(new Board());
+        setupGUI(state, args);
+    }
+
+    private static void setupGUI(State state, String[] args){
         fxUI = new FxUI();
         controller = new GameImpl(state, fxUI);
         fxUI.setController(controller);
@@ -57,11 +49,13 @@ public class Launcher extends Application {
         HBox statusBar = getFxUI().createStatusBar();
         MenuBar menuBar = getFxUI().createMenuBar();
         GridPane gameBoard = getFxUI().getGameBoardPane();
+
         getRootPane().setTop(menuBar);
         getRootPane().setLeft(legendBar);
         getRootPane().setRight(squirrelInfoBar);
         getRootPane().setCenter(gameBoard);
         getRootPane().setBottom(statusBar);
+
         Scene scene = new Scene(getRootPane(), 800, 700);
         stage.setTitle("Squirrel Game");
         stage.setScene(scene);

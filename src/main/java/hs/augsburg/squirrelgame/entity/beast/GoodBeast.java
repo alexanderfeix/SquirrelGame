@@ -17,7 +17,7 @@ public class GoodBeast extends MovableEntity {
     public void nextStep(EntityContext entityContext) {
         if (getMoveCounter() != 0) {
             setMoveCounter(getMoveCounter() - 1);
-            System.out.println("Current MoveCounter Good Beast: " + getMoveCounter());
+            //System.out.println("Current MoveCounter Good Beast: " + getMoveCounter());
             return;
         }
         entityContext.move(getEntity(), checkNearbyRadius(entityContext, getEntity()));
