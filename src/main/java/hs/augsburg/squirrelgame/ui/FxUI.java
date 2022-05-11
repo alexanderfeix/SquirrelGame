@@ -28,6 +28,8 @@ public class FxUI implements UI{
     Label statusLabel = new Label("Game is running!");
     private String statusText;
     private static Direction nextDirection;
+    MenuItem resumeMenu = new MenuItem("Resume");
+    MenuItem pauseMenu = new MenuItem("Pause");
 
 
     public void setController(GameImpl game){
@@ -153,7 +155,9 @@ public class FxUI implements UI{
             pauseButton.setOnAction(e -> {
                 getController().setPause(true);
                 pauseButton.setDisable(true);
+                pauseMenu.setDisable(true);
                 resumeButton.setDisable(false);
+                resumeMenu.setDisable(false);
                 statusText = "Game paused!";
                 statusLabel.setText(statusText);
 
@@ -161,7 +165,9 @@ public class FxUI implements UI{
             resumeButton.setOnAction(e -> {
                 getController().setPause(false);
                 resumeButton.setDisable(true);
+                resumeMenu.setDisable(true);
                 pauseButton.setDisable(false);
+                pauseMenu.setDisable(false);
                 statusText = "Game resumed!";
                 statusLabel.setText(statusText);
             });
@@ -274,22 +280,22 @@ public class FxUI implements UI{
     }
 
     public MenuBar createMenuBar() {
-        MenuItem pauseMenu = new MenuItem("Pause");
+        //MenuItem pauseMenu = new MenuItem("Pause");
         pauseMenu.setAccelerator(KeyCombination.keyCombination("Ctrl+P"));
-        MenuItem continueMenu = new MenuItem("Continue");
-        continueMenu.setAccelerator(KeyCombination.keyCombination("Ctrl+R"));
-        continueMenu.setDisable(true);
+        //MenuItem continueMenu = new MenuItem("Continue");
+        resumeMenu.setAccelerator(KeyCombination.keyCombination("Ctrl+R"));
+        resumeMenu.setDisable(true);
             pauseMenu.setOnAction(e -> {
                 getController().setPause(true);
                 pauseMenu.setDisable(true);
-                continueMenu.setDisable(false);
+                resumeMenu.setDisable(false);
                 statusText = "Game paused!";
                 statusLabel.setText(statusText);
 
             });
-            continueMenu.setOnAction(e -> {
+            resumeMenu.setOnAction(e -> {
                 getController().setPause(false);
-                continueMenu.setDisable(true);
+                resumeMenu.setDisable(true);
                 pauseMenu.setDisable(false);
                 statusText = "Game resumed!";
                 statusLabel.setText(statusText);
@@ -303,7 +309,7 @@ public class FxUI implements UI{
 
 
         Menu fileMenu = new Menu("File");
-        fileMenu.getItems().addAll(pauseMenu, continueMenu, new SeparatorMenuItem(), quitMenu);
+        fileMenu.getItems().addAll(pauseMenu, resumeMenu, new SeparatorMenuItem(), quitMenu);
 
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(fileMenu);
