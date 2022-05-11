@@ -1,7 +1,6 @@
 package hs.augsburg.squirrelgame.ui;
 
 import hs.augsburg.squirrelgame.command.Command;
-import hs.augsburg.squirrelgame.game.Game;
 import hs.augsburg.squirrelgame.util.Direction;
 
 public interface UI {

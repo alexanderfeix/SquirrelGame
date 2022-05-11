@@ -4,6 +4,7 @@ import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.game.GameImpl;
+import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.util.Direction;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -26,6 +27,7 @@ public class FxUI implements UI{
     private GameImpl controller;
     Label statusLabel = new Label("Game is running!");
     private String statusText;
+    private static Direction nextDirection;
 
 
     public void setController(GameImpl game){
@@ -37,17 +39,18 @@ public class FxUI implements UI{
         Platform.runLater(() -> {
             refreshGameBoard(view);
             refreshSquirrelInfoBar(view);
+            setNextDirection(null);
         });
     }
 
     @Override
     public Direction getNextDirection() {
-        return null;
+        return nextDirection;
     }
 
     @Override
     public void setNextDirection(Direction direction) {
-
+        nextDirection = direction;
     }
 
     @Override
@@ -130,6 +133,7 @@ public class FxUI implements UI{
     public GridPane getGameBoardPane() {
         if(gameBoardPane == null){
             gameBoardPane = new GridPane();
+            Launcher.getRootPane().setOnKeyTyped(new GUIKeyListener());
             styleGameBoardPane();
         }
         return gameBoardPane;

@@ -4,7 +4,6 @@ import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.command.CommandTypeInfo;
 import hs.augsburg.squirrelgame.command.GameCommandType;
 import hs.augsburg.squirrelgame.entity.squirrel.HandOperatedMasterSquirrel;
-import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.ui.UI;
 import hs.augsburg.squirrelgame.util.XY;
 
