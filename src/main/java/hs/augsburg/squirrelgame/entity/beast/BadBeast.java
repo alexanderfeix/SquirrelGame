@@ -85,4 +85,12 @@ public class BadBeast extends MovableEntity {
     public hs.augsburg.squirrelgame.util.XY getNearbySquirrelPosition(Entity entity) {
         return null;
     }
+
+    public int getBites() {
+        return bites;
+    }
+
+    public void setBites(int bites) {
+        this.bites = bites;
+    }
 }

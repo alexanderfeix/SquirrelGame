@@ -6,7 +6,7 @@ public abstract class Game {
 
     private final State state;
     private final UI ui;
-    public static final int FPS = 300;
+    public static final int FPS = 10;
     public static final int DELAY_MULTIPLY_FACTOR_CONSOLE = 5;
     public static boolean FPS_MODE = true;
     public static boolean PAUSE_MODE;
@@ -71,9 +71,9 @@ public abstract class Game {
         if(FPS_MODE){
             try {
                 if(getGameMode().equals(GameMode.SINGLEPLAYER_GUI)){
-                    Thread.sleep(FPS);
+                    Thread.sleep(1000/FPS);
                 }else{
-                    Thread.sleep(FPS * DELAY_MULTIPLY_FACTOR_CONSOLE);
+                    Thread.sleep(1000/FPS * DELAY_MULTIPLY_FACTOR_CONSOLE);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
