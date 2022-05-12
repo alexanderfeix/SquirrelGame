@@ -26,10 +26,13 @@ public class FxUI implements UI{
     private VBox squirrelInfoBar;
     private GameImpl controller;
     Label statusLabel = new Label("Game is running!");
-    private String statusText;
     private static Direction nextDirection;
+
+
     MenuItem resumeMenu = new MenuItem("Resume");
     MenuItem pauseMenu = new MenuItem("Pause");
+    Button pauseButton = new Button("Pause");
+    Button resumeButton = new Button("Resume");
 
 
     public void setController(GameImpl game){
@@ -80,62 +83,38 @@ public class FxUI implements UI{
         return gameBoardPane;
     }
 
-    //TODO: Rewrite this method using reflection and generics
     private Shape getRenderedEntityItem(EntityType entityType){
         switch (entityType) {
             case MASTER_SQUIRREL -> {
-                Rectangle masterSquirrel = new Rectangle(10, 10, 10, 10);
-                masterSquirrel.setStroke(Color.BLACK);
-                masterSquirrel.setFill(Color.BLACK);
-                return masterSquirrel;
+                return createRectangle(Color.BLACK);
             }
             case MINI_SQUIRREL -> {
-                Rectangle miniSquirrel = new Rectangle(10, 10, 10, 10);
-                miniSquirrel.setStroke(Color.AQUA);
-                miniSquirrel.setFill(Color.AQUA);
-                return miniSquirrel;
+                return createRectangle(Color.AQUA);
             }
             case BAD_BEAST -> {
-                Rectangle badBeast = new Rectangle(10, 10, 10, 10);
-                badBeast.setStroke(Color.RED);
-                badBeast.setFill(Color.RED);
-                return badBeast;
+                return createRectangle(Color.RED);
             }
             case GOOD_BEAST -> {
-                Rectangle goodBeast = new Rectangle(10, 10, 10, 10);
-                goodBeast.setStroke(Color.GREEN);
-                goodBeast.setFill(Color.GREEN);
-                return goodBeast;
+                return createRectangle(Color.GREEN);
             }
             case GOOD_PLANT -> {
-                Circle goodPlant = new Circle(10, 10, 5);
-                goodPlant.setStroke(Color.GREEN);
-                goodPlant.setFill(Color.GREEN);
-                return goodPlant;
+                return createCircle(Color.GREEN);
             }
             case BAD_PLANT -> {
-                Circle badPlant = new Circle(10, 10, 5);
-                badPlant.setStroke(Color.RED);
-                badPlant.setFill(Color.RED);
-                return badPlant;
+                return createCircle(Color.RED);
             }
             case WALL -> {
-                Rectangle wall = new Rectangle(10, 10, 10, 10);
-                wall.setStroke(Color.ORANGE);
-                wall.setFill(Color.ORANGE);
-                return wall;
+                return createRectangle(Color.ORANGE);
             }
         }
-        Rectangle empty = new Rectangle(10, 10, 10, 10);
-        empty.setStroke(Color.BLUE);
-        empty.setFill(Color.BLUE);
-        return empty;
+        return null;
     }
+
 
     public GridPane getGameBoardPane() {
         if(gameBoardPane == null){
             gameBoardPane = new GridPane();
-            Launcher.getRootPane().setOnKeyTyped(new GUIKeyListener());
+            Launcher.getRootPane().setOnKeyPressed(new GUIKeyListener());
             styleGameBoardPane();
         }
         return gameBoardPane;
@@ -149,27 +128,14 @@ public class FxUI implements UI{
         VBox legendBar = new VBox();
         GridPane gridPane = new GridPane();
         //Buttons
-        Button resumeButton = new Button("Resume");
-            resumeButton.setDisable(true);
-        Button pauseButton = new Button("Pause");
+        resumeButton.setDisable(true);
             pauseButton.setOnAction(e -> {
+                switchPauseItems();
                 getController().setPause(true);
-                pauseButton.setDisable(true);
-                pauseMenu.setDisable(true);
-                resumeButton.setDisable(false);
-                resumeMenu.setDisable(false);
-                statusText = "Game paused!";
-                statusLabel.setText(statusText);
-
             });
             resumeButton.setOnAction(e -> {
+                switchPauseItems();
                 getController().setPause(false);
-                resumeButton.setDisable(true);
-                resumeMenu.setDisable(true);
-                pauseButton.setDisable(false);
-                pauseMenu.setDisable(false);
-                statusText = "Game resumed!";
-                statusLabel.setText(statusText);
             });
         //Titles
         Text controlTitle = new Text("Controls");
@@ -179,47 +145,31 @@ public class FxUI implements UI{
 
         //Forms/Plants
         Text badPlantText = new Text("BadPlant");
-        Circle c1BadPlant = new Circle(10,10,5);
-        c1BadPlant.setStroke(Color.RED);
-        c1BadPlant.setFill(Color.RED);
+        Circle badPlantCircle = createCircle(Color.RED);
 
         Text goodPlantText = new Text("GoodPlant");
-        Circle c2GoodPlant = new Circle(10,10,5);
-        c2GoodPlant.setStroke(Color.GREEN);
-        c2GoodPlant.setFill(Color.GREEN);
+        Circle goodPlantCircle = createCircle(Color.GREEN);
 
         //Forms/Beasts
         Text badBeastText = new Text("BadBeast");
-        Rectangle r1BadBeast = new Rectangle(10,10,10,10);
-        r1BadBeast.setStroke(Color.RED);
-        r1BadBeast.setFill(Color.RED);
+        Rectangle badBeastRectangle = createRectangle(Color.RED);
 
         Text goodBeastText = new Text("GoodBeast");
-        Rectangle r2GoodBeast = new Rectangle(10,10,10,10);
-        r2GoodBeast.setStroke(Color.GREEN);
-        r2GoodBeast.setFill(Color.GREEN);
+        Rectangle goodBeastRectangle = createRectangle(Color.GREEN);
 
         //Forms/Squirrels
         Text masterSquirrelText = new Text("MasterSquirrel");
-        Rectangle masterSquirrel = new Rectangle(10,10,10,10);
-        masterSquirrel.setStroke(Color.BLACK);
-        masterSquirrel.setFill(Color.BLACK);
+        Rectangle masterSquirrelRectangle = createRectangle(Color.BLACK);
 
         Text miniSquirrelText = new Text("MiniSquirrel");
-        Rectangle miniSquirrel = new Rectangle(10,10,10,10);
-        miniSquirrel.setStroke(Color.LIGHTSKYBLUE);
-        miniSquirrel.setFill(Color.LIGHTSKYBLUE);
+        Rectangle miniSquirrelRectangle = createRectangle(Color.LIGHTBLUE);
 
         Text handOperatedSquirrelText = new Text("HandOperatedSquirrel");
-        Rectangle handOperatedSquirrel = new Rectangle(10,10,10,10);
-        handOperatedSquirrel.setStroke(Color.BLUE);
-        handOperatedSquirrel.setFill(Color.BLUE);
+        Rectangle handOperatedMasterSquirrelRectangle = createRectangle(Color.BLUE);
 
         //Forms/Structure
         Text wallText = new Text("Wall");
-        Rectangle wall = new Rectangle(10,10,10,10);
-        wall.setStroke(Color.ORANGE);
-        wall.setFill(Color.ORANGE);
+        Rectangle wallRectangle = createRectangle(Color.ORANGE);
 
         //alignments
         legendBar.setAlignment(Pos.TOP_LEFT);
@@ -229,50 +179,17 @@ public class FxUI implements UI{
         gridPane.setHgap(5);
         gridPane.setVgap(3);
 
-        GridPane.setRowIndex(c1BadPlant, 0);
-        GridPane.setColumnIndex(c1BadPlant,0);
-        GridPane.setRowIndex(badPlantText,0);
-        GridPane.setColumnIndex(badPlantText, 1);
+        setIndices(badPlantCircle, badPlantText, 0, 0);
+        setIndices(badBeastRectangle, badBeastText, 0, 1);
+        setIndices(goodPlantCircle, goodPlantText, 0, 2);
+        setIndices(goodBeastRectangle, goodBeastText, 0, 3);
+        setIndices(masterSquirrelRectangle, masterSquirrelText, 0, 4);
+        setIndices(miniSquirrelRectangle, miniSquirrelText, 0, 5);
+        setIndices(wallRectangle, wallText, 0, 6);
+        setIndices(handOperatedMasterSquirrelRectangle, handOperatedSquirrelText, 0, 7);
 
-        GridPane.setRowIndex(r1BadBeast, 1);
-        GridPane.setColumnIndex(r1BadBeast,0);
-        GridPane.setRowIndex(badBeastText, 1);
-        GridPane.setColumnIndex(badBeastText,1);
-
-        GridPane.setRowIndex(c2GoodPlant, 2);
-        GridPane.setColumnIndex(c2GoodPlant,0);
-        GridPane.setRowIndex(goodPlantText, 2);
-        GridPane.setColumnIndex(goodPlantText,1);
-
-        GridPane.setRowIndex(r2GoodBeast, 3);
-        GridPane.setColumnIndex(r2GoodBeast,0);
-        GridPane.setRowIndex(goodBeastText, 3);
-        GridPane.setColumnIndex(goodBeastText,1);
-
-        GridPane.setRowIndex(masterSquirrel, 4);
-        GridPane.setColumnIndex(masterSquirrel,0);
-        GridPane.setRowIndex(masterSquirrelText, 4);
-        GridPane.setColumnIndex(masterSquirrelText,1);
-
-        GridPane.setRowIndex(miniSquirrel, 5);
-        GridPane.setColumnIndex(miniSquirrel,0);
-        GridPane.setRowIndex(miniSquirrelText,5);
-        GridPane.setColumnIndex(miniSquirrelText, 1);
-
-        GridPane.setRowIndex(wall, 6);
-        GridPane.setColumnIndex(wall,0);
-        GridPane.setRowIndex(wallText, 6);
-        GridPane.setColumnIndex(wallText,1);
-
-        GridPane.setRowIndex(handOperatedSquirrel, 7);
-        GridPane.setColumnIndex(handOperatedSquirrel,0);
-        GridPane.setRowIndex(handOperatedSquirrelText,7);
-        GridPane.setColumnIndex(handOperatedSquirrelText, 1);
-
-
-
-        gridPane.getChildren().addAll(c1BadPlant, badPlantText, r1BadBeast, badBeastText, c2GoodPlant, goodPlantText, r2GoodBeast, goodBeastText,
-                masterSquirrel, masterSquirrelText, miniSquirrel, miniSquirrelText,wall, wallText, handOperatedSquirrel, handOperatedSquirrelText);
+        gridPane.getChildren().addAll(badPlantText, badBeastText, goodPlantText, goodBeastText, masterSquirrelText, miniSquirrelText, wallText, handOperatedSquirrelText);
+        gridPane.getChildren().addAll(badPlantCircle, badBeastRectangle, goodPlantCircle, goodBeastRectangle, masterSquirrelRectangle, miniSquirrelRectangle, wallRectangle, handOperatedMasterSquirrelRectangle);
 
         legendBar.getChildren().addAll(controlTitle, pauseButton, resumeButton, legendTitle, gridPane);
 
@@ -280,25 +197,16 @@ public class FxUI implements UI{
     }
 
     public MenuBar createMenuBar() {
-        //MenuItem pauseMenu = new MenuItem("Pause");
         pauseMenu.setAccelerator(KeyCombination.keyCombination("Ctrl+P"));
-        //MenuItem continueMenu = new MenuItem("Continue");
         resumeMenu.setAccelerator(KeyCombination.keyCombination("Ctrl+R"));
         resumeMenu.setDisable(true);
             pauseMenu.setOnAction(e -> {
+                switchPauseItems();
                 getController().setPause(true);
-                pauseMenu.setDisable(true);
-                resumeMenu.setDisable(false);
-                statusText = "Game paused!";
-                statusLabel.setText(statusText);
-
             });
             resumeMenu.setOnAction(e -> {
+                switchPauseItems();
                 getController().setPause(false);
-                resumeMenu.setDisable(true);
-                pauseMenu.setDisable(false);
-                statusText = "Game resumed!";
-                statusLabel.setText(statusText);
             });
 
         MenuItem quitMenu = new MenuItem("Quit");
@@ -306,7 +214,6 @@ public class FxUI implements UI{
             quitMenu.setOnAction(e-> {
                 System.exit(0);
             });
-
 
         Menu fileMenu = new Menu("File");
         fileMenu.getItems().addAll(pauseMenu, resumeMenu, new SeparatorMenuItem(), quitMenu);
@@ -346,6 +253,47 @@ public class FxUI implements UI{
                 }
             }
         }
+    }
+
+    //Helper methods
+
+    private void setIndices(Shape shape, Text text, int colIndex, int rowIndex){
+        GridPane.setRowIndex(shape, rowIndex);
+        GridPane.setColumnIndex(shape, colIndex);
+        GridPane.setRowIndex(text, rowIndex);
+        GridPane.setColumnIndex(text, colIndex + 1);
+    }
+
+    private Rectangle createRectangle(Color color){
+        Rectangle rectangle = new Rectangle(10, 10, 10, 10);
+        rectangle.setStroke(color);
+        rectangle.setFill(color);
+        return rectangle;
+    }
+
+    private Circle createCircle(Color color){
+        Circle circle = new Circle(10, 10, 5);
+        circle.setStroke(color);
+        circle.setFill(color);
+        return circle;
+    }
+
+    private void switchPauseItems(){
+        String statusText;
+        if(getController().isPause()){
+            pauseButton.setDisable(false);
+            pauseMenu.setDisable(false);
+            resumeButton.setDisable(true);
+            resumeMenu.setDisable(true);
+            statusText = "Game resumed!";
+        }else{
+            pauseButton.setDisable(true);
+            pauseMenu.setDisable(true);
+            resumeButton.setDisable(false);
+            resumeMenu.setDisable(false);
+            statusText = "Game paused!";
+        }
+        statusLabel.setText(statusText);
     }
 
     public GameImpl getController() {

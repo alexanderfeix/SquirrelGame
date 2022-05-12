@@ -7,15 +7,14 @@ import javafx.scene.input.KeyEvent;
 public class GUIKeyListener extends FxUI implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent keyEvent) {
-        if(keyEvent.getEventType() == KeyEvent.KEY_TYPED){
-            String keyTyped = keyEvent.getCharacter().toUpperCase();
-            System.out.println(keyTyped);
-            switch (keyTyped) {
-                case "W", "UP" -> setNextDirection(Direction.UP);
-                case "A", "LEFT" -> setNextDirection(Direction.LEFT);
-                case "S", "DOWN" -> setNextDirection(Direction.DOWN);
-                case "D", "RIGHT" -> setNextDirection(Direction.RIGHT);
-            }
+        String keyTyped = keyEvent.getText().toUpperCase();
+        System.out.println(keyTyped);
+        switch (keyTyped) {
+            case "UP", "W" -> setNextDirection(Direction.UP);
+            case "LEFT", "A" -> setNextDirection(Direction.LEFT);
+            case "DOWN", "S" -> setNextDirection(Direction.DOWN);
+            case "RIGHT", "D" -> setNextDirection(Direction.RIGHT);
         }
+
     }
 }
