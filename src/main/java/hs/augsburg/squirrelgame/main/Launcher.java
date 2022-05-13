@@ -8,10 +8,12 @@ import hs.augsburg.squirrelgame.game.State;
 import hs.augsburg.squirrelgame.ui.ConsoleUI;
 import hs.augsburg.squirrelgame.ui.FxUI;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Launcher extends Application {
 
@@ -81,10 +83,12 @@ public class Launcher extends Application {
         getRootPane().setCenter(gameBoard);
         getRootPane().setBottom(statusBar);
 
-        Scene scene = new Scene(getRootPane(), 1000, 900);
+        Scene scene = new Scene(getRootPane(), 1000, 800);
         stage.setTitle("Squirrel Game");
         stage.setScene(scene);
         stage.show();
+        stage.setOnCloseRequest(we -> System.exit(0));
+
     }
 
     public FxUI getFxUI() {
