@@ -34,6 +34,8 @@ public class FxUI implements UI{
     Button pauseButton = new Button("Pause");
     Button resumeButton = new Button("Resume");
 
+    private boolean checkedHandOperatedSquirrelDeath = false;
+
 
     public void setController(GameImpl game){
         this.controller = game;
@@ -42,6 +44,7 @@ public class FxUI implements UI{
     @Override
     public void render(BoardView view) {
         Platform.runLater(() -> {
+            handleSquirrelDead();
             refreshGameBoard(view);
             refreshSquirrelInfoBar(view);
             setNextDirection(null);
@@ -62,6 +65,19 @@ public class FxUI implements UI{
     public Command getCommand() {
         return null;
     }
+
+    @Override
+    public void handleSquirrelDead() {
+        if(!checkedHandOperatedSquirrelDeath){
+            if(!getController().getHandOperatedMasterSquirrel().isAlive()){
+                switchPauseItems();
+                getController().setPause(true);
+                setAllDisabledOnSquirrelDeath();
+                checkedHandOperatedSquirrelDeath = true;
+            }
+        }
+    }
+
 
     public void refreshGameBoard(BoardView view){
         gameBoardPane = getGridPane(view);
@@ -294,6 +310,14 @@ public class FxUI implements UI{
             statusText = "Game paused!";
         }
         statusLabel.setText(statusText);
+    }
+
+    private void setAllDisabledOnSquirrelDeath(){
+        pauseMenu.setDisable(true);
+        pauseButton.setDisable(true);
+        resumeMenu.setDisable(true);
+        resumeButton.setDisable(true);
+        statusLabel.setText("Oh no, your squirrel has died. Game Over!");
     }
 
     public GameImpl getController() {

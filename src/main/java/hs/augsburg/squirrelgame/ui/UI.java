@@ -13,4 +13,6 @@ public interface UI {
 
     Command getCommand();
 
+    void handleSquirrelDead();
+
 }

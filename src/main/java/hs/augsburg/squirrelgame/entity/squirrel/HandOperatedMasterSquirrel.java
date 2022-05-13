@@ -3,8 +3,10 @@ package hs.augsburg.squirrelgame.entity.squirrel;
 
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
+import hs.augsburg.squirrelgame.game.Game;
 import hs.augsburg.squirrelgame.game.GameImpl;
 import hs.augsburg.squirrelgame.game.GameMode;
+import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.ui.ConsoleUI;
 import hs.augsburg.squirrelgame.ui.FxUI;
 import hs.augsburg.squirrelgame.ui.UI;
