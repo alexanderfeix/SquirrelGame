@@ -51,6 +51,11 @@ public class ConsoleUI implements UI {
         }
     }
 
+    @Override
+    public void handleSquirrelDead() {
+
+    }
+
     /**
      * Prints the gameBoard to the console.
      * This method should get deleted once the gui works fine.

@@ -18,7 +18,7 @@ public class BadBeast extends MovableEntity {
     public void nextStep(EntityContext entityContext) {
         if (getMoveCounter() != 0) {
             setMoveCounter(getMoveCounter() - 1);
-            System.out.println("Current MoveCounter Bad Beast: " + getMoveCounter());
+            //System.out.println("Current MoveCounter Bad Beast: " + getMoveCounter());
             return;
         }
         entityContext.move(getEntity(), checkNearbyRadius(entityContext, getEntity()));
@@ -84,5 +84,13 @@ public class BadBeast extends MovableEntity {
     @Override
     public hs.augsburg.squirrelgame.util.XY getNearbySquirrelPosition(Entity entity) {
         return null;
+    }
+
+    public int getBites() {
+        return bites;
+    }
+
+    public void setBites(int bites) {
+        this.bites = bites;
     }
 }

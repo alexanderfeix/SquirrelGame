@@ -9,7 +9,9 @@ public enum GameCommandType implements CommandTypeInfo{
     DIRECTION_UP("w", " * moves the squirrel up", "hs.augsburg.squirrelgame.command.command.direction.DirectionUpCommand"),
     DIRECTION_DOWN("s", " * moves the squirrel down", "hs.augsburg.squirrelgame.command.command.direction.DirectionDownCommand"),
     DIRECTION_LEFT("a", " * moves the squirrel left", "hs.augsburg.squirrelgame.command.command.direction.DirectionLeftCommand"),
-    DIRECTION_RIGHT("d", " * moves the squirrel right", "hs.augsburg.squirrelgame.command.command.direction.DirectionRightCommand");
+    DIRECTION_RIGHT("d", " * moves the squirrel right", "hs.augsburg.squirrelgame.command.command.direction.DirectionRightCommand"),
+    PAUSE("pause", " * pauses the game", "hs.augsburg.squirrelgame.command.command.PauseCommand"),
+    RESUME("resume", " * resumes the game", "hs.augsburg.squirrelgame.command.command.ResumeCommand");
 
     private final String name;
     private final String helpText;

@@ -6,8 +6,12 @@ public abstract class Game {
 
     private final State state;
     private final UI ui;
-    public static final int FPS = 1000;
+    public static final int FPS = 10;
+    public static final int DELAY_MULTIPLY_FACTOR_CONSOLE = 10;
     public static boolean FPS_MODE = true;
+    public static boolean PAUSE_MODE;
+    private static GameMode gameMode;
+
 
     public Game(State state, UI ui) {
         this.state = state;
@@ -19,10 +23,14 @@ public abstract class Game {
      */
     public void run() {
         while (true) {
-            render();
-            sleep();
-            processInput();
-            update();
+            if(!PAUSE_MODE){
+                render();
+                sleep();
+                processInput();
+                update();
+            }else{
+                processInput();
+            }
         }
     }
 
@@ -51,10 +59,22 @@ public abstract class Game {
         return ui;
     }
 
+    public static GameMode getGameMode() {
+        return gameMode;
+    }
+
+    public static void setGameMode(GameMode gameMode) {
+        Game.gameMode = gameMode;
+    }
+
     private void sleep(){
         if(FPS_MODE){
             try {
-                Thread.sleep(Game.FPS);
+                if(getGameMode().equals(GameMode.SINGLEPLAYER_GUI)){
+                    Thread.sleep(1000/FPS);
+                }else{
+                    Thread.sleep(1000/FPS * DELAY_MULTIPLY_FACTOR_CONSOLE);
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
