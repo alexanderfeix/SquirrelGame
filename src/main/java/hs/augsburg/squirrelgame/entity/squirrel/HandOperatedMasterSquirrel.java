@@ -4,17 +4,9 @@ package hs.augsburg.squirrelgame.entity.squirrel;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.game.Game;
-import hs.augsburg.squirrelgame.game.GameImpl;
-import hs.augsburg.squirrelgame.game.GameMode;
-import hs.augsburg.squirrelgame.main.Launcher;
-import hs.augsburg.squirrelgame.ui.ConsoleUI;
-import hs.augsburg.squirrelgame.ui.FxUI;
-import hs.augsburg.squirrelgame.ui.UI;
 import hs.augsburg.squirrelgame.util.Direction;
 
 public class HandOperatedMasterSquirrel extends MasterSquirrel implements EntityContext {
-
-    private final int createNewMiniSquirrelEnergy = 0;
 
     public HandOperatedMasterSquirrel(hs.augsburg.squirrelgame.util.XY position) {
         super(position);
@@ -31,23 +23,16 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel implements Entity
             System.out.println("Current MoveCounter HandOperatedMasterSquirrel: " + getMoveCounter());
             return;
         }
-        UI ui = null;
-        if(GameImpl.getGameMode() == GameMode.SINGLEPLAYER_CONSOLE){
-            ui = new ConsoleUI();
-        }else if(GameImpl.getGameMode() == GameMode.SINGLEPLAYER_GUI){
-            ui = new FxUI();
-        }
-        assert(ui != null);
-        if (ui.getNextDirection() == Direction.UP) {
+        if (Game.getUi().getNextDirection() == Direction.UP) {
             System.out.println("UP");
             entityContext.move(getEntity(), getPosition().getRandomNearbyPosition(Direction.UP));
-        } else if (ui.getNextDirection() == Direction.RIGHT) {
+        } else if (Game.getUi().getNextDirection() == Direction.RIGHT) {
             System.out.println("RIGHT");
             entityContext.move(getEntity(), getPosition().getRandomNearbyPosition(Direction.RIGHT));
-        } else if (ui.getNextDirection() == Direction.DOWN) {
+        } else if (Game.getUi().getNextDirection() == Direction.DOWN) {
             System.out.println("DOWN");
             entityContext.move(getEntity(), getPosition().getRandomNearbyPosition(Direction.DOWN));
-        } else if (ui.getNextDirection() == Direction.LEFT) {
+        } else if (Game.getUi().getNextDirection() == Direction.LEFT) {
             System.out.println("LEFT");
             entityContext.move(getEntity(), getPosition().getRandomNearbyPosition(Direction.LEFT));
         }

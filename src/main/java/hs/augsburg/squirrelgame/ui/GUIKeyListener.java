@@ -8,7 +8,6 @@ public class GUIKeyListener extends FxUI implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent keyEvent) {
         String keyTyped = keyEvent.getText().toUpperCase();
-        System.out.println(keyTyped);
         switch (keyTyped) {
             case "UP", "W" -> setNextDirection(Direction.UP);
             case "LEFT", "A" -> setNextDirection(Direction.LEFT);

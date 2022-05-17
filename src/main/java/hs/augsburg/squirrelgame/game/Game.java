@@ -5,7 +5,7 @@ import hs.augsburg.squirrelgame.ui.UI;
 public abstract class Game {
 
     private final State state;
-    private final UI ui;
+    private static UI ui;
     public static final int FPS = 10;
     public static final int DELAY_MULTIPLY_FACTOR_CONSOLE = 10;
     public static boolean FPS_MODE = true;
@@ -15,7 +15,7 @@ public abstract class Game {
 
     public Game(State state, UI ui) {
         this.state = state;
-        this.ui = ui;
+        Game.ui = ui;
     }
 
     /**
@@ -55,7 +55,7 @@ public abstract class Game {
         return state;
     }
 
-    public UI getUi() {
+    public static UI getUi() {
         return ui;
     }
 
