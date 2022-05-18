@@ -10,6 +10,7 @@ public class EntitySet {
 
     private ListElement tail;
     private ListElement head;
+    private final ArrayList<Entity> entities = new ArrayList<>();
     /**
      * Counts the entities in the EntitySet. Do not confuse with the idCounter in Entity. The id in Entity-Class
      * is a real identifier for every entity created. The entityCounter in EntitySet identifies only counts the entities
@@ -37,6 +38,7 @@ public class EntitySet {
                 tail.setPrevItem(prevTail);
             }
             entityCounter++;
+            entities.add(entity);
         }
     }
 
@@ -75,6 +77,9 @@ public class EntitySet {
                 return;
             }
             tempTail = newTempTail;
+        }
+        if(entities.contains(entity)){
+            entities.remove(entity);
         }
 
     }
@@ -226,23 +231,7 @@ public class EntitySet {
         }
     }
 
-    /**
-     * @return ArrayList with all entities in the linked list
-     * commonly used to get all entities that are currently on the board
-     */
     public ArrayList<Entity> getEntities() {
-        ArrayList<Entity> entities = new ArrayList<>();
-        if (getTail() == null) {
-            return entities;
-        }
-        ListElement tempTail = getTail();
-        entities.add(tempTail.getEntity());
-        while (tempTail.hasPrev()) {
-            if(tempTail.getPrevItem().getEntity().isAlive()){
-                entities.add(tempTail.getPrevItem().getEntity());
-            }
-            tempTail = tempTail.getPrevItem();
-        }
         return entities;
     }
 

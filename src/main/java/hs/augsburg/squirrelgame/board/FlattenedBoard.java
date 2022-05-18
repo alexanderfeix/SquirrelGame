@@ -12,18 +12,25 @@ import hs.augsburg.squirrelgame.util.XY;
 import hs.augsburg.squirrelgame.util.exception.NotEnoughEnergyException;
 
 import java.util.Enumeration;
+import java.util.HashMap;
 
 public class FlattenedBoard implements BoardView, EntityContext {
 
     private final Entity[][] gameBoard;
     private EntitySet entitySet;
     private final Board board;
+    private boolean overlapping;
 
     public FlattenedBoard(Board board, EntitySet entitySet) {
         this.board = board;
         this.entitySet = entitySet;
         this.gameBoard = new Entity[BoardConfig.COLUMNS][BoardConfig.ROWS];
+        setOverlapping(false);
         fillGameBoard();
+        do{
+            checkEqualPositionOfEntities();
+        }while(isOverlapping());
+
     }
 
     public Entity[][] getGameBoard() {
@@ -52,20 +59,20 @@ public class FlattenedBoard implements BoardView, EntityContext {
 
     @Override
     public void createStandardMiniSquirrel(MasterSquirrel masterSquirrel, int energy) {
-            if(energy > masterSquirrel.getEnergy()){
-                throw new NotEnoughEnergyException();
+        if(energy > masterSquirrel.getEnergy()){
+            throw new NotEnoughEnergyException();
+        }
+        if (energy < 100) {
+            throw new RuntimeException("Energy to create a new mini squirrel must be over a hundred!");
+        } else {
+            MiniSquirrel miniSquirrel = new MiniSquirrel(masterSquirrel.getPosition().getRandomNearbyPosition(), energy);
+            miniSquirrel.setMasterSquirrelId(masterSquirrel.getId());
+            masterSquirrel.updateEnergy(-energy);
+            while(getEntity(miniSquirrel.getPosition().getX(), miniSquirrel.getPosition().getY()) != null){
+                miniSquirrel.updatePosition(masterSquirrel.getPosition().getRandomNearbyPosition());
             }
-            if (energy < 100) {
-                throw new RuntimeException("Energy to create a new mini squirrel must be over a hundred!");
-            } else {
-                MiniSquirrel miniSquirrel = new MiniSquirrel(masterSquirrel.getPosition().getRandomNearbyPosition(), energy);
-                miniSquirrel.setMasterSquirrelId(masterSquirrel.getId());
-                masterSquirrel.updateEnergy(-energy);
-                while(getEntity(miniSquirrel.getPosition().getX(), miniSquirrel.getPosition().getY()) != null){
-                    miniSquirrel.updatePosition(masterSquirrel.getPosition().getRandomNearbyPosition());
-                }
-                getBoard().getEntitySet().addEntity(miniSquirrel);
-            }
+            getBoard().getEntitySet().addEntity(miniSquirrel);
+        }
     }
 
 
@@ -118,11 +125,45 @@ public class FlattenedBoard implements BoardView, EntityContext {
         }
     }
 
+    /**
+     * This method checks if two or more entities lie on the same field. In this case the lying entity should get respawned!
+     * We need to check this after every render run, because when an entity gets a new random position on the board, for
+     * example when a squirrel eats a plant, the plant has no view on the board.
+     * So, in some cases, the respawn position of the plant could be a position that is already in use.
+     */
+    private void checkEqualPositionOfEntities(){
+        setOverlapping(false);
+        HashMap<String, Entity> hashedEntities = new HashMap<>();
+        for(Entity entity : getEntitySet().getEntities()) {
+            try {
+                if(hashedEntities.containsKey(entity.getPosition().toString())){
+                    if(entity.getEntityType() == EntityType.GOOD_PLANT || entity.getEntityType() != EntityType.BAD_PLANT
+                    || entity.getEntityType() == EntityType.GOOD_BEAST || entity.getEntityType() == EntityType.BAD_BEAST){
+                        entity.updatePosition(entity.getPosition().getRandomNearbyPosition());
+                        setOverlapping(true);
+                    }
+                }else{
+                    hashedEntities.put(entity.getPosition().toString(), entity);
+                }
+            }catch (Exception ignored){}
+        }
+        hashedEntities.clear();
+    }
+
+
     public EntitySet getEntitySet() {
         return entitySet;
     }
 
     public Board getBoard() {
         return board;
+    }
+
+    public boolean isOverlapping() {
+        return overlapping;
+    }
+
+    public void setOverlapping(boolean overlapping) {
+        this.overlapping = overlapping;
     }
 }

@@ -1,5 +1,6 @@
 package hs.augsburg.squirrelgame.game;
 
+import hs.augsburg.squirrelgame.board.FlattenedBoard;
 import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.command.CommandTypeInfo;
 import hs.augsburg.squirrelgame.command.GameCommandType;
@@ -31,7 +32,8 @@ public class GameImpl extends Game {
 
     @Override
     public void render() {
-        ui.render(getState().getFlattenedBoard());
+        FlattenedBoard flattenedBoard = getState().getFlattenedBoard();
+        ui.render(flattenedBoard);
     }
 
     private void callCommandClasses(){
