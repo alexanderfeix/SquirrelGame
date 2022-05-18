@@ -11,6 +11,8 @@ import hs.augsburg.squirrelgame.util.XY;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameImpl extends Game {
 
@@ -58,6 +60,11 @@ public class GameImpl extends Game {
             }
         }
     }
+
+    public ArrayList<GameCommandType> getGameCommandTypes(){
+        return new ArrayList<>(Arrays.asList(GameCommandType.values()));
+    }
+
     public void setPause(boolean pause){
         PAUSE_MODE = pause;
     }

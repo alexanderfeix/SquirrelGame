@@ -1,6 +1,8 @@
 package hs.augsburg.squirrelgame.ui;
 
 import hs.augsburg.squirrelgame.command.Command;
+import hs.augsburg.squirrelgame.command.CommandScanner;
+import hs.augsburg.squirrelgame.command.GameCommandType;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.game.GameImpl;
@@ -9,6 +11,8 @@ import hs.augsburg.squirrelgame.util.Direction;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.*;
@@ -19,6 +23,10 @@ import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class FxUI implements UI{
 
@@ -33,8 +41,12 @@ public class FxUI implements UI{
     MenuItem pauseMenu = new MenuItem("Pause");
     Button pauseButton = new Button("Pause");
     Button resumeButton = new Button("Resume");
+    Button helpButton = new Button("Help");
+    Button spawnMiniSquirrelButton = new Button("Spawn MiniSquirrel");
 
     private boolean checkedHandOperatedSquirrelDeath = false;
+    private final BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
+    private final CommandScanner commandScanner = new CommandScanner(GameCommandType.values(), inputReader);
 
 
     public void setController(GameImpl game){
@@ -153,6 +165,20 @@ public class FxUI implements UI{
                 switchPauseItems();
                 getController().setPause(false);
             });
+            helpButton.setOnAction(e -> {
+                if(!getController().isPause()){
+                    switchPauseItems();
+                    getController().setPause(true);
+                }
+                showHelpMenu();
+            });
+            spawnMiniSquirrelButton.setOnAction(e -> {
+                if(!getController().isPause()){
+                    switchPauseItems();
+                    getController().setPause(true);
+                }
+                showSpawnMiniSquirrelMenu();
+            });
         //Titles
         Text controlTitle = new Text("Controls");
         controlTitle.setFont(Font.font("Arial", FontWeight.BOLD, 14));
@@ -207,7 +233,7 @@ public class FxUI implements UI{
         gridPane.getChildren().addAll(badPlantText, badBeastText, goodPlantText, goodBeastText, masterSquirrelText, miniSquirrelText, wallText, handOperatedSquirrelText);
         gridPane.getChildren().addAll(badPlantCircle, badBeastRectangle, goodPlantCircle, goodBeastRectangle, masterSquirrelRectangle, miniSquirrelRectangle, wallRectangle, handOperatedMasterSquirrelRectangle);
 
-        legendBar.getChildren().addAll(controlTitle, pauseButton, resumeButton, legendTitle, gridPane);
+        legendBar.getChildren().addAll(controlTitle, pauseButton, resumeButton, helpButton, spawnMiniSquirrelButton, legendTitle, gridPane);
 
         return legendBar;
     }
@@ -271,6 +297,54 @@ public class FxUI implements UI{
         }
     }
 
+    private void showHelpMenu(){
+        VBox helpVbox = new VBox();
+        helpVbox.setPadding(new Insets(20, 20, 20, 20));
+        helpVbox.setAlignment(Pos.CENTER_LEFT);
+        Stage stage = new Stage();
+        Scene scene = new Scene(helpVbox, 400, 200);
+        stage.setTitle("Help Menu");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        createCommandButtons(helpVbox);
+        stage.show();
+    }
+
+    private void showSpawnMiniSquirrelMenu(){
+        VBox helpVbox = new VBox();
+        helpVbox.setAlignment(Pos.CENTER_LEFT);
+        Stage stage = new Stage();
+        Scene scene = new Scene(helpVbox, 400, 150);
+        stage.setTitle("SpawnMiniSquirrel");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        styleSpawnMiniSquirrelMenu(stage, helpVbox);
+        stage.show();
+    }
+
+    private void createCommandButtons(Pane pane){
+        for(GameCommandType gameCommandType : getController().getGameCommandTypes()){
+            Text text = new Text(gameCommandType.getName() + ": " + gameCommandType.getHelpText());
+            pane.getChildren().addAll(text);
+        }
+    }
+
+    private void styleSpawnMiniSquirrelMenu(Stage stage, Pane pane){
+        Text text = new Text("Please type in the spawn-energy");
+        TextField textField = new TextField("250");
+        pane.getChildren().addAll(text, textField);
+        pane.setPadding(new Insets(20, 20, 20, 20));
+        textField.setOnAction(e -> {
+            try {
+                int energy = Integer.parseInt(textField.getText());
+                getController().getState().getFlattenedBoard().createStandardMiniSquirrel(getController().getHandOperatedMasterSquirrel(), energy);
+                stage.close();
+                switchPauseItems();
+                getController().setPause(false);
+            }catch (Exception ignored){}
+        });
+    }
+
     //Helper methods
 
     private void setIndices(Shape shape, Text text, int colIndex, int rowIndex){
@@ -301,12 +375,16 @@ public class FxUI implements UI{
             pauseMenu.setDisable(false);
             resumeButton.setDisable(true);
             resumeMenu.setDisable(true);
+            helpButton.setDisable(false);
+            spawnMiniSquirrelButton.setDisable(false);
             statusText = "Game resumed!";
         }else{
             pauseButton.setDisable(true);
             pauseMenu.setDisable(true);
             resumeButton.setDisable(false);
             resumeMenu.setDisable(false);
+            helpButton.setDisable(false);
+            spawnMiniSquirrelButton.setDisable(false);
             statusText = "Game paused!";
         }
         statusLabel.setText(statusText);
@@ -317,6 +395,8 @@ public class FxUI implements UI{
         pauseButton.setDisable(true);
         resumeMenu.setDisable(true);
         resumeButton.setDisable(true);
+        spawnMiniSquirrelButton.setDisable(true);
+        helpButton.setDisable(true);
         statusLabel.setText("Oh no, your squirrel has died. Game Over!");
     }
 

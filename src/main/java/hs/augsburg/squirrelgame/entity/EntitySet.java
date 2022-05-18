@@ -78,10 +78,7 @@ public class EntitySet {
             }
             tempTail = newTempTail;
         }
-        if(entities.contains(entity)){
-            entities.remove(entity);
-        }
-
+        entities.remove(entity);
     }
 
     /**
