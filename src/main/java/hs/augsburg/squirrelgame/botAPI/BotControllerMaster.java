@@ -22,7 +22,7 @@ public class BotControllerMaster implements BotController{
                 try {
                     XY currentPosition = new XY(col, row);
                     Entity entity = controllerContext.getEntity(currentPosition);
-                    if(entity.getEntityType() == EntityType.BAD_BEAST || entity.getEntityType() == EntityType.BAD_PLANT){
+                    if(entity.getEntityType() == EntityType.BAD_BEAST || entity.getEntityType() == EntityType.BAD_PLANT || entity.getEntityType() == EntityType.WALL){
                         double distance = MathUtils.getDistanceFromTwoPoints(entity.getPosition().getX(), entity.getPosition().getY(), position.getX(), position.getY());
                         if(distance < shortestEnemyDistance){
                             shortestEnemyDistance = distance;
@@ -39,9 +39,9 @@ public class BotControllerMaster implements BotController{
             }
         }
         if(shortestEnemyDistance < shortestFriendDistance){
-            //TODO: Get away from enemy
+            controllerContext.move(position.escapeFromEntity(shortestEnemy));
         }else if (shortestEnemyDistance > shortestFriendDistance){
-            //TODO: Go to friendly entity
+            controllerContext.move(position.chaseEntity(shortestFriend));
         }else{
             controllerContext.move(position.getRandomNearbyPosition());
         }

@@ -1,6 +1,7 @@
 package hs.augsburg.squirrelgame.board;
 
 import hs.augsburg.squirrelgame.botAPI.ControllerContext;
+import hs.augsburg.squirrelgame.botAPI.MiniSquirrelBot;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.entity.EntitySet;
@@ -66,7 +67,7 @@ public class FlattenedBoard implements BoardView, EntityContext{
         if (energy < 100) {
             throw new RuntimeException("Energy to create a new mini squirrel must be over a hundred!");
         } else {
-            MiniSquirrel miniSquirrel = new MiniSquirrel(masterSquirrel.getPosition().getRandomNearbyPosition(), energy);
+            MiniSquirrel miniSquirrel = new MiniSquirrelBot(masterSquirrel.getPosition().getRandomNearbyPosition(), energy);
             miniSquirrel.setMasterSquirrelId(masterSquirrel.getId());
             miniSquirrel.setMasterSquirrel(masterSquirrel);
             masterSquirrel.updateEnergy(-energy);
@@ -145,6 +146,10 @@ public class FlattenedBoard implements BoardView, EntityContext{
         setOverlapping(false);
         HashMap<String, Entity> hashedEntities = new HashMap<>();
         for(Entity entity : getEntitySet().getEntities()) {
+            if((entity.getEntityType() == EntityType.MASTER_SQUIRREL || entity.getEntityType() == EntityType.MINI_SQUIRREL)
+                && entity.getEnergy() <= 0 && entity.isAlive()){
+                entity.setAlive(false);
+            }
             try {
                 if(hashedEntities.containsKey(entity.getPosition().toString())){
                     if(entity.getEntityType() == EntityType.GOOD_PLANT || entity.getEntityType() != EntityType.BAD_PLANT
