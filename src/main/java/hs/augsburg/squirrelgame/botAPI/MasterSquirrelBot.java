@@ -1,18 +1,31 @@
 package hs.augsburg.squirrelgame.botAPI;
 
+import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.util.XY;
 
-public class MasterSquirrelBot extends MasterSquirrel {
+public class MasterSquirrelBot extends MasterSquirrel implements BotController {
 
     public MasterSquirrelBot(hs.augsburg.squirrelgame.util.XY position) {
         super(position);
     }
 
+    private final ControllerContext controllerContext = new ControllerContextImpl();
+
     @Override
     public void nextStep(EntityContext entityContext) {
+        nextStep(getControllerContext());
+    }
+
+    @Override
+    public void nextStep(ControllerContext controllerContext) {
+        //TODO: Actual nextStep method
+    }
+
+    public ControllerContext getControllerContext() {
+        return controllerContext;
     }
 
     private class ControllerContextImpl implements ControllerContext{
@@ -33,7 +46,7 @@ public class MasterSquirrelBot extends MasterSquirrel {
         }
 
         @Override
-        public void move(hs.augsburg.squirrelgame.util.XY direction) {
+        public void move(Entity entity, hs.augsburg.squirrelgame.util.XY direction) {
 
         }
 
