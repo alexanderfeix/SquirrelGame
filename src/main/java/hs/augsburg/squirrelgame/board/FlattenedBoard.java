@@ -1,5 +1,6 @@
 package hs.augsburg.squirrelgame.board;
 
+import hs.augsburg.squirrelgame.botAPI.ControllerContext;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.entity.EntitySet;
@@ -14,7 +15,7 @@ import hs.augsburg.squirrelgame.util.exception.NotEnoughEnergyException;
 import java.util.Enumeration;
 import java.util.HashMap;
 
-public class FlattenedBoard implements BoardView, EntityContext {
+public class FlattenedBoard implements BoardView, EntityContext{
 
     private final Entity[][] gameBoard;
     private EntitySet entitySet;
@@ -67,6 +68,7 @@ public class FlattenedBoard implements BoardView, EntityContext {
         } else {
             MiniSquirrel miniSquirrel = new MiniSquirrel(masterSquirrel.getPosition().getRandomNearbyPosition(), energy);
             miniSquirrel.setMasterSquirrelId(masterSquirrel.getId());
+            miniSquirrel.setMasterSquirrel(masterSquirrel);
             masterSquirrel.updateEnergy(-energy);
             while(getEntity(miniSquirrel.getPosition().getX(), miniSquirrel.getPosition().getY()) != null){
                 miniSquirrel.updatePosition(masterSquirrel.getPosition().getRandomNearbyPosition());
@@ -123,6 +125,14 @@ public class FlattenedBoard implements BoardView, EntityContext {
         }else{
             return null;
         }
+    }
+
+    @Override
+    public Entity getEntity(XY position) {
+        if(position.getX() >= BoardConfig.COLUMNS || position.getY() >= BoardConfig.ROWS){
+            return null;
+        }
+        return gameBoard[position.getX()][position.getY()];
     }
 
     /**

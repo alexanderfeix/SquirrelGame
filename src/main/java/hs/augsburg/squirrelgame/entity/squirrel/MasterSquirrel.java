@@ -76,6 +76,7 @@ public class MasterSquirrel extends Entity {
         } else {
             MiniSquirrel miniSquirrel = new MiniSquirrel(position, energy);
             miniSquirrel.setMasterSquirrelId(getId());
+            miniSquirrel.setMasterSquirrel(this);
             this.updateEnergy(-energy);
             return miniSquirrel;
         }

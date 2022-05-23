@@ -86,6 +86,11 @@ public class BadBeast extends MovableEntity {
         return null;
     }
 
+    @Override
+    public Entity getEntity(hs.augsburg.squirrelgame.util.XY position) {
+        return null;
+    }
+
     public int getBites() {
         return bites;
     }
