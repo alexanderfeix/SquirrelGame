@@ -6,6 +6,7 @@ import hs.augsburg.squirrelgame.util.MathUtils;
 import hs.augsburg.squirrelgame.util.XY;
 
 public class BotControllerMini implements BotController{
+
     @Override
     public void nextStep(ControllerContext controllerContext) {
         XY position = controllerContext.locate();
@@ -16,6 +17,15 @@ public class BotControllerMini implements BotController{
         Entity shortestEnemy = null;
         double shortestFriendDistance = Double.MAX_VALUE;
         Entity shortestFriend = null;
+
+        Entity miniSquirrel;
+        if(controllerContext.getEntity(position) != null){
+            miniSquirrel = controllerContext.getEntity(position);
+            miniSquirrel.updateEnergy(-1);
+            if (miniSquirrel.getEnergy() <= 0) {
+                miniSquirrel.setAlive(false);
+            }
+        }
 
         for(int col = viewLowerLeft.getX(); col < viewUpperRight.getX(); col++){
             for(int row = viewUpperRight.getY(); row < viewLowerLeft.getY(); row++){

@@ -4,7 +4,6 @@ import hs.augsburg.squirrelgame.botAPI.exception.ImpactRadiusOutOfBoundsExceptio
 import hs.augsburg.squirrelgame.botAPI.exception.OutOfViewException;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
-import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.entity.beast.BadBeast;
 import hs.augsburg.squirrelgame.entity.beast.GoodBeast;
 import hs.augsburg.squirrelgame.entity.plant.BadPlant;
@@ -22,10 +21,10 @@ public class MiniSquirrelBot extends MiniSquirrel{
     }
     private final BotControllerFactory botControllerFactory = new BotControllerFactoryImpl();
 
-    @Override
+
     public void nextStep(EntityContext entityContext) {
         ControllerContext controllerContext = new ControllerContextImpl(entityContext);
-        BotController botController = botControllerFactory.createMasterBotController();
+        BotController botController = botControllerFactory.createMiniBotController();
         botController.nextStep(controllerContext);
     }
 
@@ -61,7 +60,6 @@ public class MiniSquirrelBot extends MiniSquirrel{
             }else if (xy.getY() > viewLowerLeft.getY() || xy.getY() < viewUpperRight.getY()){
                 throw new OutOfViewException();
             }
-            //TODO: check context.getEntityType()
             return entityContext.getEntity(xy);
         }
 
@@ -80,6 +78,7 @@ public class MiniSquirrelBot extends MiniSquirrel{
             return MiniSquirrelBot.this.getPosition();
         }
 
+        //TODO: Testing
         @Override
         public void implode(int impactRadius){
             if(!(impactRadius >= 2 && impactRadius <= 10)){
