@@ -6,6 +6,7 @@ import hs.augsburg.squirrelgame.util.MathUtils;
 import hs.augsburg.squirrelgame.util.XY;
 
 public class BotControllerMaster implements BotController{
+
     @Override
     public void nextStep(ControllerContext controllerContext) {
         XY position = controllerContext.locate();
@@ -45,5 +46,6 @@ public class BotControllerMaster implements BotController{
         }else{
             controllerContext.move(position.getRandomNearbyPosition());
         }
+
     }
 }
