@@ -93,64 +93,23 @@ public class MiniSquirrelBot extends MiniSquirrel{
                         switch(entity.getEntityType()){
                             case MINI_SQUIRREL:
                                 MiniSquirrel miniSquirrel = (MiniSquirrel) entity;
-                                if(miniSquirrel.getMasterSquirrelId() != getMasterSquirrelId()){
-                                    int energyLoss = MathUtils.getEnergyLoss(miniSquirrel, MiniSquirrelBot.this, getImpactRadius());
-                                    if(miniSquirrel.getEnergy() < energyLoss){
-                                        miniSquirrel.setEnergy(0);
-                                    }else{
-                                        miniSquirrel.updateEnergy(-energyLoss);
-                                    }
-                                    getMasterSquirrel().updateEnergy(energyLoss);
-                                }
+                                implodeHandling(miniSquirrel);
                                 break;
                             case MASTER_SQUIRREL:
                                 MasterSquirrel masterSquirrel = (MasterSquirrel) entity;
-                                if(masterSquirrel.getId() != getMasterSquirrelId()){
-                                    int energyLoss = MathUtils.getEnergyLoss(masterSquirrel, MiniSquirrelBot.this, getImpactRadius());
-                                    if(masterSquirrel.getEnergy() < energyLoss){
-                                        masterSquirrel.setEnergy(0);
-                                    }else{
-                                        masterSquirrel.updateEnergy(-energyLoss);
-                                    }
-                                    getMasterSquirrel().updateEnergy(energyLoss);
-                                }
+                                implodeHandling(masterSquirrel);
                                 break;
-                            case GOOD_PLANT:
-                                GoodPlant goodPlant = (GoodPlant) entity;
-                                int energyLoss = MathUtils.getEnergyLoss(goodPlant, MiniSquirrelBot.this, getImpactRadius());
-                                if(goodPlant.getEnergy() < energyLoss){
-                                    goodPlant.setEnergy(0);
-                                }else{
-                                    goodPlant.updateEnergy(-energyLoss);
-                                }
-                                getMasterSquirrel().updateEnergy(energyLoss);
+                            case GOOD_PLANT, GOOD_BEAST:
+                                Entity goodEntity = entity;
+                                implodeHandling(goodEntity);
                                 break;
-                            case GOOD_BEAST:
-                                GoodBeast goodBeast = (GoodBeast) entity;
-                                energyLoss = MathUtils.getEnergyLoss(goodBeast, MiniSquirrelBot.this, getImpactRadius());
-                                if(goodBeast.getEnergy() < energyLoss){
-                                    goodBeast.setEnergy(0);
+                            case BAD_BEAST, BAD_PLANT:
+                                Entity badEntity = entity;
+                                int energyLoss = MathUtils.getEnergyLoss(badEntity, MiniSquirrelBot.this, getImpactRadius());
+                                if(badEntity.getEnergy() + energyLoss >= 0){
+                                    badEntity.setEnergy(0);
                                 }else{
-                                    goodBeast.updateEnergy(-energyLoss);
-                                }
-                                getMasterSquirrel().updateEnergy(energyLoss);
-                                break;
-                            case BAD_BEAST:
-                                BadBeast badBeast = (BadBeast) entity;
-                                energyLoss = MathUtils.getEnergyLoss(badBeast, MiniSquirrelBot.this, getImpactRadius());
-                                if(badBeast.getEnergy() + energyLoss >= 0){
-                                    badBeast.setEnergy(0);
-                                }else{
-                                    badBeast.updateEnergy(energyLoss);
-                                }
-                                break;
-                            case BAD_PLANT:
-                                BadPlant badPlant = (BadPlant) entity;
-                                energyLoss = MathUtils.getEnergyLoss(badPlant, MiniSquirrelBot.this, getImpactRadius());
-                                if(badPlant.getEnergy() + energyLoss >= 0){
-                                    badPlant.setEnergy(0);
-                                }else{
-                                    badPlant.updateEnergy(energyLoss);
+                                    badEntity.updateEnergy(energyLoss);
                                 }
                                 break;
                         }
@@ -158,6 +117,18 @@ public class MiniSquirrelBot extends MiniSquirrel{
                 }
             }
             setEnergy(0);
+        }
+
+        private void implodeHandling(Entity entity) {
+            if(entity.getId() != getMasterSquirrelId()){
+                int energyLoss = MathUtils.getEnergyLoss(entity, MiniSquirrelBot.this, getImpactRadius());
+                if(entity.getEnergy() < energyLoss){
+                    entity.setEnergy(0);
+                }else{
+                    entity.updateEnergy(-energyLoss);
+                }
+                getMasterSquirrel().updateEnergy(energyLoss);
+            }
         }
 
         @Override
