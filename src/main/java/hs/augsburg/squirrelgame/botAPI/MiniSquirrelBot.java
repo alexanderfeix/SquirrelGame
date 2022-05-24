@@ -4,10 +4,6 @@ import hs.augsburg.squirrelgame.botAPI.exception.ImpactRadiusOutOfBoundsExceptio
 import hs.augsburg.squirrelgame.botAPI.exception.OutOfViewException;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
-import hs.augsburg.squirrelgame.entity.beast.BadBeast;
-import hs.augsburg.squirrelgame.entity.beast.GoodBeast;
-import hs.augsburg.squirrelgame.entity.plant.BadPlant;
-import hs.augsburg.squirrelgame.entity.plant.GoodPlant;
 import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.entity.squirrel.MiniSquirrel;
 import hs.augsburg.squirrelgame.util.Direction;
@@ -89,28 +85,28 @@ public class MiniSquirrelBot extends MiniSquirrel{
                     try {
                         XY position = new XY(col, row);
                         Entity entity = getEntity(position);
-                        switch(entity.getEntityType()){
-                            case MINI_SQUIRREL:
+                        switch (entity.getEntityType()) {
+                            case MINI_SQUIRREL -> {
                                 MiniSquirrel miniSquirrel = (MiniSquirrel) entity;
-                                implodeHandling(miniSquirrel);
-                                break;
-                            case MASTER_SQUIRREL:
-                                MasterSquirrel masterSquirrel = (MasterSquirrel) entity;
-                                implodeHandling(masterSquirrel);
-                                break;
-                            case GOOD_PLANT, GOOD_BEAST:
-                                Entity goodEntity = entity;
-                                implodeHandling(goodEntity);
-                                break;
-                            case BAD_BEAST, BAD_PLANT:
-                                Entity badEntity = entity;
-                                int energyLoss = MathUtils.getEnergyLoss(badEntity, MiniSquirrelBot.this, getImpactRadius());
-                                if(badEntity.getEnergy() + energyLoss >= 0){
-                                    badEntity.setEnergy(0);
-                                }else{
-                                    badEntity.updateEnergy(energyLoss);
+                                if (miniSquirrel.getMasterSquirrelId() != getMasterSquirrelId()) {
+                                    implodeHandling(miniSquirrel);
                                 }
-                                break;
+                            }
+                            case MASTER_SQUIRREL -> {
+                                MasterSquirrel masterSquirrel = (MasterSquirrel) entity;
+                                if (masterSquirrel.getId() != getMasterSquirrelId()) {
+                                    implodeHandling(masterSquirrel);
+                                }
+                            }
+                            case GOOD_PLANT, GOOD_BEAST -> implodeHandling(entity);
+                            case BAD_BEAST, BAD_PLANT -> {
+                                int energyLoss = MathUtils.getEnergyLoss(entity, MiniSquirrelBot.this, getImpactRadius());
+                                if (entity.getEnergy() + energyLoss >= 0) {
+                                    entity.setEnergy(0);
+                                } else {
+                                    entity.updateEnergy(energyLoss);
+                                }
+                            }
                         }
                     }catch (Exception ignored){}
                 }
@@ -119,7 +115,6 @@ public class MiniSquirrelBot extends MiniSquirrel{
         }
 
         private void implodeHandling(Entity entity) {
-            if(entity.getId() != getMasterSquirrelId()){
                 int energyLoss = MathUtils.getEnergyLoss(entity, MiniSquirrelBot.this, getImpactRadius());
                 if(entity.getEnergy() < energyLoss){
                     entity.setEnergy(0);
@@ -127,7 +122,6 @@ public class MiniSquirrelBot extends MiniSquirrel{
                     entity.updateEnergy(-energyLoss);
                 }
                 getMasterSquirrel().updateEnergy(energyLoss);
-            }
         }
 
         @Override
