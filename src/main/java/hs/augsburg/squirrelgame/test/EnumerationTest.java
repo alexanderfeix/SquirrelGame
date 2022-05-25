@@ -6,12 +6,12 @@ import hs.augsburg.squirrelgame.entity.beast.GoodBeast;
 import hs.augsburg.squirrelgame.entity.plant.BadPlant;
 import hs.augsburg.squirrelgame.entity.plant.GoodPlant;
 import hs.augsburg.squirrelgame.util.XY;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.Enumeration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class EnumerationTest {
 

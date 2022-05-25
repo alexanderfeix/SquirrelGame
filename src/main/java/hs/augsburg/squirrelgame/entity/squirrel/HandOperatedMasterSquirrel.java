@@ -52,5 +52,10 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel implements Entity
     public hs.augsburg.squirrelgame.util.XY getNearbySquirrelPosition(Entity entity) {
         return null;
     }
+
+    @Override
+    public Entity getEntity(hs.augsburg.squirrelgame.util.XY position) {
+        return null;
+    }
 }
 

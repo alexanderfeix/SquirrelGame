@@ -6,13 +6,14 @@ import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.entity.plant.BadPlant;
 import hs.augsburg.squirrelgame.game.State;
 import hs.augsburg.squirrelgame.util.XY;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class EntitySetTest {
+
+public class EntitySetTest {
     @Test
-    void checkIfAddMethodReallyAddsEntities() {
+    public void checkIfAddMethodReallyAddsEntities() {
         EntitySet entitySet = new EntitySet();
         int firstID = entitySet.returnLastID();
         Entity test = new BadPlant(new XY(3, 3));
@@ -23,7 +24,7 @@ class EntitySetTest {
     }
 
     @Test
-    void checkIfRemoveMethodReallyRemovesEntities() {
+    public void checkIfRemoveMethodReallyRemovesEntities() {
         EntitySet entitySet = new EntitySet();
         Entity test = new BadPlant(new XY(3, 3));
         int removedID = test.getId();
@@ -34,7 +35,7 @@ class EntitySetTest {
     }
 
     @Test
-    void checkIfRemoveOnlyRemovesWhatNeedsToBeRemoved() {
+    public void checkIfRemoveOnlyRemovesWhatNeedsToBeRemoved() {
         EntitySet entitySet = new EntitySet();
         int itemsInListStart = entitySet.countItems(true);
         Entity test = new BadPlant(new XY(3, 3));
@@ -47,7 +48,7 @@ class EntitySetTest {
     }
 
     @Test
-    void throwExceptionIfEntityInContainer() {
+    public void throwExceptionIfEntityInContainer() {
         boolean thrown = false;
         EntitySet entitySet = new EntitySet();
         Entity test = new BadPlant(new XY(3, 3));
@@ -61,7 +62,7 @@ class EntitySetTest {
     }
 
     @Test
-    void throwExceptionIfTryingToRemoveNonExistentEntity() {
+    public void throwExceptionIfTryingToRemoveNonExistentEntity() {
         boolean thrown = false;
         EntitySet entitySet = new EntitySet();
         Entity test = new BadPlant(new XY(3, 3));
@@ -74,7 +75,7 @@ class EntitySetTest {
     }
 
     @Test
-    void doesTheNextStepMethodActuallyCallTheNextStepMethodOfEntity() {
+    public void doesTheNextStepMethodActuallyCallTheNextStepMethodOfEntity() {
         State state = new State(new Board());
         EntitySet entitySet = new EntitySet();
         Entity test = new TestEntity(new XY(2, 5));

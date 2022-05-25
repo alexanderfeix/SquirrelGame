@@ -1,10 +1,26 @@
 module SquirrelGame {
 
-    requires javafx.graphics;
     requires javafx.controls;
-    requires org.junit.platform.commons;
-    requires org.junit.jupiter.api;
-    requires org.opentest4j;
-    opens hs.augsburg.squirrelgame.main;
+    requires javafx.fxml;
+    requires transitive javafx.graphics;
+    requires junit;
+
+    opens hs.augsburg.squirrelgame.main to javafx.fxml;
+
+    exports hs.augsburg.squirrelgame.main;
+    exports hs.augsburg.squirrelgame.entity;
+    exports hs.augsburg.squirrelgame.util;
+    exports hs.augsburg.squirrelgame.game;
+    exports hs.augsburg.squirrelgame.botAPI;
+    exports hs.augsburg.squirrelgame.command;
+    exports hs.augsburg.squirrelgame.board;
+    exports hs.augsburg.squirrelgame.test;
+    exports hs.augsburg.squirrelgame.ui;
+
+
+
+
+
+
 
 }

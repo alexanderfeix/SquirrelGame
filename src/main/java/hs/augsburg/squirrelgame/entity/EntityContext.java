@@ -8,4 +8,5 @@ public interface EntityContext {
     void move(Entity entity, XY randomPosition);
     void createStandardMiniSquirrel(MasterSquirrel masterSquirrel, int energy);
     XY getNearbySquirrelPosition(Entity entity);
+    Entity getEntity(XY position);
 }

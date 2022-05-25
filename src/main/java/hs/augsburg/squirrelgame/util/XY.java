@@ -1,6 +1,7 @@
 package hs.augsburg.squirrelgame.util;
 
 import hs.augsburg.squirrelgame.board.BoardConfig;
+import hs.augsburg.squirrelgame.entity.Entity;
 
 import java.util.Random;
 
@@ -73,6 +74,54 @@ public class XY{
         int spawnX = random.nextInt(BoardConfig.COLUMNS - 2) + 1;
         int spawnY = random.nextInt(BoardConfig.ROWS - 2) + 1;
         return new XY(spawnX, spawnY);
+    }
+
+    public XY escapeFromEntity(Entity entity){
+        XY enemyPosition = entity.getPosition();
+        if(enemyPosition.getX() > getX() && enemyPosition.getY() > getY()){
+            return new XY(getX() - 1, getY() - 1);
+        }else if (enemyPosition.getX() > getX() && enemyPosition.getY() < getY()){
+            return new XY(getX() - 1, getY() + 1);
+        }else if (enemyPosition.getX() > getX() && enemyPosition.getY() == getY()){
+            return new XY(getX() - 1, getY());
+        }else if(enemyPosition.getX() < getX() && enemyPosition.getY() > getY()){
+            return new XY(getX() + 1, getY() - 1);
+        }else if (enemyPosition.getX() < getX() && enemyPosition.getY() < getY()){
+            return new XY(getX() + 1, getY() + 1);
+        }else if (enemyPosition.getX() < getX() && enemyPosition.getY() == getY()){
+            return new XY(getX() + 1, getY());
+        }else if (enemyPosition.getX() == getX() && enemyPosition.getY() > getY()){
+            return new XY(getX(), getY() - 1);
+        }else if (enemyPosition.getX() == getX() && enemyPosition.getY() < getY()){
+            return new XY(getX(), getY() + 1);
+        }else if (enemyPosition.getX() == getX() && enemyPosition.getY() == getY()){
+            return new XY(getX(), getY());
+        }
+        return this;
+    }
+
+    public XY chaseEntity(Entity entity){
+        XY enemyPosition = entity.getPosition();
+        if(enemyPosition.getX() > getX() && enemyPosition.getY() > getY()){
+            return new XY(getX() + 1, getY() + 1);
+        }else if (enemyPosition.getX() > getX() && enemyPosition.getY() < getY()){
+            return new XY(getX() + 1, getY() - 1);
+        }else if (enemyPosition.getX() > getX() && enemyPosition.getY() == getY()){
+            return new XY(getX() + 1, getY());
+        }else if(enemyPosition.getX() < getX() && enemyPosition.getY() > getY()){
+            return new XY(getX() - 1, getY() + 1);
+        }else if (enemyPosition.getX() < getX() && enemyPosition.getY() < getY()){
+            return new XY(getX() - 1, getY() - 1);
+        }else if (enemyPosition.getX() < getX() && enemyPosition.getY() == getY()){
+            return new XY(getX() - 1, getY());
+        }else if (enemyPosition.getX() == getX() && enemyPosition.getY() > getY()){
+            return new XY(getX(), getY() + 1);
+        }else if (enemyPosition.getX() == getX() && enemyPosition.getY() < getY()){
+            return new XY(getX(), getY() - 1);
+        }else if (enemyPosition.getX() == getX() && enemyPosition.getY() == getY()){
+            return new XY(getX(), getY());
+        }
+        return this;
     }
 
     public String toString() {
