@@ -83,7 +83,7 @@ public class MiniSquirrelBot extends MiniSquirrel{
         @Override
         public void implode(int impactRadius){
             if(!(impactRadius >= 2 && impactRadius <= 10)){
-                throw new ImpactRadiusOutOfBoundsException("Impact radius is out of bounds! Valid: [2; 10]");
+                throw new ImpactRadiusOutOfBoundsException("[2; 10]");
             }
             for(int col = getPosition().getX() - impactRadius; col < getPosition().getX() + impactRadius; col++){
                 for(int row = getPosition().getY() - impactRadius; row < getPosition().getY() + impactRadius; row++){

@@ -1,6 +1,5 @@
 package hs.augsburg.squirrelgame.board;
 
-import hs.augsburg.squirrelgame.botAPI.ControllerContext;
 import hs.augsburg.squirrelgame.botAPI.MiniSquirrelBot;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;

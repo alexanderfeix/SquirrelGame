@@ -24,8 +24,8 @@ public class Board {
     public Board() {
         this.board = this;
         this.entitySet = new EntitySet();
-        spawnBoarderWalls();
-        spawnEntitiesRandomly();
+        //spawnBoarderWalls();
+        //spawnEntitiesRandomly();
     }
 
     /**

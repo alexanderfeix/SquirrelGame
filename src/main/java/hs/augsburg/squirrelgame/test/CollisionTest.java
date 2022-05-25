@@ -11,9 +11,10 @@ import hs.augsburg.squirrelgame.entity.squirrel.HandOperatedMasterSquirrel;
 import hs.augsburg.squirrelgame.entity.squirrel.MiniSquirrel;
 import hs.augsburg.squirrelgame.util.Direction;
 import hs.augsburg.squirrelgame.util.XY;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+
 
 public class CollisionTest {
 
@@ -21,7 +22,7 @@ public class CollisionTest {
      * This class tests all collisions between squirrel and other entities.
      */
     @Test
-    void checkWallCollision() {
+    public void checkWallCollision() {
         Board board = new Board();
         EntitySet entitySet = new EntitySet();
         board.flatten();
@@ -33,7 +34,7 @@ public class CollisionTest {
     }
 
     @Test
-    void checkMasterSquirrelWithBadBeastCollision() {
+    public void checkMasterSquirrelWithBadBeastCollision() {
         Board board = new Board();
         HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2, 1));
         BadBeast badBeast = new BadBeast(new XY(1, 1));
@@ -49,7 +50,7 @@ public class CollisionTest {
     }
 
     @Test
-    void checkMasterSquirrelWithGoodBeastCollision() {
+    public void checkMasterSquirrelWithGoodBeastCollision() {
         Board board = new Board();
         HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2, 1));
         GoodBeast goodBeast = new GoodBeast(new XY(2, 2));
@@ -65,7 +66,7 @@ public class CollisionTest {
     }
 
     @Test
-    void checkMasterSquirrelWithGoodPlantCollision() {
+    public void checkMasterSquirrelWithGoodPlantCollision() {
         Board board = new Board();
         HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2, 1));
         GoodPlant goodPlant = new GoodPlant(new XY(1, 1));
@@ -81,7 +82,7 @@ public class CollisionTest {
     }
 
     @Test
-    void checkMasterSquirrelWithBadPlantCollision() {
+    public void checkMasterSquirrelWithBadPlantCollision() {
         Board board = new Board();
         HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2, 1));
         BadPlant badPlant = new BadPlant(new XY(3, 1));
@@ -97,7 +98,7 @@ public class CollisionTest {
     }
 
     @Test
-    void checkMasterSquirrelWithMiniSquirrelCollision() {
+    public void checkMasterSquirrelWithMiniSquirrelCollision() {
         Board board = new Board();
         HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2, 1));
         MiniSquirrel miniSquirrel = (MiniSquirrel) masterSquirrel.createMiniSquirrel(new XY(3, 1), 150);
