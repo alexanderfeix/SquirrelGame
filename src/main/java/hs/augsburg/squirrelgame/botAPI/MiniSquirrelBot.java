@@ -16,12 +16,17 @@ public class MiniSquirrelBot extends MiniSquirrel{
         super(position, energy);
     }
     private final BotControllerFactory botControllerFactory = new BotControllerFactoryImpl();
+    private ControllerContext controllerContext;
 
 
     public void nextStep(EntityContext entityContext) {
-        ControllerContext controllerContext = new ControllerContextImpl(entityContext);
+        controllerContext = new ControllerContextImpl(entityContext);
         BotController botController = botControllerFactory.createMiniBotController();
         botController.nextStep(controllerContext);
+    }
+
+    public ControllerContext getControllerContext() {
+        return controllerContext;
     }
 
     private class ControllerContextImpl implements ControllerContext{
