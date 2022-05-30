@@ -4,6 +4,7 @@ import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.util.MathUtils;
 import hs.augsburg.squirrelgame.util.XY;
 import hs.augsburg.squirrelgame.util.XYBot;
+import hs.augsburg.squirrelgame.util.XYBotSupport;
 
 public class BotControllerMini implements BotController{
 
@@ -48,11 +49,11 @@ public class BotControllerMini implements BotController{
             }
         }
         if(shortestEnemyDistance < shortestFriendDistance){
-            controllerContext.move(position.escapeFromEntity(enemyPosition));
+            controllerContext.move(position.getUtils().escapeFromEntity(enemyPosition));
         }else if (shortestEnemyDistance > shortestFriendDistance){
-            controllerContext.move(position.chaseEntity(friendPosition));
+            controllerContext.move(position.getUtils().chaseEntity(friendPosition));
         }else{
-            controllerContext.move(position.getRandomNearbyPosition());
+            controllerContext.move(position.getUtils().getRandomNearbyPosition());
         }
     }
 }
