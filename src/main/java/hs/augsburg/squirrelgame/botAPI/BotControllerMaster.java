@@ -4,24 +4,25 @@ import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.util.MathUtils;
 import hs.augsburg.squirrelgame.util.XY;
+import hs.augsburg.squirrelgame.util.XYBot;
 
 public class BotControllerMaster implements BotController{
 
     @Override
     public void nextStep(ControllerContext controllerContext) {
-        XY position = controllerContext.locate();
-        XY viewLowerLeft = controllerContext.getViewLowerLeft();
-        XY viewUpperRight = controllerContext.getViewUpperRight();
+        XYBot position = controllerContext.locate();
+        XYBot viewLowerLeft = controllerContext.getViewLowerLeft();
+        XYBot viewUpperRight = controllerContext.getViewUpperRight();
 
         double shortestEnemyDistance = Double.MAX_VALUE;
-        XY enemyPosition = null;
+        XYBot enemyPosition = null;
         double shortestFriendDistance = Double.MAX_VALUE;
-        XY friendPosition = null;
+        XYBot friendPosition = null;
 
         for(int col = viewLowerLeft.getX(); col < viewUpperRight.getX(); col++){
             for(int row = viewUpperRight.getY(); row < viewLowerLeft.getY(); row++){
                 try {
-                    XY currentPosition = new XY(col, row);
+                    XYBot currentPosition = new XYBot(col, row);
                     EntityType entityType = controllerContext.getEntityAt(currentPosition);
                     if(entityType == EntityType.BAD_BEAST || entityType == EntityType.BAD_PLANT || entityType == EntityType.WALL){
                         double distance = MathUtils.getDistanceFromTwoPoints(currentPosition.getX(), currentPosition.getY(), position.getX(), position.getY());
@@ -48,4 +49,6 @@ public class BotControllerMaster implements BotController{
         }
 
     }
+
+
 }

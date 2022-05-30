@@ -10,6 +10,7 @@ import hs.augsburg.squirrelgame.entity.squirrel.MiniSquirrel;
 import hs.augsburg.squirrelgame.util.Direction;
 import hs.augsburg.squirrelgame.util.MathUtils;
 import hs.augsburg.squirrelgame.util.XY;
+import hs.augsburg.squirrelgame.util.XYBot;
 
 public class MiniSquirrelBot extends MiniSquirrel{
 
@@ -40,23 +41,23 @@ public class MiniSquirrelBot extends MiniSquirrel{
         }
 
         @Override
-        public hs.augsburg.squirrelgame.util.XY getViewLowerLeft() {
+        public hs.augsburg.squirrelgame.util.XYBot getViewLowerLeft() {
             int y = getPosition().getY() + 10;
             int x = getPosition().getX() - 10;
-            return new XY(x, y);
+            return new XYBot(x, y);
         }
 
         @Override
-        public hs.augsburg.squirrelgame.util.XY getViewUpperRight() {
+        public hs.augsburg.squirrelgame.util.XYBot getViewUpperRight() {
             int y = getPosition().getY() - 10;
             int x = getPosition().getX() + 10;
-            return new XY(x, y);
+            return new XYBot(x, y);
         }
 
         @Override
-        public EntityType getEntityAt(hs.augsburg.squirrelgame.util.XY xy) {
-            XY viewUpperRight = getViewUpperRight();
-            XY viewLowerLeft = getViewLowerLeft();
+        public EntityType getEntityAt(hs.augsburg.squirrelgame.util.XYBot xy) {
+            XYBot viewUpperRight = getViewUpperRight();
+            XYBot viewLowerLeft = getViewLowerLeft();
             if(xy.getX() > viewUpperRight.getX() || xy.getX() < viewLowerLeft.getX()){
                 throw new OutOfViewException();
             }else if (xy.getY() > viewLowerLeft.getY() || xy.getY() < viewUpperRight.getY()){
@@ -66,18 +67,19 @@ public class MiniSquirrelBot extends MiniSquirrel{
         }
 
         @Override
-        public void move(hs.augsburg.squirrelgame.util.XY direction) {
+        public void move(hs.augsburg.squirrelgame.util.XYBot direction) {
             entityContext.move(MiniSquirrelBot.this, direction);
         }
 
         @Override
-        public void spawnMiniBot(hs.augsburg.squirrelgame.util.XY position, int energy) {
+        public void spawnMiniBot(hs.augsburg.squirrelgame.util.XYBot position, int energy) {
             //TODO: NOTHING TO DO HERE!
         }
 
         @Override
-        public hs.augsburg.squirrelgame.util.XY locate() {
-            return MiniSquirrelBot.this.getPosition();
+        public hs.augsburg.squirrelgame.util.XYBot locate() {
+            XY position = MiniSquirrelBot.this.getPosition();
+            return new XYBot(position.getX(), position.getY());
         }
 
         @Override
@@ -150,9 +152,9 @@ public class MiniSquirrelBot extends MiniSquirrel{
         }
 
         @Override
-        public boolean isMine(hs.augsburg.squirrelgame.util.XY xy) {
-            XY viewUpperRight = getViewUpperRight();
-            XY viewLowerLeft = getViewLowerLeft();
+        public boolean isMine(hs.augsburg.squirrelgame.util.XYBot xy) {
+            XYBot viewUpperRight = getViewUpperRight();
+            XYBot viewLowerLeft = getViewLowerLeft();
             if(xy.getX() > viewUpperRight.getX() || xy.getX() < viewLowerLeft.getX()){
                 throw new OutOfViewException();
             }else if (xy.getY() > viewLowerLeft.getY() || xy.getY() < viewUpperRight.getY()){

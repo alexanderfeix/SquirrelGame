@@ -1,11 +1,10 @@
 package hs.augsburg.squirrelgame.util;
 
 import hs.augsburg.squirrelgame.board.BoardConfig;
-import hs.augsburg.squirrelgame.entity.Entity;
 
 import java.util.Random;
 
-public class XY{
+public class XY {
 
     private final int x;
     private final int y;
@@ -62,8 +61,8 @@ public class XY{
                     newPosition = new XY(getX() - 1, getY());
             default -> throw new IllegalStateException("Unexpected value: " + directionInt);
         }
-        if(newPosition.getX() >= BoardConfig.COLUMNS || newPosition.getX() < 0
-                || newPosition.getY() >= BoardConfig.ROWS || newPosition.getY() < 0){
+        if (newPosition.getX() >= BoardConfig.COLUMNS || newPosition.getX() < 0
+                || newPosition.getY() >= BoardConfig.ROWS || newPosition.getY() < 0) {
             return getRandomNearbyPosition();
         }
         return newPosition;
@@ -76,47 +75,47 @@ public class XY{
         return new XY(spawnX, spawnY);
     }
 
-    public XY escapeFromEntity(XY position){
-        if(position.getX() > getX() && position.getY() > getY()){
+    public XY escapeFromEntity(XY position) {
+        if (position.getX() > getX() && position.getY() > getY()) {
             return new XY(getX() - 1, getY() - 1);
-        }else if (position.getX() > getX() && position.getY() < getY()){
+        } else if (position.getX() > getX() && position.getY() < getY()) {
             return new XY(getX() - 1, getY() + 1);
-        }else if (position.getX() > getX() && position.getY() == getY()){
+        } else if (position.getX() > getX() && position.getY() == getY()) {
             return new XY(getX() - 1, getY());
-        }else if(position.getX() < getX() && position.getY() > getY()){
+        } else if (position.getX() < getX() && position.getY() > getY()) {
             return new XY(getX() + 1, getY() - 1);
-        }else if (position.getX() < getX() && position.getY() < getY()){
+        } else if (position.getX() < getX() && position.getY() < getY()) {
             return new XY(getX() + 1, getY() + 1);
-        }else if (position.getX() < getX() && position.getY() == getY()){
+        } else if (position.getX() < getX() && position.getY() == getY()) {
             return new XY(getX() + 1, getY());
-        }else if (position.getX() == getX() && position.getY() > getY()){
+        } else if (position.getX() == getX() && position.getY() > getY()) {
             return new XY(getX(), getY() - 1);
-        }else if (position.getX() == getX() && position.getY() < getY()){
+        } else if (position.getX() == getX() && position.getY() < getY()) {
             return new XY(getX(), getY() + 1);
-        }else if (position.getX() == getX() && position.getY() == getY()){
+        } else if (position.getX() == getX() && position.getY() == getY()) {
             return new XY(getX(), getY());
         }
         return this;
     }
 
-    public XY chaseEntity(XY position){
-        if(position.getX() > getX() && position.getY() > getY()){
+    public XY chaseEntity(XY position) {
+        if (position.getX() > getX() && position.getY() > getY()) {
             return new XY(getX() + 1, getY() + 1);
-        }else if (position.getX() > getX() && position.getY() < getY()){
+        } else if (position.getX() > getX() && position.getY() < getY()) {
             return new XY(getX() + 1, getY() - 1);
-        }else if (position.getX() > getX() && position.getY() == getY()){
+        } else if (position.getX() > getX() && position.getY() == getY()) {
             return new XY(getX() + 1, getY());
-        }else if(position.getX() < getX() && position.getY() > getY()){
+        } else if (position.getX() < getX() && position.getY() > getY()) {
             return new XY(getX() - 1, getY() + 1);
-        }else if (position.getX() < getX() && position.getY() < getY()){
+        } else if (position.getX() < getX() && position.getY() < getY()) {
             return new XY(getX() - 1, getY() - 1);
-        }else if (position.getX() < getX() && position.getY() == getY()){
+        } else if (position.getX() < getX() && position.getY() == getY()) {
             return new XY(getX() - 1, getY());
-        }else if (position.getX() == getX() && position.getY() > getY()){
+        } else if (position.getX() == getX() && position.getY() > getY()) {
             return new XY(getX(), getY() + 1);
-        }else if (position.getX() == getX() && position.getY() < getY()){
+        } else if (position.getX() == getX() && position.getY() < getY()) {
             return new XY(getX(), getY() - 1);
-        }else if (position.getX() == getX() && position.getY() == getY()){
+        } else if (position.getX() == getX() && position.getY() == getY()) {
             return new XY(getX(), getY());
         }
         return this;
