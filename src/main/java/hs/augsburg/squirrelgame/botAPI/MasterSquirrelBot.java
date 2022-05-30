@@ -3,6 +3,7 @@ package hs.augsburg.squirrelgame.botAPI;
 import hs.augsburg.squirrelgame.botAPI.exception.OutOfViewException;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
+import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.util.Direction;
 import hs.augsburg.squirrelgame.util.XY;
@@ -48,7 +49,7 @@ public class MasterSquirrelBot extends MasterSquirrel{
         }
 
         @Override
-        public Entity getEntity(hs.augsburg.squirrelgame.util.XY xy) {
+        public EntityType getEntityAt(hs.augsburg.squirrelgame.util.XY xy) {
             XY viewUpperRight = getViewUpperRight();
             XY viewLowerLeft = getViewLowerLeft();
             if(xy.getX() > viewUpperRight.getX() || xy.getX() < viewLowerLeft.getX()){
@@ -56,7 +57,7 @@ public class MasterSquirrelBot extends MasterSquirrel{
             }else if (xy.getY() > viewLowerLeft.getY() || xy.getY() < viewUpperRight.getY()){
                 throw new OutOfViewException();
             }
-            return entityContext.getEntity(xy);
+            return entityContext.getEntity(xy).getEntityType();
         }
 
         @Override
@@ -87,8 +88,28 @@ public class MasterSquirrelBot extends MasterSquirrel{
         }
 
         @Override
-        public Direction getMasterSquirrelDirection() {
+        public Direction directionOfMaster() {
             return null;
+        }
+
+        @Override
+        public Entity getEntity() {
+            return MasterSquirrelBot.this;
+        }
+
+        @Override
+        public boolean isMine(hs.augsburg.squirrelgame.util.XY xy) {
+            return false;
+        }
+
+        @Override
+        public int getEnergy() {
+            return MasterSquirrelBot.this.getEnergy();
+        }
+
+        @Override
+        public long getRemainingSteps() {
+            return 0;
         }
     }
 }

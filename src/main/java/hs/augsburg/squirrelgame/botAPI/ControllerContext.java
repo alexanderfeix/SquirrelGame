@@ -8,11 +8,16 @@ import hs.augsburg.squirrelgame.util.XY;
 public interface ControllerContext {
     XY getViewLowerLeft();
     XY getViewUpperRight();
-    Entity getEntity(XY xy);
+    EntityType getEntityAt(XY xy);
     void move(XY direction);
     void spawnMiniBot(XY position, int energy);
     XY locate();
     void implode(int implodeRadius);
-    Direction getMasterSquirrelDirection();
+    Direction directionOfMaster();
+    Entity getEntity();
+    boolean isMine(XY xy);
+    int getEnergy();
+    long getRemainingSteps();
+
 
 }

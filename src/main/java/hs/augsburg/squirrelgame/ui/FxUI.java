@@ -11,7 +11,6 @@ import hs.augsburg.squirrelgame.util.Direction;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
@@ -142,7 +141,7 @@ public class FxUI implements UI{
     public GridPane getGameBoardPane() {
         if(gameBoardPane == null){
             gameBoardPane = new GridPane();
-            Launcher.getRootPane().setOnKeyPressed(new GUIKeyListener());
+            Launcher.getRootPane().setOnKeyPressed(new GUIKeyPressedListener());
             styleGameBoardPane();
         }
         return gameBoardPane;

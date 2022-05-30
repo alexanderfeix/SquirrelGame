@@ -1,6 +1,5 @@
 package hs.augsburg.squirrelgame.botAPI;
 
-import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.util.MathUtils;
 import hs.augsburg.squirrelgame.util.XY;
@@ -14,16 +13,15 @@ public class BotControllerMini implements BotController{
         XY viewUpperRight = controllerContext.getViewUpperRight();
 
         double shortestEnemyDistance = Double.MAX_VALUE;
-        Entity shortestEnemy = null;
+        XY enemyPosition = null;
         double shortestFriendDistance = Double.MAX_VALUE;
-        Entity shortestFriend = null;
+        XY friendPosition = null;
 
-        Entity miniSquirrel;
-        if(controllerContext.getEntity(position) != null){
-            miniSquirrel = controllerContext.getEntity(position);
-            miniSquirrel.updateEnergy(-1);
-            if (miniSquirrel.getEnergy() <= 0) {
-                miniSquirrel.setAlive(false);
+        if(controllerContext.getEntity() != null){
+            MiniSquirrelBot miniSquirrelBot = (MiniSquirrelBot) controllerContext.getEntity();
+            miniSquirrelBot.updateEnergy(-1);
+            if (miniSquirrelBot.getEnergy() <= 0) {
+                miniSquirrelBot.setAlive(false);
             }
         }
 
@@ -31,27 +29,27 @@ public class BotControllerMini implements BotController{
             for(int row = viewUpperRight.getY(); row < viewLowerLeft.getY(); row++){
                 try {
                     XY currentPosition = new XY(col, row);
-                    Entity entity = controllerContext.getEntity(currentPosition);
-                    if(entity.getEntityType() == EntityType.BAD_BEAST || entity.getEntityType() == EntityType.BAD_PLANT || entity.getEntityType() == EntityType.WALL){
-                        double distance = MathUtils.getDistanceFromTwoPoints(entity.getPosition().getX(), entity.getPosition().getY(), position.getX(), position.getY());
+                    EntityType entityType = controllerContext.getEntityAt(currentPosition);
+                    if(entityType == EntityType.BAD_BEAST || entityType == EntityType.BAD_PLANT || entityType == EntityType.WALL){
+                        double distance = MathUtils.getDistanceFromTwoPoints(currentPosition.getX(), currentPosition.getY(), position.getX(), position.getY());
                         if(distance < shortestEnemyDistance){
                             shortestEnemyDistance = distance;
-                            shortestEnemy = entity;
+                            enemyPosition = currentPosition;
                         }
-                    }else if(entity.getEntityType() == EntityType.GOOD_BEAST || entity.getEntityType() == EntityType.GOOD_PLANT){
-                        double distance = MathUtils.getDistanceFromTwoPoints(entity.getPosition().getX(), entity.getPosition().getY(), position.getX(), position.getY());
+                    }else if(entityType == EntityType.GOOD_BEAST || entityType == EntityType.GOOD_PLANT){
+                        double distance = MathUtils.getDistanceFromTwoPoints(currentPosition.getX(), currentPosition.getY(), position.getX(), position.getY());
                         if(distance < shortestFriendDistance){
                             shortestFriendDistance = distance;
-                            shortestFriend = entity;
+                            friendPosition = currentPosition;
                         }
                     }
                 }catch (Exception ignored){}
             }
         }
         if(shortestEnemyDistance < shortestFriendDistance){
-            controllerContext.move(position.escapeFromEntity(shortestEnemy));
+            controllerContext.move(position.escapeFromEntity(enemyPosition));
         }else if (shortestEnemyDistance > shortestFriendDistance){
-            controllerContext.move(position.chaseEntity(shortestFriend));
+            controllerContext.move(position.chaseEntity(friendPosition));
         }else{
             controllerContext.move(position.getRandomNearbyPosition());
         }
