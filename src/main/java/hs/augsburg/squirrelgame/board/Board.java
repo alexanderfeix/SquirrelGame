@@ -1,5 +1,6 @@
 package hs.augsburg.squirrelgame.board;
 
+import hs.augsburg.squirrelgame.botAPI.MasterSquirrelBot;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.entity.EntityType;
@@ -103,6 +104,16 @@ public class Board {
             }
         }
         System.out.println("\n----------\n");
+    }
+
+    public void spawnBots(){
+        for(int i = 0; i < BoardConfig.MASTER_SQUIRREL_BOTS_SPAWN_RATE; i++){
+            MasterSquirrelBot masterSquirrelBot = new MasterSquirrelBot(new XY(0,0).getUtils().getRandomPosition());
+            getEntitySet().addEntity(masterSquirrelBot);
+        }
+        for(int i = 0; i < BoardConfig.MINI_SQUIRREL_BOTS_SPAWN_RATE; i++){
+            //TODO: Spawn mini squirrels, but from which master squirrel?
+        }
     }
 
     public EntitySet getEntitySet() {

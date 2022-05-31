@@ -3,13 +3,14 @@ package hs.augsburg.squirrelgame.entity.beast;
 import hs.augsburg.squirrelgame.entity.*;
 import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.util.XY;
+import hs.augsburg.squirrelgame.util.XY;
 
 public class BadBeast extends MovableEntity {
 
     private static final int startEnergy = -150;
     private int bites = 0;
 
-    public BadBeast(hs.augsburg.squirrelgame.util.XY position) {
+    public BadBeast(XY position) {
         super(EntityType.BAD_BEAST, position, startEnergy);
         setEntity(this);
     }
@@ -31,13 +32,13 @@ public class BadBeast extends MovableEntity {
             enemy.updateEnergy(getEnergy());
             if (bites >= 7) {
                 bites = 0;
-                updatePosition(getPosition().getRandomPosition());
+                updatePosition(getPosition().getUtils().getRandomPosition());
             }
         }
     }
 
 
-    private hs.augsburg.squirrelgame.util.XY checkNearbyRadius(EntityContext entityContext, Entity entity) {
+    private XY checkNearbyRadius(EntityContext entityContext, Entity entity) {
         XY position = entity.getPosition();
         if (entityContext.getNearbySquirrelPosition(entity) != null) {
             XY enemyPosition = entityContext.getNearbySquirrelPosition(entity);
@@ -67,7 +68,7 @@ public class BadBeast extends MovableEntity {
                 return new XY(position.getX() - 1, position.getY());
             }
         }
-        return position.getRandomNearbyPosition();
+        return position.getUtils().getRandomNearbyPosition();
     }
 
     @Override
@@ -81,12 +82,12 @@ public class BadBeast extends MovableEntity {
     }
 
     @Override
-    public hs.augsburg.squirrelgame.util.XY getNearbySquirrelPosition(Entity entity) {
+    public XY getNearbySquirrelPosition(Entity entity) {
         return null;
     }
 
     @Override
-    public Entity getEntity(hs.augsburg.squirrelgame.util.XY position) {
+    public Entity getEntity(XY position) {
         return null;
     }
 

@@ -5,6 +5,7 @@ import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.entity.beast.BadBeast;
 import hs.augsburg.squirrelgame.util.XY;
+import hs.augsburg.squirrelgame.util.XY;
 
 public class MasterSquirrel extends Entity {
     //MasterSquirrel is actually a movable entity but can't implement the move() method, because move() provides
@@ -12,7 +13,7 @@ public class MasterSquirrel extends Entity {
 
     private static final int startEnergy = 500;
 
-    public MasterSquirrel(hs.augsburg.squirrelgame.util.XY position) {
+    public MasterSquirrel(XY position) {
         super(EntityType.MASTER_SQUIRREL, position, startEnergy);
         setEntity(this);
     }
@@ -33,14 +34,14 @@ public class MasterSquirrel extends Entity {
             updateEnergy(enemy.getEnergy());
             XY currentPosition = enemy.getPosition();
             while (currentPosition == enemy.getPosition()) {
-                enemy.updatePosition(enemy.getPosition().getRandomPosition());
+                enemy.updatePosition(enemy.getPosition().getUtils().getRandomPosition());
             }
             updatePosition(currentPosition);
         } else if (enemy.getEntityType() == EntityType.GOOD_BEAST) {
             updateEnergy(enemy.getEnergy());
             XY currentPosition = enemy.getPosition();
             while (currentPosition == enemy.getPosition()) {
-                enemy.updatePosition(enemy.getPosition().getRandomPosition());
+                enemy.updatePosition(enemy.getPosition().getUtils().getRandomPosition());
             }
             updatePosition(currentPosition);
         }else if (enemy.getEntityType() == EntityType.BAD_BEAST){
@@ -49,7 +50,7 @@ public class MasterSquirrel extends Entity {
             if(badBeast.getBites() >= 7){
                 XY currentPosition = enemy.getPosition();
                 while (currentPosition == enemy.getPosition()) {
-                    enemy.updatePosition(enemy.getPosition().getRandomPosition());
+                    enemy.updatePosition(enemy.getPosition().getUtils().getRandomPosition());
                 }
                 updatePosition(currentPosition);
                 badBeast.setBites(0);

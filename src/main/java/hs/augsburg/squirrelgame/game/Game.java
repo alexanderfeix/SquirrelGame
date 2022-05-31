@@ -22,6 +22,8 @@ public abstract class Game {
      * This method is the game loop
      */
     public void run() {
+        System.out.println(getGameMode());
+        if(getGameMode() == GameMode.BOT_GUI) getState().getBoard().spawnBots();
         while (true) {
             if(!PAUSE_MODE){
                 render();
@@ -71,6 +73,8 @@ public abstract class Game {
         if(FPS_MODE){
             try {
                 if(getGameMode().equals(GameMode.SINGLEPLAYER_GUI)){
+                    Thread.sleep(1000/FPS);
+                }else if (getGameMode().equals(GameMode.BOT_GUI)){
                     Thread.sleep(1000/FPS);
                 }else{
                     Thread.sleep(1000/FPS * DELAY_MULTIPLY_FACTOR_CONSOLE);

@@ -11,6 +11,7 @@ import hs.augsburg.squirrelgame.entity.squirrel.HandOperatedMasterSquirrel;
 import hs.augsburg.squirrelgame.entity.squirrel.MiniSquirrel;
 import hs.augsburg.squirrelgame.util.Direction;
 import hs.augsburg.squirrelgame.util.XY;
+import hs.augsburg.squirrelgame.util.XY;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -29,7 +30,7 @@ public class CollisionTest {
         HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2, 1));
         entitySet.addEntity(masterSquirrel);
         int energyBeforeCollision = masterSquirrel.getEnergy();
-        board.getFlattenedBoard().move(masterSquirrel, masterSquirrel.getPosition().getRandomNearbyPosition(Direction.UP));
+        board.getFlattenedBoard().move(masterSquirrel, masterSquirrel.getPosition().plus(XY.UP));
         assertEquals(masterSquirrel.getEnergy(), energyBeforeCollision - 30);
     }
 
@@ -44,7 +45,7 @@ public class CollisionTest {
         int squirrelEnergyBeforeCollision = masterSquirrel.getEnergy();
         int badBeastEnergyBeforeCollision = badBeast.getEnergy();
         XY beastPositionBeforeCollision = badBeast.getPosition();
-        board.getFlattenedBoard().move(masterSquirrel, masterSquirrel.getPosition().getRandomNearbyPosition(Direction.LEFT));
+        board.getFlattenedBoard().move(masterSquirrel, masterSquirrel.getPosition().plus(XY.LEFT));
         assertEquals(squirrelEnergyBeforeCollision + badBeastEnergyBeforeCollision, masterSquirrel.getEnergy());
         assertNotEquals(badBeast.getPosition(), beastPositionBeforeCollision);
     }
@@ -60,7 +61,7 @@ public class CollisionTest {
         int squirrelEnergyBeforeCollision = masterSquirrel.getEnergy();
         int goodBeastEnergyBeforeCollision = goodBeast.getEnergy();
         XY beastPositionBeforeCollision = goodBeast.getPosition();
-        board.getFlattenedBoard().move(masterSquirrel, masterSquirrel.getPosition().getRandomNearbyPosition(Direction.DOWN));
+        board.getFlattenedBoard().move(masterSquirrel, masterSquirrel.getPosition().plus(XY.DOWN));
         assertEquals(squirrelEnergyBeforeCollision + goodBeastEnergyBeforeCollision, masterSquirrel.getEnergy());
         assertNotEquals(goodBeast.getPosition(), beastPositionBeforeCollision);
     }
@@ -76,7 +77,7 @@ public class CollisionTest {
         int squirrelEnergyBeforeCollision = masterSquirrel.getEnergy();
         int goodPlantEnergyBeforeCollision = goodPlant.getEnergy();
         XY plantPositionBeforeCollision = goodPlant.getPosition();
-        board.getFlattenedBoard().move(masterSquirrel, masterSquirrel.getPosition().getRandomNearbyPosition(Direction.LEFT));
+        board.getFlattenedBoard().move(masterSquirrel, masterSquirrel.getPosition().plus(XY.LEFT));
         assertEquals(squirrelEnergyBeforeCollision + goodPlantEnergyBeforeCollision, masterSquirrel.getEnergy());
         assertNotEquals(goodPlant.getPosition(), plantPositionBeforeCollision);
     }
@@ -92,7 +93,7 @@ public class CollisionTest {
         int squirrelEnergyBeforeCollision = masterSquirrel.getEnergy();
         int badPlantEnergyBeforeCollision = badPlant.getEnergy();
         XY plantPositionBeforeCollision = badPlant.getPosition();
-        board.getFlattenedBoard().move(masterSquirrel, masterSquirrel.getPosition().getRandomNearbyPosition(Direction.RIGHT));
+        board.getFlattenedBoard().move(masterSquirrel, masterSquirrel.getPosition().plus(XY.RIGHT));
         assertEquals(squirrelEnergyBeforeCollision + badPlantEnergyBeforeCollision, masterSquirrel.getEnergy());
         assertNotEquals(badPlant.getPosition(), plantPositionBeforeCollision);
     }
@@ -107,7 +108,7 @@ public class CollisionTest {
         board.flatten();
         int squirrelEnergyBeforeCollision = masterSquirrel.getEnergy();
         int miniSquirrelEnergyBeforeCollision = miniSquirrel.getEnergy();
-        board.getFlattenedBoard().move(masterSquirrel, masterSquirrel.getPosition().getRandomNearbyPosition(Direction.RIGHT));
+        board.getFlattenedBoard().move(masterSquirrel, masterSquirrel.getPosition().plus(XY.RIGHT));
         assertEquals(squirrelEnergyBeforeCollision + miniSquirrelEnergyBeforeCollision, masterSquirrel.getEnergy());
         assertFalse(miniSquirrel.isAlive());
     }

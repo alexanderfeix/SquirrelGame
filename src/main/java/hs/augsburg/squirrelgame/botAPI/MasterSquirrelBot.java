@@ -1,21 +1,19 @@
 package hs.augsburg.squirrelgame.botAPI;
 
 import hs.augsburg.squirrelgame.botAPI.exception.OutOfViewException;
-import hs.augsburg.squirrelgame.botAPI.exception.SpawnException;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.util.Direction;
 import hs.augsburg.squirrelgame.util.XY;
-import hs.augsburg.squirrelgame.util.XYBot;
 import hs.augsburg.squirrelgame.util.exception.NotEnoughEnergyException;
 
 public class MasterSquirrelBot extends MasterSquirrel{
 
     private final BotControllerFactory botControllerFactory;
 
-    public MasterSquirrelBot(hs.augsburg.squirrelgame.util.XY position) {
+    public MasterSquirrelBot(XY position) {
         super(position);
         this.botControllerFactory = new BotControllerFactoryImpl();
 
@@ -37,23 +35,23 @@ public class MasterSquirrelBot extends MasterSquirrel{
         }
 
         @Override
-        public hs.augsburg.squirrelgame.util.XYBot getViewLowerLeft() {
+        public hs.augsburg.squirrelgame.util.XY getViewLowerLeft() {
             int y = getPosition().getY() + 15;
             int x = getPosition().getX() - 15;
-            return new XYBot(x, y);
+            return new XY(x, y);
         }
 
         @Override
-        public hs.augsburg.squirrelgame.util.XYBot getViewUpperRight() {
+        public hs.augsburg.squirrelgame.util.XY getViewUpperRight() {
             int y = getPosition().getY() - 15;
             int x = getPosition().getX() + 15;
-            return new XYBot(x, y);
+            return new XY(x, y);
         }
 
         @Override
-        public EntityType getEntityAt(hs.augsburg.squirrelgame.util.XYBot xy) {
-            XYBot viewUpperRight = getViewUpperRight();
-            XYBot viewLowerLeft = getViewLowerLeft();
+        public EntityType getEntityAt(hs.augsburg.squirrelgame.util.XY xy) {
+            hs.augsburg.squirrelgame.util.XY viewUpperRight = getViewUpperRight();
+            hs.augsburg.squirrelgame.util.XY viewLowerLeft = getViewLowerLeft();
             if(xy.getX() > viewUpperRight.getX() || xy.getX() < viewLowerLeft.getX()){
                 throw new OutOfViewException();
             }else if (xy.getY() > viewLowerLeft.getY() || xy.getY() < viewUpperRight.getY()){
@@ -63,27 +61,26 @@ public class MasterSquirrelBot extends MasterSquirrel{
         }
 
         @Override
-        public void move(hs.augsburg.squirrelgame.util.XYBot direction) {
+        public void move(hs.augsburg.squirrelgame.util.XY direction) {
             entityContext.move(MasterSquirrelBot.this, direction);
         }
 
         @Override
-
-        public void spawnMiniBot(hs.augsburg.squirrelgame.util.XYBot position, int energy) {
-            MiniSquirrelBot miniSquirrelBot = (MiniSquirrelBot) createMiniSquirrel(position.getRandomNearbyPosition(), energy);
+        public void spawnMiniBot(hs.augsburg.squirrelgame.util.XY position, int energy) {
+            if(energy < 100){
+                throw new NotEnoughEnergyException();
+            }
+            MiniSquirrelBot miniSquirrelBot = (MiniSquirrelBot) createMiniSquirrel(position.getUtils().getRandomNearbyPosition(), energy);
             if(miniSquirrelBot != null){
-                if(energy < 100 || position == null || MasterSquirrelBot.this.getPosition() == miniSquirrelBot.getPosition()){
-                    throw new SpawnException();
-                }
                 miniSquirrelBot.setMasterSquirrelId(getId());
                 miniSquirrelBot.setMasterSquirrel(MasterSquirrelBot.this);
             }
         }
 
         @Override
-        public hs.augsburg.squirrelgame.util.XYBot locate() {
+        public hs.augsburg.squirrelgame.util.XY locate() {
             XY position =  MasterSquirrelBot.this.getPosition();
-            return new XYBot(position.getX(), position.getY());
+            return new XY(position.getX(), position.getY());
         }
 
         @Override
@@ -102,7 +99,7 @@ public class MasterSquirrelBot extends MasterSquirrel{
         }
 
         @Override
-        public boolean isMine(hs.augsburg.squirrelgame.util.XYBot xy) {
+        public boolean isMine(hs.augsburg.squirrelgame.util.XY xy) {
             return false;
         }
 

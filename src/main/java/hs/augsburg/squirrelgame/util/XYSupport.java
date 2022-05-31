@@ -4,79 +4,80 @@ import hs.augsburg.squirrelgame.board.BoardConfig;
 
 import java.util.Random;
 
-public class XYBotSupport extends XYBot{
+public class XYSupport extends XY{
 
-    public XYBotSupport(int posX, int posY) {
+
+    public XYSupport(int posX, int posY) {
         super(posX, posY);
     }
 
-    public XYBot escapeFromEntity(XY position) {
+    public XY escapeFromEntity(XY position) {
         if (position.getX() > getX() && position.getY() > getY()) {
-            return new XYBot(getX() - 1, getY() - 1);
+            return this.plus(XY.LEFT_UP);
         } else if (position.getX() > getX() && position.getY() < getY()) {
-            return new XYBot(getX() - 1, getY() + 1);
+            return this.plus(XY.LEFT_DOWN);
         } else if (position.getX() > getX() && position.getY() == getY()) {
-            return new XYBot(getX() - 1, getY());
+            return this.plus(XY.LEFT);
         } else if (position.getX() < getX() && position.getY() > getY()) {
-            return new XYBot(getX() + 1, getY() - 1);
+            return this.plus(XY.RIGHT_UP);
         } else if (position.getX() < getX() && position.getY() < getY()) {
-            return new XYBot(getX() + 1, getY() + 1);
+            return this.plus(XY.RIGHT_DOWN);
         } else if (position.getX() < getX() && position.getY() == getY()) {
-            return new XYBot(getX() + 1, getY());
+            return this.plus(XY.RIGHT);
         } else if (position.getX() == getX() && position.getY() > getY()) {
-            return new XYBot(getX(), getY() - 1);
+            return this.plus(XY.UP);
         } else if (position.getX() == getX() && position.getY() < getY()) {
-            return new XYBot(getX(), getY() + 1);
+            return this.plus(XY.DOWN);
         } else if (position.getX() == getX() && position.getY() == getY()) {
-            return new XYBot(getX(), getY());
+            return this;
         }
         return this;
     }
 
-    public XYBot chaseEntity(XY position) {
+    public XY chaseEntity(XY position) {
         if (position.getX() > getX() && position.getY() > getY()) {
-            return new XYBot(getX() + 1, getY() + 1);
+            return this.plus(XY.RIGHT_DOWN);
         } else if (position.getX() > getX() && position.getY() < getY()) {
-            return new XYBot(getX() + 1, getY() - 1);
+            return this.plus(XY.RIGHT_UP);
         } else if (position.getX() > getX() && position.getY() == getY()) {
-            return new XYBot(getX() + 1, getY());
+            return this.plus(XY.RIGHT);
         } else if (position.getX() < getX() && position.getY() > getY()) {
-            return new XYBot(getX() - 1, getY() + 1);
+            return this.plus(XY.LEFT_DOWN);
         } else if (position.getX() < getX() && position.getY() < getY()) {
-            return new XYBot(getX() - 1, getY() - 1);
+            return this.plus(XY.LEFT_UP);
         } else if (position.getX() < getX() && position.getY() == getY()) {
-            return new XYBot(getX() - 1, getY());
+            return this.plus(XY.LEFT);
         } else if (position.getX() == getX() && position.getY() > getY()) {
-            return new XYBot(getX(), getY() + 1);
+            return this.plus(XY.DOWN);
         } else if (position.getX() == getX() && position.getY() < getY()) {
-            return new XYBot(getX(), getY() - 1);
+            return this.plus(XY.UP);
         } else if (position.getX() == getX() && position.getY() == getY()) {
-            return new XYBot(getX(), getY());
+            return this;
         }
         return this;
     }
 
-    public XYBot getRandomNearbyPosition() {
+    public XY getRandomNearbyPosition() {
         Random random = new Random();
         int directionInt = random.nextInt(8);
-        XYBot newPosition = null;
+        XY newPosition = null;
         switch (directionInt) {
             case 0 -> //Move left-up
-                    newPosition = new XYBot(getX() - 1, getY() - 1);
+                    newPosition = this.plus(XY.LEFT_UP);
             case 1 -> //Move up
-                    newPosition = new XYBot(getX(), getY() - 1);
+                    newPosition = this.plus(XY.UP);
             case 2 -> //Move right-up
-                    newPosition = new XYBot(getX() + 1, getY() - 1);
+                    newPosition = this.plus(XY.RIGHT_UP);
             case 3 -> //Move right
-                    newPosition = new XYBot(getX() + 1, getY());
+                    newPosition = this.plus(XY.RIGHT);
             case 4 -> //Move right-down
-                    newPosition = new XYBot(getX() + 1, getY() + 1);
+                    newPosition = this.plus(XY.RIGHT_DOWN);
             case 5 -> //Move down
-                    newPosition = new XYBot(getX(), getY() + 1);
+                    newPosition = this.plus(XY.DOWN);
             case 6 -> //Move left-down
-                    newPosition = new XYBot(getX() - 1, getY() + 1);
+                    newPosition = this.plus(XY.LEFT_DOWN);
             case 7 -> //Move left
-                    newPosition = new XYBot(getX() - 1, getY());
+                    newPosition = this.plus(XY.LEFT);
             default -> throw new IllegalStateException("Unexpected value: " + directionInt);
         }
         if (newPosition.getX() >= BoardConfig.COLUMNS || newPosition.getX() < 0
@@ -84,6 +85,13 @@ public class XYBotSupport extends XYBot{
             return getRandomNearbyPosition();
         }
         return newPosition;
+    }
+
+    public XY getRandomPosition() {
+        Random random = new Random();
+        int spawnX = random.nextInt(BoardConfig.COLUMNS - 2) + 1;
+        int spawnY = random.nextInt(BoardConfig.ROWS - 2) + 1;
+        return new XY(spawnX, spawnY);
     }
 
 }
