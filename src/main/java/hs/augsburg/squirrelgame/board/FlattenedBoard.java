@@ -66,12 +66,12 @@ public class FlattenedBoard implements BoardView, EntityContext{
         if (energy < 100) {
             throw new RuntimeException("Energy to create a new mini squirrel must be over a hundred!");
         } else {
-            MiniSquirrel miniSquirrel = new MiniSquirrelBot(masterSquirrel.getPosition().getRandomNearbyPosition(), energy);
+            MiniSquirrel miniSquirrel = new MiniSquirrelBot(masterSquirrel.getPosition().getUtils().getRandomNearbyPosition(), energy);
             miniSquirrel.setMasterSquirrelId(masterSquirrel.getId());
             miniSquirrel.setMasterSquirrel(masterSquirrel);
             masterSquirrel.updateEnergy(-energy);
             while(getEntity(miniSquirrel.getPosition().getX(), miniSquirrel.getPosition().getY()) != null){
-                miniSquirrel.updatePosition(masterSquirrel.getPosition().getRandomNearbyPosition());
+                miniSquirrel.updatePosition(masterSquirrel.getPosition().getUtils().getRandomNearbyPosition());
             }
             getBoard().getEntitySet().addEntity(miniSquirrel);
         }
@@ -153,7 +153,7 @@ public class FlattenedBoard implements BoardView, EntityContext{
                 if(hashedEntities.containsKey(entity.getPosition().toString())){
                     if(entity.getEntityType() == EntityType.GOOD_PLANT || entity.getEntityType() != EntityType.BAD_PLANT
                     || entity.getEntityType() == EntityType.GOOD_BEAST || entity.getEntityType() == EntityType.BAD_BEAST){
-                        entity.updatePosition(entity.getPosition().getRandomNearbyPosition());
+                        entity.updatePosition(entity.getPosition().getUtils().getRandomNearbyPosition());
                         setOverlapping(true);
                     }
                 }else{

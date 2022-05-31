@@ -31,9 +31,11 @@ public class Launcher extends Application {
     private static void setupGame(State state, String[] args){
         if(args.length > 0){
             if (args[0].equalsIgnoreCase(GameMode.SINGLEPLAYER_GUI.toString())) {
-                setupGUI(state, args);
+                setupSingleplayerGUI(state, args);
             }else if(args[0].equalsIgnoreCase(GameMode.SINGLEPLAYER_CONSOLE.toString())){
                 setupConsole(state);
+            }else if (args[0].equalsIgnoreCase(GameMode.BOT_GUI.toString())){
+                setupBotGUI(state, args);
             }else{
                 throw new RuntimeException("Can not interpret gameMode. Please correct your arguments!");
             }
@@ -42,19 +44,28 @@ public class Launcher extends Application {
         }
     }
 
-    private static void setupGUI(State state, String[] args){
+    private static void setupSingleplayerGUI(State state, String[] args){
         fxUI = new FxUI();
+        Game.setGameMode(GameMode.SINGLEPLAYER_GUI);
         controller = new GameImpl(state, fxUI);
         fxUI.setController(controller);
-        Game.setGameMode(GameMode.SINGLEPLAYER_GUI);
+        startGame(controller);
+        launch(args);
+    }
+
+    private static void setupBotGUI(State state, String[] args){
+        fxUI = new FxUI();
+        Game.setGameMode(GameMode.BOT_GUI);
+        controller = new GameImpl(state, fxUI);
+        fxUI.setController(controller);
         startGame(controller);
         launch(args);
     }
 
     private static void setupConsole(State state){
         consoleUI = new ConsoleUI();
-        controller = new GameImpl(state, consoleUI);
         Game.setGameMode(GameMode.SINGLEPLAYER_CONSOLE);
+        controller = new GameImpl(state, consoleUI);
         startGame(controller);
     }
 

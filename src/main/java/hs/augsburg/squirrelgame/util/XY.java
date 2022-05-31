@@ -1,10 +1,17 @@
 package hs.augsburg.squirrelgame.util;
 
-import hs.augsburg.squirrelgame.board.BoardConfig;
-
-import java.util.Random;
 
 public class XY {
+
+    public static final XY ZERO_ZERO = new XY(0, 0);
+    public static final XY RIGHT = new XY(1, 0);
+    public static final XY LEFT = new XY(-1, 0);
+    public static final XY UP = new XY(0, -1);
+    public static final XY DOWN = new XY(0, 1);
+    public static final XY RIGHT_UP = new XY(1, -1);
+    public static final XY RIGHT_DOWN = new XY(1, 1);
+    public static final XY LEFT_UP = new XY(-1, -1);
+    public static final XY LEFT_DOWN = new XY(-1, 1);
 
     private final int x;
     private final int y;
@@ -14,113 +21,39 @@ public class XY {
         this.y = posY;
     }
 
-    /**
-     * @return a random position in the eight surrounding positions
-     */
-    public XY getRandomNearbyPosition(Direction direction) {
-        return switch (direction) {
-            case UP_LEFT -> //Move left-up
-                    new XY(getX() - 1, getY() - 1);
-            case UP -> //Move up
-                    new XY(getX(), getY() - 1);
-            case UP_RIGHT -> //Move right-up
-                    new XY(getX() + 1, getY() - 1);
-            case RIGHT -> //Move right
-                    new XY(getX() + 1, getY());
-            case DOWN_RIGHT -> //Move right-down
-                    new XY(getX() + 1, getY() + 1);
-            case DOWN -> //Move down
-                    new XY(getX(), getY() + 1);
-            case DOWN_LEFT -> //Move left-down
-                    new XY(getX() - 1, getY() + 1);
-            case LEFT -> //Move left
-                    new XY(getX() - 1, getY());
-        };
+    public XY plus(XY xy){
+        int newX = getX() + xy.getX();
+        int newY = getY() + xy.getY();
+        return new XY(newX, newY);
     }
 
-    public XY getRandomNearbyPosition() {
-        Random random = new Random();
-        int directionInt = random.nextInt(8);
-        XY newPosition = null;
-        switch (directionInt) {
-            case 0 -> //Move left-up
-                    newPosition = new XY(getX() - 1, getY() - 1);
-            case 1 -> //Move up
-                    newPosition = new XY(getX(), getY() - 1);
-            case 2 -> //Move right-up
-                    newPosition = new XY(getX() + 1, getY() - 1);
-            case 3 -> //Move right
-                    newPosition = new XY(getX() + 1, getY());
-            case 4 -> //Move right-down
-                    newPosition = new XY(getX() + 1, getY() + 1);
-            case 5 -> //Move down
-                    newPosition = new XY(getX(), getY() + 1);
-            case 6 -> //Move left-down
-                    newPosition = new XY(getX() - 1, getY() + 1);
-            case 7 -> //Move left
-                    newPosition = new XY(getX() - 1, getY());
-            default -> throw new IllegalStateException("Unexpected value: " + directionInt);
-        }
-        if (newPosition.getX() >= BoardConfig.COLUMNS || newPosition.getX() < 0
-                || newPosition.getY() >= BoardConfig.ROWS || newPosition.getY() < 0) {
-            return getRandomNearbyPosition();
-        }
-        return newPosition;
+    public XY minus(XY xy){
+        int newX = getX() - xy.getX();
+        int newY = getY() - xy.getY();
+        return new XY(newX, newY);
     }
 
-    public XY getRandomPosition() {
-        Random random = new Random();
-        int spawnX = random.nextInt(BoardConfig.COLUMNS - 2) + 1;
-        int spawnY = random.nextInt(BoardConfig.ROWS - 2) + 1;
-        return new XY(spawnX, spawnY);
+    public XY times(int factor){
+        int newX = getX() * factor;
+        int newY = getY() * factor;
+        return new XY(newX, newY);
     }
 
-    public XY escapeFromEntity(XY position) {
-        if (position.getX() > getX() && position.getY() > getY()) {
-            return new XY(getX() - 1, getY() - 1);
-        } else if (position.getX() > getX() && position.getY() < getY()) {
-            return new XY(getX() - 1, getY() + 1);
-        } else if (position.getX() > getX() && position.getY() == getY()) {
-            return new XY(getX() - 1, getY());
-        } else if (position.getX() < getX() && position.getY() > getY()) {
-            return new XY(getX() + 1, getY() - 1);
-        } else if (position.getX() < getX() && position.getY() < getY()) {
-            return new XY(getX() + 1, getY() + 1);
-        } else if (position.getX() < getX() && position.getY() == getY()) {
-            return new XY(getX() + 1, getY());
-        } else if (position.getX() == getX() && position.getY() > getY()) {
-            return new XY(getX(), getY() - 1);
-        } else if (position.getX() == getX() && position.getY() < getY()) {
-            return new XY(getX(), getY() + 1);
-        } else if (position.getX() == getX() && position.getY() == getY()) {
-            return new XY(getX(), getY());
-        }
-        return this;
+    public double length(){
+        return 0.;
     }
 
-    public XY chaseEntity(XY position) {
-        if (position.getX() > getX() && position.getY() > getY()) {
-            return new XY(getX() + 1, getY() + 1);
-        } else if (position.getX() > getX() && position.getY() < getY()) {
-            return new XY(getX() + 1, getY() - 1);
-        } else if (position.getX() > getX() && position.getY() == getY()) {
-            return new XY(getX() + 1, getY());
-        } else if (position.getX() < getX() && position.getY() > getY()) {
-            return new XY(getX() - 1, getY() + 1);
-        } else if (position.getX() < getX() && position.getY() < getY()) {
-            return new XY(getX() - 1, getY() - 1);
-        } else if (position.getX() < getX() && position.getY() == getY()) {
-            return new XY(getX() - 1, getY());
-        } else if (position.getX() == getX() && position.getY() > getY()) {
-            return new XY(getX(), getY() + 1);
-        } else if (position.getX() == getX() && position.getY() < getY()) {
-            return new XY(getX(), getY() - 1);
-        } else if (position.getX() == getX() && position.getY() == getY()) {
-            return new XY(getX(), getY());
-        }
-        return this;
+    public double distanceFrom(XY xy){
+        int xDiff = Math.abs(xy.getX() - getX());
+        int yDiff = Math.abs(xy.getY() - getY());
+        return Math.pow(xDiff, 2) + Math.pow(yDiff, 2);
     }
 
+    public XYSupport getUtils(){
+        return new XYSupport(getX(), getY());
+    }
+
+    @Override
     public String toString() {
         return getX() + ", " + getY();
     }
