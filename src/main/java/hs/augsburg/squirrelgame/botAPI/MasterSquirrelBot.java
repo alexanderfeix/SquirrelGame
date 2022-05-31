@@ -1,7 +1,7 @@
 package hs.augsburg.squirrelgame.botAPI;
 
+import hs.augsburg.squirrelgame.board.BoardConfig;
 import hs.augsburg.squirrelgame.botAPI.exception.OutOfViewException;
-import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
@@ -9,21 +9,43 @@ import hs.augsburg.squirrelgame.util.Direction;
 import hs.augsburg.squirrelgame.util.XY;
 import hs.augsburg.squirrelgame.util.exception.NotEnoughEnergyException;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+
 public class MasterSquirrelBot extends MasterSquirrel{
 
-    private final BotControllerFactory botControllerFactory;
+    private final Class<? extends BotControllerFactory> botControllerFactory;
+    private final String name;
 
-    public MasterSquirrelBot(XY position) {
+    public MasterSquirrelBot(XY position, Class<? extends BotControllerFactory> factoryImpl, String name) {
         super(position);
-        this.botControllerFactory = new BotControllerFactoryImpl();
-
+        this.botControllerFactory = factoryImpl;
+        this.name = name;
     }
 
     @Override
     public void nextStep(EntityContext entityContext) {
         ControllerContext controllerContext = new ControllerContextImpl(entityContext);
-        BotController botController = botControllerFactory.createMasterBotController();
-        botController.nextStep(controllerContext);
+        try {
+            Object object = botControllerFactory.getDeclaredConstructor().newInstance();
+            Method method = botControllerFactory.getMethod("createMasterBotController");
+            BotController botController = (BotController) method.invoke(object);
+            botController.nextStep(controllerContext);
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        if(controllerContext.getRemainingSteps() <= 0){
+            ArrayList<Integer> highScores;
+            if(BoardConfig.HIGHSCORES.get(name) == null){
+                highScores = new ArrayList<>();
+            }else{
+                highScores = BoardConfig.HIGHSCORES.get(name);
+            }
+            highScores.add(controllerContext.getEnergy());
+            BoardConfig.HIGHSCORES.put(name, highScores);
+            System.out.println(highScores);
+        }
     }
 
     private class ControllerContextImpl implements ControllerContext{
@@ -94,11 +116,6 @@ public class MasterSquirrelBot extends MasterSquirrel{
         }
 
         @Override
-        public Entity getEntity() {
-            return MasterSquirrelBot.this;
-        }
-
-        @Override
         public boolean isMine(hs.augsburg.squirrelgame.util.XY xy) {
             return false;
         }
@@ -110,7 +127,7 @@ public class MasterSquirrelBot extends MasterSquirrel{
 
         @Override
         public long getRemainingSteps() {
-            return 0;
+            return BoardConfig.REMAINING_STEPS;
         }
     }
 }

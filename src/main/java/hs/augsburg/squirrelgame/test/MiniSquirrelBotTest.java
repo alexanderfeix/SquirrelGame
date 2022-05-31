@@ -1,6 +1,7 @@
 package hs.augsburg.squirrelgame.test;
 
 import hs.augsburg.squirrelgame.board.Board;
+import hs.augsburg.squirrelgame.botAPI.BotControllerFactoryImpl;
 import hs.augsburg.squirrelgame.botAPI.MasterSquirrelBot;
 import hs.augsburg.squirrelgame.botAPI.MiniSquirrelBot;
 import hs.augsburg.squirrelgame.entity.beast.GoodBeast;
@@ -19,7 +20,7 @@ public class MiniSquirrelBotTest {
     public void checkImplodeMethod(){
         State state = new State(new Board());
         Game game = new GameImpl(state, new ConsoleUI());
-        MasterSquirrelBot masterSquirrel = new MasterSquirrelBot(new XY(5,5));
+        MasterSquirrelBot masterSquirrel = new MasterSquirrelBot(new XY(5,5), BotControllerFactoryImpl.class, "Test");
 
         GoodBeast goodBeast = new GoodBeast(new XY(20,23));
         GoodPlant goodPlant = new GoodPlant(new XY(15, 20));

@@ -1,7 +1,11 @@
 package hs.augsburg.squirrelgame.board;
 
+import hs.augsburg.squirrelgame.botAPI.BotControllerFactory;
+import hs.augsburg.squirrelgame.botAPI.BotControllerFactoryImpl;
+import hs.augsburg.squirrelgame.botimpls.Group1101FactoryImpl;
 import hs.augsburg.squirrelgame.entity.EntityType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BoardConfig {
@@ -15,6 +19,15 @@ public class BoardConfig {
         put(EntityType.BAD_PLANT, 24*2);
         put(EntityType.WALL, 10*2);
     }};
-    public static int MASTER_SQUIRREL_BOTS_SPAWN_RATE = 4;
-    public static int MINI_SQUIRREL_BOTS_SPAWN_RATE = 4;
+
+    public static int STEPS = 20;
+    public static int REMAINING_STEPS = STEPS;
+    public static int CURRENT_ROUND = 1;
+
+    public static HashMap<String, Class<? extends BotControllerFactory>> MASTER_BOT_IMPLEMENTATIONS = new HashMap<>() {{
+        put("Group11_v0.1", BotControllerFactoryImpl.class);
+        put("LostBotv1", Group1101FactoryImpl.class);
+    }};
+
+    public static HashMap<String, ArrayList<Integer>> HIGHSCORES = new HashMap<>();
 }

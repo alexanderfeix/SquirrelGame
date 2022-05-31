@@ -14,7 +14,6 @@ public interface ControllerContext {
     XY locate();
     void implode(int implodeRadius);
     Direction directionOfMaster();
-    Entity getEntity();
     boolean isMine(XY xy);
     int getEnergy();
     long getRemainingSteps();

@@ -1,5 +1,6 @@
 package hs.augsburg.squirrelgame.botAPI;
 
+import hs.augsburg.squirrelgame.board.BoardConfig;
 import hs.augsburg.squirrelgame.botAPI.exception.ImpactRadiusOutOfBoundsException;
 import hs.augsburg.squirrelgame.botAPI.exception.OutOfViewException;
 import hs.augsburg.squirrelgame.entity.Entity;
@@ -146,11 +147,6 @@ public class MiniSquirrelBot extends MiniSquirrel{
         }
 
         @Override
-        public Entity getEntity() {
-            return MiniSquirrelBot.this;
-        }
-
-        @Override
         public boolean isMine(hs.augsburg.squirrelgame.util.XY xy) {
             hs.augsburg.squirrelgame.util.XY viewUpperRight = getViewUpperRight();
             hs.augsburg.squirrelgame.util.XY viewLowerLeft = getViewLowerLeft();
@@ -176,7 +172,7 @@ public class MiniSquirrelBot extends MiniSquirrel{
 
         @Override
         public long getRemainingSteps() {
-            return 0;
+            return BoardConfig.REMAINING_STEPS;
         }
 
         private void implodeHandling(Entity entity) {

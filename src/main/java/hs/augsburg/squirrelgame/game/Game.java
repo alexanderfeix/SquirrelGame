@@ -1,16 +1,21 @@
 package hs.augsburg.squirrelgame.game;
 
+import hs.augsburg.squirrelgame.board.Board;
+import hs.augsburg.squirrelgame.board.BoardConfig;
+import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.ui.UI;
+import javafx.application.Platform;
 
 public abstract class Game {
 
-    private final State state;
+    private State state;
     private static UI ui;
     public static final int FPS = 10;
     public static final int DELAY_MULTIPLY_FACTOR_CONSOLE = 10;
     public static boolean FPS_MODE = true;
     public static boolean PAUSE_MODE;
-    private static GameMode gameMode;
+    public static boolean RESET = false;
+    public static GameMode gameMode;
 
 
     public Game(State state, UI ui) {
@@ -22,9 +27,7 @@ public abstract class Game {
      * This method is the game loop
      */
     public void run() {
-        System.out.println(getGameMode());
-        if(getGameMode() == GameMode.BOT_GUI) getState().getBoard().spawnBots();
-        while (true) {
+        while (!RESET) {
             if(!PAUSE_MODE){
                 render();
                 sleep();
@@ -34,6 +37,18 @@ public abstract class Game {
                 processInput();
             }
         }
+    }
+
+    public void reset(){
+        Platform.runLater(() -> {
+            Launcher.getFxUI().switchPauseItems();
+            Launcher.getFxUI().showHighscoreMenu();
+        });
+        BoardConfig.CURRENT_ROUND++;
+        RESET = true;
+        state = new State(new Board());
+        RESET = false;
+        run();
     }
 
     /**

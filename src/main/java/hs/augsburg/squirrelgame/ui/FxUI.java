@@ -1,5 +1,7 @@
 package hs.augsburg.squirrelgame.ui;
 
+import hs.augsburg.squirrelgame.board.BoardConfig;
+import hs.augsburg.squirrelgame.botAPI.HighScore;
 import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.command.CommandScanner;
 import hs.augsburg.squirrelgame.command.GameCommandType;
@@ -9,10 +11,13 @@ import hs.augsburg.squirrelgame.game.GameImpl;
 import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.util.Direction;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -26,6 +31,7 @@ import javafx.stage.Stage;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 
 public class FxUI implements UI{
 
@@ -321,6 +327,31 @@ public class FxUI implements UI{
         stage.show();
     }
 
+    public void showHighscoreMenu(){
+        ObservableList<HighScore> data = FXCollections.observableArrayList();
+        for(int i = 0; i < BoardConfig.HIGHSCORES.size(); i++){
+            for(int j = 0; j < BoardConfig.HIGHSCORES.get((String) BoardConfig.HIGHSCORES.keySet().toArray()[i]).size(); j++){
+                HighScore highScore = new HighScore((String) BoardConfig.HIGHSCORES.keySet().toArray()[i], BoardConfig.CURRENT_ROUND, BoardConfig.HIGHSCORES.get(BoardConfig.HIGHSCORES.keySet().toArray()[i]).get(j));
+                data.add(highScore);
+            }
+        }
+        TableView tableView = new TableView();
+        TableColumn name = new TableColumn("Name");
+        TableColumn score = new TableColumn("Score");
+        score.setSortType(TableColumn.SortType.DESCENDING);
+
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        score.setCellValueFactory(new PropertyValueFactory<>("highScore"));
+        tableView.setItems(data);
+        tableView.getColumns().addAll(name, score);
+        tableView.getSortOrder().add(score);
+        Stage stage = new Stage();
+        Scene scene = new Scene(tableView, 300, 300);
+        stage.setTitle("HighScores");
+        stage.setScene(scene);
+        stage.show();
+    }
+
     private void createCommandButtons(Pane pane){
         for(GameCommandType gameCommandType : getController().getGameCommandTypes()){
             Text text = new Text(gameCommandType.getName() + ": " + gameCommandType.getHelpText());
@@ -367,7 +398,7 @@ public class FxUI implements UI{
         return circle;
     }
 
-    private void switchPauseItems(){
+    public void switchPauseItems(){
         String statusText;
         if(getController().isPause()){
             pauseButton.setDisable(false);
@@ -377,6 +408,7 @@ public class FxUI implements UI{
             helpButton.setDisable(false);
             spawnMiniSquirrelButton.setDisable(false);
             statusText = "Game resumed!";
+            getController().setPause(false);
         }else{
             pauseButton.setDisable(true);
             pauseMenu.setDisable(true);
@@ -385,6 +417,7 @@ public class FxUI implements UI{
             helpButton.setDisable(false);
             spawnMiniSquirrelButton.setDisable(false);
             statusText = "Game paused!";
+            getController().setPause(true);
         }
         statusLabel.setText(statusText);
     }

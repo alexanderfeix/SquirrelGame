@@ -1,8 +1,11 @@
 package hs.augsburg.squirrelgame.botAPI;
 
+import hs.augsburg.squirrelgame.board.BoardConfig;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.util.MathUtils;
 import hs.augsburg.squirrelgame.util.XY;
+
+import java.util.ArrayList;
 
 public class BotControllerMaster implements BotController{
 
@@ -45,7 +48,6 @@ public class BotControllerMaster implements BotController{
         }else{
             controllerContext.move(position.getUtils().getRandomNearbyPosition());
         }
-
     }
 
 

@@ -1,5 +1,10 @@
 package hs.augsburg.squirrelgame.entity;
 
+import hs.augsburg.squirrelgame.board.BoardConfig;
+import hs.augsburg.squirrelgame.game.Game;
+import hs.augsburg.squirrelgame.game.GameMode;
+import hs.augsburg.squirrelgame.main.Launcher;
+
 import java.util.*;
 
 public class EntitySet {
@@ -226,6 +231,14 @@ public class EntitySet {
                 current.nextStep(entityContext);
             }
         }
+        if(Game.getGameMode() == GameMode.BOT_GUI){
+            if(BoardConfig.REMAINING_STEPS <= 0){
+                BoardConfig.REMAINING_STEPS = BoardConfig.STEPS;
+                Launcher.getController().reset();
+            }
+        }
+
+        BoardConfig.REMAINING_STEPS--;
     }
 
     public ArrayList<Entity> getEntities() {

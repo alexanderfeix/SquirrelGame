@@ -1,6 +1,9 @@
 package hs.augsburg.squirrelgame.board;
 
+import hs.augsburg.squirrelgame.botAPI.BotControllerFactory;
+import hs.augsburg.squirrelgame.botAPI.BotControllerFactoryImpl;
 import hs.augsburg.squirrelgame.botAPI.MasterSquirrelBot;
+import hs.augsburg.squirrelgame.botimpls.Group1101FactoryImpl;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.entity.EntityType;
@@ -10,6 +13,8 @@ import hs.augsburg.squirrelgame.entity.plant.BadPlant;
 import hs.augsburg.squirrelgame.entity.plant.GoodPlant;
 import hs.augsburg.squirrelgame.entity.squirrel.HandOperatedMasterSquirrel;
 import hs.augsburg.squirrelgame.entity.util.Wall;
+import hs.augsburg.squirrelgame.game.Game;
+import hs.augsburg.squirrelgame.game.GameMode;
 import hs.augsburg.squirrelgame.util.XY;
 
 import java.util.ArrayList;
@@ -26,6 +31,7 @@ public class Board {
         this.board = this;
         this.entitySet = new EntitySet();
         spawnBoarderWalls();
+        spawnBots();
         spawnEntitiesRandomly();
     }
 
@@ -107,12 +113,11 @@ public class Board {
     }
 
     public void spawnBots(){
-        for(int i = 0; i < BoardConfig.MASTER_SQUIRREL_BOTS_SPAWN_RATE; i++){
-            MasterSquirrelBot masterSquirrelBot = new MasterSquirrelBot(new XY(0,0).getUtils().getRandomPosition());
-            getEntitySet().addEntity(masterSquirrelBot);
-        }
-        for(int i = 0; i < BoardConfig.MINI_SQUIRREL_BOTS_SPAWN_RATE; i++){
-            //TODO: Spawn mini squirrels, but from which master squirrel?
+        if(Game.getGameMode() == GameMode.BOT_GUI){
+            for(String name : BoardConfig.MASTER_BOT_IMPLEMENTATIONS.keySet()){
+                MasterSquirrelBot masterSquirrelBot = new MasterSquirrelBot(new XY(0,0).getUtils().getRandomPosition(), BoardConfig.MASTER_BOT_IMPLEMENTATIONS.get(name), name);
+                getEntitySet().addEntity(masterSquirrelBot);
+            }
         }
     }
 

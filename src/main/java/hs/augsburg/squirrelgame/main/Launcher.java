@@ -22,20 +22,20 @@ public class Launcher extends Application {
     private static BorderPane rootPane;
     private static GameImpl controller;
     private static Thread gameThread;
+    private static Thread fxThread;
 
     public static void main(String[] args) {
-        State state = new State(new Board());
-        setupGame(state, args);
+        setupGame(args);
     }
 
-    private static void setupGame(State state, String[] args){
+    private static void setupGame(String[] args){
         if(args.length > 0){
             if (args[0].equalsIgnoreCase(GameMode.SINGLEPLAYER_GUI.toString())) {
-                setupSingleplayerGUI(state, args);
+                setupSingleplayerGUI(args);
             }else if(args[0].equalsIgnoreCase(GameMode.SINGLEPLAYER_CONSOLE.toString())){
-                setupConsole(state);
+                setupConsole();
             }else if (args[0].equalsIgnoreCase(GameMode.BOT_GUI.toString())){
-                setupBotGUI(state, args);
+                setupBotGUI(args);
             }else{
                 throw new RuntimeException("Can not interpret gameMode. Please correct your arguments!");
             }
@@ -44,27 +44,30 @@ public class Launcher extends Application {
         }
     }
 
-    private static void setupSingleplayerGUI(State state, String[] args){
-        fxUI = new FxUI();
+    private static void setupSingleplayerGUI(String[] args){
         Game.setGameMode(GameMode.SINGLEPLAYER_GUI);
-        controller = new GameImpl(state, fxUI);
-        fxUI.setController(controller);
-        startGame(controller);
-        launch(args);
-    }
-
-    private static void setupBotGUI(State state, String[] args){
+        State state = new State(new Board());
         fxUI = new FxUI();
-        Game.setGameMode(GameMode.BOT_GUI);
         controller = new GameImpl(state, fxUI);
         fxUI.setController(controller);
         startGame(controller);
         launch(args);
     }
 
-    private static void setupConsole(State state){
-        consoleUI = new ConsoleUI();
+    private static void setupBotGUI(String[] args){
+        Game.setGameMode(GameMode.BOT_GUI);
+        State state = new State(new Board());
+        fxUI = new FxUI();
+        controller = new GameImpl(state, fxUI);
+        fxUI.setController(controller);
+        startGame(controller);
+        launch(args);
+    }
+
+    private static void setupConsole(){
         Game.setGameMode(GameMode.SINGLEPLAYER_CONSOLE);
+        State state = new State(new Board());
+        consoleUI = new ConsoleUI();
         controller = new GameImpl(state, consoleUI);
         startGame(controller);
     }
@@ -81,6 +84,7 @@ public class Launcher extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        fxThread = Thread.currentThread();
         rootPane = new BorderPane();
         VBox squirrelInfoBar = getFxUI().createSquirrelInfoBar();
         VBox legendBar = getFxUI().createLegendBar();
@@ -102,7 +106,11 @@ public class Launcher extends Application {
 
     }
 
-    public FxUI getFxUI() {
+    public static GameImpl getController() {
+        return controller;
+    }
+
+    public static FxUI getFxUI() {
         return fxUI;
     }
 
@@ -112,6 +120,10 @@ public class Launcher extends Application {
 
     public static Thread getGameThread() {
         return gameThread;
+    }
+
+    public static Thread getFxThread() {
+        return fxThread;
     }
 
     public static void setGameThread(Thread gameThread) {

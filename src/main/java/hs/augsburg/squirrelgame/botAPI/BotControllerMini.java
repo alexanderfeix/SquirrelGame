@@ -17,13 +17,6 @@ public class BotControllerMini implements BotController{
         double shortestFriendDistance = Double.MAX_VALUE;
         XY friendPosition = null;
 
-        if(controllerContext.getEntity() != null){
-            MiniSquirrelBot miniSquirrelBot = (MiniSquirrelBot) controllerContext.getEntity();
-            miniSquirrelBot.updateEnergy(-1);
-            if (miniSquirrelBot.getEnergy() <= 0) {
-                miniSquirrelBot.setAlive(false);
-            }
-        }
 
         for(int col = viewLowerLeft.getX(); col < viewUpperRight.getX(); col++){
             for(int row = viewUpperRight.getY(); row < viewLowerLeft.getY(); row++){
