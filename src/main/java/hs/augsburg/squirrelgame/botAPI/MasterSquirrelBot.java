@@ -1,6 +1,7 @@
 package hs.augsburg.squirrelgame.botAPI;
 
 import hs.augsburg.squirrelgame.botAPI.exception.OutOfViewException;
+import hs.augsburg.squirrelgame.botAPI.exception.SpawnException;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.entity.EntityType;
@@ -67,11 +68,11 @@ public class MasterSquirrelBot extends MasterSquirrel{
 
         @Override
         public void spawnMiniBot(hs.augsburg.squirrelgame.util.XY position, int energy) {
-            if(energy < 100){
-                throw new NotEnoughEnergyException();
-            }
             MiniSquirrelBot miniSquirrelBot = (MiniSquirrelBot) createMiniSquirrel(position.getUtils().getRandomNearbyPosition(), energy);
             if(miniSquirrelBot != null){
+                if(energy < 100 || position == null || MasterSquirrelBot.this.getPosition() == miniSquirrelBot.getPosition()){
+                    throw new SpawnException();
+                }
                 miniSquirrelBot.setMasterSquirrelId(getId());
                 miniSquirrelBot.setMasterSquirrel(MasterSquirrelBot.this);
             }
