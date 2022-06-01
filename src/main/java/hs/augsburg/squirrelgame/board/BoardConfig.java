@@ -20,13 +20,15 @@ public class BoardConfig {
         put(EntityType.WALL, 10*2);
     }};
 
-    public static int STEPS = 20;
+    public static int STEPS = 50;
     public static int REMAINING_STEPS = STEPS;
     public static int CURRENT_ROUND = 1;
 
     public static HashMap<String, Class<? extends BotControllerFactory>> MASTER_BOT_IMPLEMENTATIONS = new HashMap<>() {{
-        put("Group11_v0.1", BotControllerFactoryImpl.class);
-        put("LostBotv1", Group1101FactoryImpl.class);
+        put("DistanceCheck_v1.0#1", BotControllerFactoryImpl.class);
+        put("DistanceCheck_v1.0#2", BotControllerFactoryImpl.class);
+        put("RandomMove#1", Group1101FactoryImpl.class);
+        put("RandomMove#2", Group1101FactoryImpl.class);
     }};
 
     public static HashMap<String, ArrayList<Integer>> HIGHSCORES = new HashMap<>();

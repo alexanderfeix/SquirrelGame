@@ -231,14 +231,6 @@ public class EntitySet {
                 current.nextStep(entityContext);
             }
         }
-        if(Game.getGameMode() == GameMode.BOT_GUI){
-            if(BoardConfig.REMAINING_STEPS <= 0){
-                BoardConfig.REMAINING_STEPS = BoardConfig.STEPS;
-                Launcher.getController().reset();
-            }
-        }
-
-        BoardConfig.REMAINING_STEPS--;
     }
 
     public ArrayList<Entity> getEntities() {

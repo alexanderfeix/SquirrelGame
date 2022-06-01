@@ -31,6 +31,7 @@ import javafx.stage.Stage;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FxUI implements UI{
@@ -40,6 +41,7 @@ public class FxUI implements UI{
     private GameImpl controller;
     Label statusLabel = new Label("Game is running!");
     private static Direction nextDirection;
+    private Stage highScoreStage;
 
 
     MenuItem resumeMenu = new MenuItem("Resume");
@@ -329,27 +331,46 @@ public class FxUI implements UI{
 
     public void showHighscoreMenu(){
         ObservableList<HighScore> data = FXCollections.observableArrayList();
-        for(int i = 0; i < BoardConfig.HIGHSCORES.size(); i++){
-            for(int j = 0; j < BoardConfig.HIGHSCORES.get((String) BoardConfig.HIGHSCORES.keySet().toArray()[i]).size(); j++){
-                HighScore highScore = new HighScore((String) BoardConfig.HIGHSCORES.keySet().toArray()[i], BoardConfig.CURRENT_ROUND, BoardConfig.HIGHSCORES.get(BoardConfig.HIGHSCORES.keySet().toArray()[i]).get(j));
+        for(String name : BoardConfig.HIGHSCORES.keySet()){
+            int highestScore = 0, sum = 0, count = 0;
+            for(Integer score : BoardConfig.HIGHSCORES.get(name)){
+                if(score > highestScore){
+                    highestScore = score;
+                }
+                count++;
+                sum += score;
+                HighScore highScore = new HighScore(name, BoardConfig.CURRENT_ROUND, score);
                 data.add(highScore);
             }
+            HighScore bestScore = new HighScore("Best for " + name, BoardConfig.CURRENT_ROUND, highestScore);
+            bestScore.setAverage(sum/count);
+            data.add(bestScore);
         }
-        TableView tableView = new TableView();
-        TableColumn name = new TableColumn("Name");
-        TableColumn score = new TableColumn("Score");
+        TableView<HighScore> tableView = new TableView<>();
+        TableColumn<HighScore, String> name = new TableColumn<>("Name");
+        TableColumn<HighScore, Integer> score = new TableColumn<>("Score");
+        TableColumn<HighScore, Integer> average = new TableColumn<>("Average");
         score.setSortType(TableColumn.SortType.DESCENDING);
+        average.setSortType(TableColumn.SortType.DESCENDING);
 
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         score.setCellValueFactory(new PropertyValueFactory<>("highScore"));
+        average.setCellValueFactory(new PropertyValueFactory<>("average"));
         tableView.setItems(data);
-        tableView.getColumns().addAll(name, score);
+        tableView.getColumns().addAll(name, score, average);
+        tableView.getSortOrder().add(average);
         tableView.getSortOrder().add(score);
-        Stage stage = new Stage();
         Scene scene = new Scene(tableView, 300, 300);
-        stage.setTitle("HighScores");
-        stage.setScene(scene);
-        stage.show();
+        if(getHighScoreStage() == null){
+            this.highScoreStage = new Stage();
+        }
+        getHighScoreStage().setTitle("HighScores");
+        getHighScoreStage().setScene(scene);
+        if(getHighScoreStage().isShowing()){
+            getHighScoreStage().close();
+        }
+        getHighScoreStage().show();
+        switchPauseItems();
     }
 
     private void createCommandButtons(Pane pane){
@@ -442,5 +463,9 @@ public class FxUI implements UI{
 
     public void setSquirrelInfoBar(VBox squirrelInfoBar) {
         this.squirrelInfoBar = squirrelInfoBar;
+    }
+
+    public Stage getHighScoreStage() {
+        return highScoreStage;
     }
 }

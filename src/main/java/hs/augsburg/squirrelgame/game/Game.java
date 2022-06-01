@@ -10,7 +10,7 @@ public abstract class Game {
 
     private State state;
     private static UI ui;
-    public static final int FPS = 10;
+    public static final int FPS = 60;
     public static final int DELAY_MULTIPLY_FACTOR_CONSOLE = 10;
     public static boolean FPS_MODE = true;
     public static boolean PAUSE_MODE;
@@ -33,6 +33,7 @@ public abstract class Game {
                 sleep();
                 processInput();
                 update();
+                updateSteps();
             }else{
                 processInput();
             }
@@ -98,5 +99,16 @@ public abstract class Game {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void updateSteps(){
+        if(getGameMode() == GameMode.BOT_GUI){
+            if(BoardConfig.REMAINING_STEPS <= 0){
+                BoardConfig.REMAINING_STEPS = BoardConfig.STEPS;
+                reset();
+            }
+        }
+
+        BoardConfig.REMAINING_STEPS--;
     }
 }
