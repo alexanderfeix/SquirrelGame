@@ -1,158 +1,27 @@
 package hs.augsburg.squirrelgame.entity;
 
-import hs.augsburg.squirrelgame.board.BoardConfig;
-import hs.augsburg.squirrelgame.game.Game;
-import hs.augsburg.squirrelgame.game.GameMode;
-import hs.augsburg.squirrelgame.main.Launcher;
-
 import java.util.*;
 import java.util.Collection;
-public class EntitySet<E> implements Collection<E> {
+public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Entity> {
     /**
      * This class is used to manage the entities. Every instance of EntitySet could contain a different set of entities.
      */
     public EntitySet(){
 
     }
-    public EntitySet(E e){
+    public EntitySet(Entity entity){
 
     }
 
     private ListElement tail;
     private ListElement head;
-    private final ArrayList<Entity> entities = new ArrayList<>();
+    private final ArrayList<hs.augsburg.squirrelgame.entity.Entity> entities = new ArrayList<>();
     /**
      * Counts the entities in the EntitySet. Do not confuse with the idCounter in Entity. The id in Entity-Class
      * is a real identifier for every entity created. The entityCounter in EntitySet identifies only counts the entities
      * in this EntitySet. So, the actual number of entities created can vary from the integer value below.
      */
     private int entityCounter = 0;
-
-    /**
-     * Adds an entity to the EntitySet.
-     *
-     * @param entity
-     */
-    public void addEntity(Entity entity) {
-        if (entityExists(entity.getId())) {
-            throw new IllegalStateException("An entity with this id already exists!");
-        } else {
-            ListElement newItem = new ListElement(entity);
-            if (tail == null || head == null) {
-                head = newItem;
-                tail = newItem;
-            }else {
-                ListElement prevTail = tail;
-                tail.setNextItem(newItem);
-                tail = newItem;
-                tail.setPrevItem(prevTail);
-            }
-            entityCounter++;
-            entities.add(entity);
-        }
-    }
-
-    public void removeEntity(Entity entity) {
-        if (!entityExists(entity.getId())) throw new IllegalStateException("The entity doesn't exists!");
-        ListElement tempTail = tail;
-        if (tempTail == null) {
-            return;
-        }
-        if (!tempTail.hasPrev() && tempTail.getEntity() == entity) {
-            tail = null;
-            head = null;
-            return;
-        }
-        while (tempTail.hasPrev()) {
-            ListElement newTempTail = tempTail.getPrevItem();
-            if (tempTail.getEntity() == entity) {
-                if (tail.getEntity() == tempTail.getEntity()) {
-                    tail = tempTail.getPrevItem();
-                }
-                tempTail.getPrevItem().setNextItem(null);
-                tempTail.setNextItem(null);
-                tempTail.setPrevItem(null);
-                return;
-            }
-            if (tempTail.getPrevItem().getEntity() == entity) {
-                if (tempTail.getPrevItem().hasPrev()) {
-                    tempTail.getPrevItem().getPrevItem().setNextItem(tempTail);
-                    tempTail.setPrevItem(tempTail.getPrevItem().getPrevItem());
-                    tempTail.getPrevItem().setPrevItem(null);
-                    tempTail.getPrevItem().setNextItem(null);
-                } else {
-                    tempTail.getPrevItem().setNextItem(null);
-                    tempTail.setPrevItem(null);
-                }
-                return;
-            }
-            tempTail = newTempTail;
-        }
-        entities.remove(entity);
-    }
-
-    /**
-     * Enumerates the set of entities from head to tail.
-     *
-     * @return
-     */
-    public Enumeration enumerateForward() {
-        return new Enumeration() {
-            ListElement temphead = head;
-
-            @Override
-            public boolean hasMoreElements() {
-                return temphead != null;
-            }
-
-            @Override
-            public Entity nextElement() {
-                if (temphead == null) {
-                    throw new NoSuchElementException("No elements in list!");
-                }
-                if (!temphead.hasNext()) {
-                    return temphead.getEntity();
-                }
-                ListElement newTempHead = temphead.getNextItem();
-                ListElement output = temphead;
-                temphead = newTempHead;
-                return output.getEntity();
-            }
-        };
-    }
-
-    /**
-     * Enumerates the set of entities from tail to head.
-     *
-     * @return
-     */
-    public Enumeration enumerateBackwards() {
-        class E implements Enumeration {
-            ListElement tempTail = tail;
-
-            @Override
-            public boolean hasMoreElements() {
-                return tempTail != null;
-            }
-
-            @Override
-            public Entity nextElement() {
-                if (tempTail == null) {
-                    throw new NoSuchElementException("No elements in list!");
-                }
-                if (!tempTail.hasPrev()) {
-                    ListElement output = tempTail;
-                    tempTail = null;
-                    return output.getEntity();
-                }
-                ListElement newTempTail = tempTail.getPrevItem();
-                ListElement output = tempTail;
-                tempTail = newTempTail;
-                return output.getEntity();
-            }
-        }
-        return new E();
-    }
 
     /**
      * Enumerates the set of entities randomly.
@@ -182,7 +51,7 @@ public class EntitySet<E> implements Collection<E> {
             }
 
             @Override
-            public Entity nextElement() { //maybe remove "dead" Entities in arraylist. Or check living entities.
+            public hs.augsburg.squirrelgame.entity.Entity nextElement() { //maybe remove "dead" Entities in arraylist. Or check living entities.
                 int randomIndex = 0;
                 Random indexGenerator = new Random();
                 if (this.hasMoreElements()) {
@@ -231,14 +100,14 @@ public class EntitySet<E> implements Collection<E> {
     public void nextStep(EntityContext entityContext) {
         Enumeration enumeration = enumerateRandom();
         while (enumeration.hasMoreElements()) {
-            Entity current = (Entity) enumeration.nextElement();
+            hs.augsburg.squirrelgame.entity.Entity current = (hs.augsburg.squirrelgame.entity.Entity) enumeration.nextElement();
             if (current.isAlive()) {
                 current.nextStep(entityContext);
             }
         }
     }
 
-    public ArrayList<Entity> getEntities() {
+    public ArrayList<hs.augsburg.squirrelgame.entity.Entity> getEntities() {
         return entities;
     }
 
@@ -291,9 +160,50 @@ public class EntitySet<E> implements Collection<E> {
     }
 
     @Override
-    public Iterator<E> iterator() {
-        return null;
+    public Iterator<hs.augsburg.squirrelgame.entity.Entity> iterator() {
+        class EnumerateRandomClass<Entity> implements Iterator<hs.augsburg.squirrelgame.entity.Entity> {
+            final HashSet<Integer> usedIndex = new HashSet<>();
+            boolean checkUsedIndex = false;
+            ListElement currentElement;
+            final ListElement[] arrayTemp = new ListElement[entityCounter];
+
+            public EnumerateRandomClass() {
+                currentElement = head;
+                for (int j = 0; j < entityCounter; j++) {
+                    arrayTemp[j] = currentElement;
+                    currentElement = currentElement.getNextItem();
+                }
+            }
+
+
+
+            @Override
+            public boolean hasNext() {
+                return usedIndex.size() < entityCounter;
+            }
+
+            @Override
+            public hs.augsburg.squirrelgame.entity.Entity next() {
+                int randomIndex = 0;
+                Random indexGenerator = new Random();
+                if (this.hasNext()) {
+                    while (!checkUsedIndex) {
+                        randomIndex = indexGenerator.nextInt(entityCounter);
+                        checkUsedIndex = usedIndex.add(randomIndex);
+                    }
+                    checkUsedIndex = false;
+                    currentElement = arrayTemp[randomIndex];
+                    return currentElement.getEntity();
+                } else {
+                    throw new NoSuchElementException("No more elements in list");
+                }
+            }
+        }
+        return new EnumerateRandomClass<>();
     }
+
+
+
 
     @Override
     public Object[] toArray() {
@@ -306,12 +216,67 @@ public class EntitySet<E> implements Collection<E> {
     }
 
     @Override
-    public boolean add(E e) {
-        return false;
+    public boolean add(hs.augsburg.squirrelgame.entity.Entity entity) {
+            if (entityExists(entity.getId())) {
+                throw new IllegalStateException("An entity with this id already exists!");
+            } else{
+                ListElement newItem = new ListElement(entity);
+                if (tail == null || head == null) {
+                    head = newItem;
+                    tail = newItem;
+                } else {
+                    ListElement prevTail = tail;
+                    tail.setNextItem(newItem);
+                    tail = newItem;
+                    tail.setPrevItem(prevTail);
+                }
+                entityCounter++;
+                entities.add(entity);
+                return true;
+            }
     }
 
     @Override
     public boolean remove(Object o) {
+        if(o instanceof hs.augsburg.squirrelgame.entity.Entity entity){
+            if (!entityExists(entity.getId())) throw new IllegalStateException("The entity doesn't exists!");
+            ListElement tempTail = tail;
+            if (tempTail == null) {
+                return true;
+            }
+            if (!tempTail.hasPrev() && tempTail.getEntity() == entity) {
+                tail = null;
+                head = null;
+                return true;
+            }
+            while (tempTail.hasPrev()) {
+                ListElement newTempTail = tempTail.getPrevItem();
+                if (tempTail.getEntity() == entity) {
+                    if (tail.getEntity() == tempTail.getEntity()) {
+                        tail = tempTail.getPrevItem();
+                    }
+                    tempTail.getPrevItem().setNextItem(null);
+                    tempTail.setNextItem(null);
+                    tempTail.setPrevItem(null);
+                    return true;
+                }
+                if (tempTail.getPrevItem().getEntity() == entity) {
+                    if (tempTail.getPrevItem().hasPrev()) {
+                        tempTail.getPrevItem().getPrevItem().setNextItem(tempTail);
+                        tempTail.setPrevItem(tempTail.getPrevItem().getPrevItem());
+                        tempTail.getPrevItem().setPrevItem(null);
+                        tempTail.getPrevItem().setNextItem(null);
+                    } else {
+                        tempTail.getPrevItem().setNextItem(null);
+                        tempTail.setPrevItem(null);
+                    }
+                    return true;
+                }
+                tempTail = newTempTail;
+            }
+            entities.remove(entity);
+            return true;
+        }
         return false;
     }
 
@@ -321,7 +286,7 @@ public class EntitySet<E> implements Collection<E> {
     }
 
     @Override
-    public boolean addAll(Collection<? extends E> c) {
+    public boolean addAll(Collection<? extends hs.augsburg.squirrelgame.entity.Entity> c) {
         return false;
     }
 
@@ -344,16 +309,16 @@ public class EntitySet<E> implements Collection<E> {
      * This class must be private static!
      */
     private static class ListElement {
-        private final Entity entity;
+        private final hs.augsburg.squirrelgame.entity.Entity entity;
         private ListElement prevItem;
         private ListElement nextItem;
 
-        public ListElement(Entity entity) {
+        public ListElement(hs.augsburg.squirrelgame.entity.Entity entity) {
             this.entity = entity;
             nextItem = null;
         }
 
-        public Entity getEntity() {
+        public hs.augsburg.squirrelgame.entity.Entity getEntity() {
             return entity;
         }
 

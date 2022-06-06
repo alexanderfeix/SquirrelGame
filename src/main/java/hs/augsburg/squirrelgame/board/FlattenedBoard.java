@@ -74,7 +74,7 @@ public class FlattenedBoard implements BoardView, EntityContext{
             while(getEntity(miniSquirrel.getPosition().getX(), miniSquirrel.getPosition().getY()) != null){
                 miniSquirrel.updatePosition(masterSquirrel.getPosition().getUtils().getRandomNearbyPosition());
             }
-            getBoard().getEntitySet().addEntity(miniSquirrel);
+            getBoard().getEntitySet().add(miniSquirrel);
         }
     }
 
