@@ -23,13 +23,13 @@ public class BoardConfig {
     public static int STEPS = 50;
     public static int REMAINING_STEPS = STEPS;
     public static int CURRENT_ROUND = 1;
+    public static int STANDARD_MINI_SQUIRREL_ENERGY = 200;
 
-    public static HashMap<String, Class<? extends BotControllerFactory>> MASTER_BOT_IMPLEMENTATIONS = new HashMap<>() {{
-        put("DistanceCheck_v1.0#1", BotControllerFactoryImpl.class);
-        put("DistanceCheck_v1.0#2", BotControllerFactoryImpl.class);
-        put("RandomMove#1", Group1101FactoryImpl.class);
-        put("RandomMove#2", Group1101FactoryImpl.class);
+    public static ArrayList<String> MASTER_BOT_IMPLEMENTATIONS = new ArrayList<>() {{
+        add("hs.augsburg.squirrelgame.botimpls.Group1101Bot_2");
+        add("hs.augsburg.squirrelgame.botAPI.Group1101Bot_1");
     }};
+    public static ArrayList<String> MINI_BOT_IMPLEMENTATIONS = new ArrayList<>();
 
     public static HashMap<String, ArrayList<Integer>> HIGHSCORES = new HashMap<>();
 }

@@ -3,7 +3,9 @@ package hs.augsburg.squirrelgame.board;
 import hs.augsburg.squirrelgame.botAPI.BotControllerFactory;
 import hs.augsburg.squirrelgame.botAPI.BotControllerFactoryImpl;
 import hs.augsburg.squirrelgame.botAPI.MasterSquirrelBot;
+import hs.augsburg.squirrelgame.botAPI.MiniSquirrelBot;
 import hs.augsburg.squirrelgame.botimpls.Group1101FactoryImpl;
+import hs.augsburg.squirrelgame.command.CommandTypeInfo;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.entity.EntityType;
@@ -12,14 +14,17 @@ import hs.augsburg.squirrelgame.entity.beast.GoodBeast;
 import hs.augsburg.squirrelgame.entity.plant.BadPlant;
 import hs.augsburg.squirrelgame.entity.plant.GoodPlant;
 import hs.augsburg.squirrelgame.entity.squirrel.HandOperatedMasterSquirrel;
+import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.entity.util.Wall;
 import hs.augsburg.squirrelgame.game.Game;
+import hs.augsburg.squirrelgame.game.GameImpl;
 import hs.augsburg.squirrelgame.game.GameMode;
+import hs.augsburg.squirrelgame.util.GameUtils;
 import hs.augsburg.squirrelgame.util.XY;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Random;
+import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.util.*;
 
 public class Board {
 
@@ -114,12 +119,50 @@ public class Board {
 
     public void spawnBots(){
         if(Game.getGameMode() == GameMode.BOT_GUI){
-            for(String name : BoardConfig.MASTER_BOT_IMPLEMENTATIONS.keySet()){
-                MasterSquirrelBot masterSquirrelBot = new MasterSquirrelBot(new XY(0,0).getUtils().getRandomPosition(), BoardConfig.MASTER_BOT_IMPLEMENTATIONS.get(name), name);
-                getEntitySet().addEntity(masterSquirrelBot);
+            for(String botString : BoardConfig.MASTER_BOT_IMPLEMENTATIONS){
+                createSquirrel(botString, EntityType.MASTER_SQUIRREL);
+            }
+            for(String botString : BoardConfig.MINI_BOT_IMPLEMENTATIONS){
+                createSquirrel(botString, EntityType.MINI_SQUIRREL);
             }
         }
     }
+
+    private void createSquirrel(String botString, EntityType entityType){
+        String[] botStringSplit = botString.split("\\.");
+        String botName = botStringSplit[botStringSplit.length-1];
+        String[] rawPackage = botString.split(botName)[0].split("\\.");
+        StringBuilder packageNameBuilder = new StringBuilder();
+        for(int i = 0; i < rawPackage.length; i++){
+            String packageSplit = rawPackage[i];
+            if(i <= rawPackage.length-2){
+                packageNameBuilder.append(packageSplit).append(".");
+            }else{
+                packageNameBuilder.append(packageSplit);
+            }
+        }
+        try {
+            Set<Class<?>> foundClassesInPackage = GameUtils.findAllClassesUsingClassLoader(packageNameBuilder.toString());
+            for(Class<?> classInPackage : foundClassesInPackage){
+                try {
+                    Class<? extends BotControllerFactory> searchedClass = (Class<? extends BotControllerFactory>) classInPackage;
+                    if(searchedClass.getName().contains("FactoryImpl")) {
+                        if (entityType == EntityType.MASTER_SQUIRREL) {
+                            MasterSquirrelBot masterSquirrelBot = new MasterSquirrelBot(new XY(0, 0).getUtils().getRandomPosition(), searchedClass, botName);
+                            getEntitySet().addEntity(masterSquirrelBot);
+                        } else if (entityType == EntityType.MINI_SQUIRREL) {
+                            MiniSquirrelBot miniSquirrelBot = new MiniSquirrelBot(new XY(0, 0).getUtils().getRandomPosition(), searchedClass, botName, BoardConfig.STANDARD_MINI_SQUIRREL_ENERGY);
+                            getEntitySet().addEntity(miniSquirrelBot);
+                        }
+                    }
+                }catch (Exception ignored){}
+            }
+        }catch (Exception exception){
+            System.err.println("Error, no compatible class found in package-name for bot!");
+            exception.printStackTrace();
+        }
+    }
+
 
     public EntitySet getEntitySet() {
         return entitySet;

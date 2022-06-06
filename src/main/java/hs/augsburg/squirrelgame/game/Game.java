@@ -10,7 +10,7 @@ public abstract class Game {
 
     private State state;
     private static UI ui;
-    public static final int FPS = 60;
+    public static final int FPS = 20;
     public static final int DELAY_MULTIPLY_FACTOR_CONSOLE = 10;
     public static boolean FPS_MODE = true;
     public static boolean PAUSE_MODE;

@@ -48,7 +48,7 @@ public class MiniSquirrelBotTest {
         miniSquirrel.nextStep(state.getFlattenedBoard());
 
 
-        miniSquirrel.getControllerContext().implode(6);
+        //miniSquirrel.getControllerContext().implode(6);
         
         System.out.println("Before: " + latestEnergyGoodBeast + ", After: " + goodBeast.getEnergy() + ", Expected: " + exGB);
         System.out.println("Before: " + latestEnergyGoodPlant + ", After: " + goodPlant.getEnergy()+ ", Expected: " + exGP);

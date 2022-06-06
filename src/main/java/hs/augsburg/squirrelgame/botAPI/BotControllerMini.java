@@ -17,7 +17,6 @@ public class BotControllerMini implements BotController{
         double shortestFriendDistance = Double.MAX_VALUE;
         XY friendPosition = null;
 
-
         for(int col = viewLowerLeft.getX(); col < viewUpperRight.getX(); col++){
             for(int row = viewUpperRight.getY(); row < viewLowerLeft.getY(); row++){
                 try {

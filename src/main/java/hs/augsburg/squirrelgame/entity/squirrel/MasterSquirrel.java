@@ -1,5 +1,6 @@
 package hs.augsburg.squirrelgame.entity.squirrel;
 
+import hs.augsburg.squirrelgame.botAPI.BotControllerFactoryImpl;
 import hs.augsburg.squirrelgame.botAPI.MiniSquirrelBot;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
@@ -76,7 +77,7 @@ public class MasterSquirrel extends Entity {
         if (energy < 100) {
             return null;
         } else {
-            MiniSquirrelBot miniSquirrel = new MiniSquirrelBot(position, energy);
+            MiniSquirrelBot miniSquirrel = new MiniSquirrelBot(position, BotControllerFactoryImpl.class, "MiniSquirrelBot", energy);
             miniSquirrel.setMasterSquirrelId(getId());
             miniSquirrel.setMasterSquirrel(this);
             this.updateEnergy(-energy);

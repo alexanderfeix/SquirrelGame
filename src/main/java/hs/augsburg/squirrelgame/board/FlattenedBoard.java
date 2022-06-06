@@ -1,5 +1,6 @@
 package hs.augsburg.squirrelgame.board;
 
+import hs.augsburg.squirrelgame.botAPI.BotControllerFactoryImpl;
 import hs.augsburg.squirrelgame.botAPI.MiniSquirrelBot;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
@@ -66,7 +67,7 @@ public class FlattenedBoard implements BoardView, EntityContext{
         if (energy < 100) {
             throw new RuntimeException("Energy to create a new mini squirrel must be over a hundred!");
         } else {
-            MiniSquirrel miniSquirrel = new MiniSquirrelBot(masterSquirrel.getPosition().getUtils().getRandomNearbyPosition(), energy);
+            MiniSquirrel miniSquirrel = new MiniSquirrelBot(masterSquirrel.getPosition().getUtils().getRandomNearbyPosition(), BotControllerFactoryImpl.class, "StandardMiniSquirrel", energy);
             miniSquirrel.setMasterSquirrelId(masterSquirrel.getId());
             miniSquirrel.setMasterSquirrel(masterSquirrel);
             masterSquirrel.updateEnergy(-energy);

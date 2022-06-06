@@ -71,7 +71,7 @@ public class MasterSquirrelBot extends MasterSquirrel{
         }
 
         @Override
-        public EntityType getEntityAt(hs.augsburg.squirrelgame.util.XY xy) {
+        public EntityType getEntityAt(hs.augsburg.squirrelgame.util.XY xy) throws OutOfViewException{
             hs.augsburg.squirrelgame.util.XY viewUpperRight = getViewUpperRight();
             hs.augsburg.squirrelgame.util.XY viewLowerLeft = getViewLowerLeft();
             if(xy.getX() > viewUpperRight.getX() || xy.getX() < viewLowerLeft.getX()){
@@ -88,7 +88,7 @@ public class MasterSquirrelBot extends MasterSquirrel{
         }
 
         @Override
-        public void spawnMiniBot(hs.augsburg.squirrelgame.util.XY position, int energy) {
+        public void spawnMiniBot(hs.augsburg.squirrelgame.util.XY position, int energy) throws SpawnException{
             MiniSquirrelBot miniSquirrelBot = (MiniSquirrelBot) createMiniSquirrel(position.getUtils().getRandomNearbyPosition(), energy);
             if(miniSquirrelBot != null){
                 if(energy < 100 || position == null || MasterSquirrelBot.this.getPosition() == miniSquirrelBot.getPosition()){
@@ -116,7 +116,7 @@ public class MasterSquirrelBot extends MasterSquirrel{
         }
 
         @Override
-        public boolean isMine(hs.augsburg.squirrelgame.util.XY xy) {
+        public boolean isMine(hs.augsburg.squirrelgame.util.XY xy) throws OutOfViewException{
             return false;
         }
 
@@ -129,5 +129,9 @@ public class MasterSquirrelBot extends MasterSquirrel{
         public long getRemainingSteps() {
             return BoardConfig.REMAINING_STEPS;
         }
+    }
+
+    public Class<? extends BotControllerFactory> getBotControllerFactory() {
+        return botControllerFactory;
     }
 }

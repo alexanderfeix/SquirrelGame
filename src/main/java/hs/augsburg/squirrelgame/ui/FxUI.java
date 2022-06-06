@@ -1,12 +1,16 @@
 package hs.augsburg.squirrelgame.ui;
 
 import hs.augsburg.squirrelgame.board.BoardConfig;
+import hs.augsburg.squirrelgame.botAPI.BotControllerFactoryImpl;
 import hs.augsburg.squirrelgame.botAPI.HighScore;
+import hs.augsburg.squirrelgame.botAPI.MasterSquirrelBot;
+import hs.augsburg.squirrelgame.botimpls.Group1101FactoryImpl;
 import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.command.CommandScanner;
 import hs.augsburg.squirrelgame.command.GameCommandType;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
+import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.game.GameImpl;
 import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.util.Direction;
@@ -15,6 +19,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -27,6 +32,7 @@ import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
@@ -111,6 +117,19 @@ public class FxUI implements UI{
                 try {
                     Entity entity = view.getEntity(col, row);
                     Shape shape = getRenderedEntityItem(entity.getEntityType());
+                    //TODO: REMOVE, THIS IS JUST FOR TESTING THE BOT ALGORITHMS
+
+                    if(entity.getEntityType() == EntityType.MASTER_SQUIRREL){
+                        try {
+                            MasterSquirrelBot masterSquirrelBot = (MasterSquirrelBot) entity;
+                            if(masterSquirrelBot.getBotControllerFactory() == BotControllerFactoryImpl.class){
+                                shape = createRectangle(Color.BLUE);
+                            }else if(masterSquirrelBot.getBotControllerFactory() == Group1101FactoryImpl.class){
+                                shape = createRectangle(Color.PURPLE);
+                            }
+                        }catch (Exception ignored){}
+                    }
+
                     gameBoardPane.add(shape, col, row);
                 }catch (Exception ignored){}
             }
@@ -364,6 +383,9 @@ public class FxUI implements UI{
         if(getHighScoreStage() == null){
             this.highScoreStage = new Stage();
         }
+        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+        getHighScoreStage().setX(primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth() - 200);
+        getHighScoreStage().setY(primaryScreenBounds.getMinY() + primaryScreenBounds.getHeight() - 500);
         getHighScoreStage().setTitle("HighScores");
         getHighScoreStage().setScene(scene);
         if(getHighScoreStage().isShowing()){

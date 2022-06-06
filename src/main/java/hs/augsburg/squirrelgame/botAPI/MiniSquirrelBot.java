@@ -3,6 +3,7 @@ package hs.augsburg.squirrelgame.botAPI;
 import hs.augsburg.squirrelgame.board.BoardConfig;
 import hs.augsburg.squirrelgame.botAPI.exception.ImpactRadiusOutOfBoundsException;
 import hs.augsburg.squirrelgame.botAPI.exception.OutOfViewException;
+import hs.augsburg.squirrelgame.botAPI.exception.SpawnException;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.entity.EntityType;
@@ -12,23 +13,44 @@ import hs.augsburg.squirrelgame.util.Direction;
 import hs.augsburg.squirrelgame.util.MathUtils;
 import hs.augsburg.squirrelgame.util.XY;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+
 public class MiniSquirrelBot extends MiniSquirrel{
 
-    public MiniSquirrelBot(XY position, int energy) {
+
+    private final Class<? extends BotControllerFactory> botControllerFactory;
+    private final String name;
+
+    public MiniSquirrelBot(XY position, Class<? extends BotControllerFactory> factoryImpl, String name, int energy) {
         super(position, energy);
+        this.botControllerFactory = factoryImpl;
+        this.name = name;
     }
-    private final BotControllerFactory botControllerFactory = new BotControllerFactoryImpl();
-    private ControllerContext controllerContext;
 
 
     public void nextStep(EntityContext entityContext) {
-        controllerContext = new ControllerContextImpl(entityContext);
-        BotController botController = botControllerFactory.createMiniBotController();
-        botController.nextStep(controllerContext);
-    }
-
-    public ControllerContext getControllerContext() {
-        return controllerContext;
+        ControllerContext controllerContext = new MiniSquirrelBot.ControllerContextImpl(entityContext);
+        try {
+            Object object = botControllerFactory.getDeclaredConstructor().newInstance();
+            Method method = botControllerFactory.getMethod("createMiniBotController");
+            BotController botController = (BotController) method.invoke(object);
+            botController.nextStep(controllerContext);
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        if(controllerContext.getRemainingSteps() <= 0){
+            ArrayList<Integer> highScores;
+            if(BoardConfig.HIGHSCORES.get(name) == null){
+                highScores = new ArrayList<>();
+            }else{
+                highScores = BoardConfig.HIGHSCORES.get(name);
+            }
+            highScores.add(controllerContext.getEnergy());
+            BoardConfig.HIGHSCORES.put(name, highScores);
+            System.out.println(highScores);
+        }
     }
 
     private class ControllerContextImpl implements ControllerContext{
@@ -55,7 +77,7 @@ public class MiniSquirrelBot extends MiniSquirrel{
         }
 
         @Override
-        public EntityType getEntityAt(hs.augsburg.squirrelgame.util.XY xy) {
+        public EntityType getEntityAt(hs.augsburg.squirrelgame.util.XY xy) throws OutOfViewException{
             hs.augsburg.squirrelgame.util.XY viewUpperRight = getViewUpperRight();
             hs.augsburg.squirrelgame.util.XY viewLowerLeft = getViewLowerLeft();
             if(xy.getX() > viewUpperRight.getX() || xy.getX() < viewLowerLeft.getX()){
@@ -72,7 +94,7 @@ public class MiniSquirrelBot extends MiniSquirrel{
         }
 
         @Override
-        public void spawnMiniBot(hs.augsburg.squirrelgame.util.XY position, int energy) {
+        public void spawnMiniBot(hs.augsburg.squirrelgame.util.XY position, int energy) throws SpawnException {
             //TODO: NOTHING TO DO HERE!
         }
 
@@ -146,8 +168,9 @@ public class MiniSquirrelBot extends MiniSquirrel{
             return null;
         }
 
+
         @Override
-        public boolean isMine(hs.augsburg.squirrelgame.util.XY xy) {
+        public boolean isMine(hs.augsburg.squirrelgame.util.XY xy) throws OutOfViewException{
             hs.augsburg.squirrelgame.util.XY viewUpperRight = getViewUpperRight();
             hs.augsburg.squirrelgame.util.XY viewLowerLeft = getViewLowerLeft();
             if(xy.getX() > viewUpperRight.getX() || xy.getX() < viewLowerLeft.getX()){
