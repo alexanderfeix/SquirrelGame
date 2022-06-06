@@ -25,7 +25,7 @@ public class GameImpl extends Game {
         super(state, ui);
         this.ui = ui;
         System.out.println(getGameMode());
-        if(getGameMode() != GameMode.BOT_GUI) state.getBoard().getEntitySet().addEntity(handOperatedMasterSquirrel);
+        if(getGameMode() != GameMode.BOT_GUI) state.getBoard().getEntitySet().add(handOperatedMasterSquirrel);
     }
 
     @Override

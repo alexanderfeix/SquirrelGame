@@ -9,6 +9,7 @@ import hs.augsburg.squirrelgame.util.XY;
 import org.junit.Test;
 
 import java.util.Enumeration;
+import java.util.Iterator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -18,26 +19,26 @@ public class EnumerationTest {
     @Test
     public void checkIfEnumerateForwardEnumeratesForward() {
         EntitySet entitySet = new EntitySet();
-        entitySet.addEntity(new BadPlant(new XY(3, 3)));
-        entitySet.addEntity(new GoodPlant(new XY(2, 5)));
-        entitySet.addEntity(new GoodBeast(new XY(8, 9)));
-        Enumeration enu = entitySet.enumerateForward();
+        entitySet.add(new BadPlant(new XY(3, 3)));
+        entitySet.add(new GoodPlant(new XY(2, 5)));
+        entitySet.add(new GoodBeast(new XY(8, 9)));
+        Iterator iterator = entitySet.iterator();
         for (int i = 0; i < 3; i++) {
-            assertEquals(i, ((Entity) enu.nextElement()).getId());
+            assertEquals(i, ((Entity) iterator.next()).getId());
         }
     }
 
     @Test
     public void checkIfEnumerateBackwardsEnumeratesBackwards() {
         EntitySet entitySet = new EntitySet();
-        entitySet.addEntity(new BadPlant(new XY(4, 3)));
-        entitySet.addEntity(new GoodPlant(new XY(3, 5)));
+        entitySet.add(new BadPlant(new XY(4, 3)));
+        entitySet.add(new GoodPlant(new XY(3, 5)));
         GoodBeast goodBeast = new GoodBeast(new XY(9, 9));
-        entitySet.addEntity(goodBeast);
+        entitySet.add(goodBeast);
         int lastEntityIndex = goodBeast.getId();
-        Enumeration enu = entitySet.enumerateBackwards();
+        Iterator iterator = entitySet.iterator();
         for (int i = lastEntityIndex; i >= lastEntityIndex - 2; i--) {
-            int nextElementId = ((Entity) enu.nextElement()).getId();
+            int nextElementId = ((Entity) iterator.next()).getId();
             assertEquals(i, nextElementId);
         }
     }
@@ -45,23 +46,23 @@ public class EnumerationTest {
     @Test
     public void checkIfEnumerateRandomEnumeratesRandom() {
         EntitySet entitySet = new EntitySet();
-        entitySet.addEntity(new BadPlant(new XY(8, 3)));
-        entitySet.addEntity(new GoodPlant(new XY(8, 5)));
-        entitySet.addEntity(new GoodBeast(new XY(8, 9)));
-        entitySet.addEntity(new GoodBeast(new XY(8, 7)));
-        entitySet.addEntity(new GoodBeast(new XY(8, 10)));
-        Enumeration enu = entitySet.enumerateRandom();
+        entitySet.add(new BadPlant(new XY(8, 3)));
+        entitySet.add(new GoodPlant(new XY(8, 5)));
+        entitySet.add(new GoodBeast(new XY(8, 9)));
+        entitySet.add(new GoodBeast(new XY(8, 7)));
+        entitySet.add(new GoodBeast(new XY(8, 10)));
+        Iterator iterator = entitySet.iterator();
         int equalsCount1 = 0;
         for (int i = 0; i < 5; i++) {
-            if (i == ((Entity) enu.nextElement()).getId()) {
+            if (i == ((Entity) iterator.next()).getId()) {
                 equalsCount1++;
             }
         }
         assertNotEquals(equalsCount1, 5);
-        Enumeration enuZwei = entitySet.enumerateRandom();
+        Iterator iterator2 = entitySet.iterator();
         int equalsCount2 = 0;
         for (int i = 4; i >= 0; i--) {
-            if (i == ((Entity) enuZwei.nextElement()).getId()) {
+            if (i == ((Entity) iterator2.next()).getId()) {
                 equalsCount2++;
             }
         }

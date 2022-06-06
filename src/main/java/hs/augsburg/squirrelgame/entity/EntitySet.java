@@ -24,53 +24,6 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
     private int entityCounter = 0;
 
     /**
-     * Enumerates the set of entities randomly.
-     * The method is working with indices and checks that no index can show up a second time.
-     * Maybe check this method for cleaner code.
-     *
-     * @return
-     */
-    public Enumeration enumerateRandom() {
-        class EnumerateRandomClass implements java.util.Enumeration {
-            final HashSet<Integer> usedIndex = new HashSet<>();
-            boolean checkUsedIndex = false;
-            ListElement currentElement;
-            final ListElement[] arrayTemp = new ListElement[entityCounter];
-
-            public EnumerateRandomClass() {
-                currentElement = head;
-                for (int j = 0; j < entityCounter; j++) {
-                    arrayTemp[j] = currentElement;
-                    currentElement = currentElement.getNextItem();
-                }
-            }
-
-            @Override
-            public boolean hasMoreElements() {
-                return usedIndex.size() < entityCounter;
-            }
-
-            @Override
-            public hs.augsburg.squirrelgame.entity.Entity nextElement() { //maybe remove "dead" Entities in arraylist. Or check living entities.
-                int randomIndex = 0;
-                Random indexGenerator = new Random();
-                if (this.hasMoreElements()) {
-                    while (!checkUsedIndex) {
-                        randomIndex = indexGenerator.nextInt(entityCounter);
-                        checkUsedIndex = usedIndex.add(randomIndex);
-                    }
-                    checkUsedIndex = false;
-                    currentElement = arrayTemp[randomIndex];
-                    return currentElement.getEntity();
-                } else {
-                    throw new NoSuchElementException("No more elements in list");
-                }
-            }
-        }
-        return new EnumerateRandomClass();
-    }
-
-    /**
      * Checks if the set of entities contains a specific entity
      *
      * @param entityId
@@ -98,9 +51,9 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
      * Calls the nextStep() method on all entities
      */
     public void nextStep(EntityContext entityContext) {
-        Enumeration enumeration = enumerateRandom();
-        while (enumeration.hasMoreElements()) {
-            hs.augsburg.squirrelgame.entity.Entity current = (hs.augsburg.squirrelgame.entity.Entity) enumeration.nextElement();
+        Iterator<Entity> entityIterator = iterator();
+        while (entityIterator.hasNext()) {
+            hs.augsburg.squirrelgame.entity.Entity current = entityIterator.next();
             if (current.isAlive()) {
                 current.nextStep(entityContext);
             }

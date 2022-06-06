@@ -81,7 +81,7 @@ public class Board {
                 } else {
                     Object entityType = BoardConfig.SPAWN_RATES.keySet().toArray()[i];
                     Entity entity = getNewEntityFromType(spawnPosition, (EntityType) entityType);
-                    getEntitySet().addEntity(entity);
+                    getEntitySet().add(entity);
                     spawnPositions.add(spawnPosition);
                 }
             }
@@ -93,12 +93,12 @@ public class Board {
      */
     private void spawnBoarderWalls() {
         for (int column = 0; column < BoardConfig.COLUMNS; column++) {
-            getEntitySet().addEntity(new Wall(new XY(column, 0)));
-            getEntitySet().addEntity(new Wall(new XY(column, BoardConfig.ROWS - 1)));
+            getEntitySet().add(new Wall(new XY(column, 0)));
+            getEntitySet().add(new Wall(new XY(column, BoardConfig.ROWS - 1)));
         }
         for (int row = 0; row < BoardConfig.ROWS; row++) {
-            getEntitySet().addEntity(new Wall(new XY(0, row)));
-            getEntitySet().addEntity(new Wall(new XY(BoardConfig.COLUMNS - 1, row)));
+            getEntitySet().add(new Wall(new XY(0, row)));
+            getEntitySet().add(new Wall(new XY(BoardConfig.COLUMNS - 1, row)));
         }
     }
 
@@ -107,9 +107,9 @@ public class Board {
      */
     public void getEntityInformation() {
         System.out.println("\n----------\n");
-        Enumeration enumeration = getEntitySet().enumerateBackwards();
-        while (enumeration.hasMoreElements()) {
-            Entity entity = (Entity) enumeration.nextElement();
+        Iterator entityIterator= getEntitySet().iterator();
+        while (entityIterator.hasNext()) {
+            Entity entity = (Entity) entityIterator.next();
             if (entity.getEntityType() != EntityType.WALL && entity.isAlive()) {
                 System.out.println("ID: " + entity.getId() + ", Energy: " + entity.getEnergy() + ", Position: " + entity.getPosition().getX() + ", " + entity.getPosition().getY() + " | " + entity.getEntityType());
             }
@@ -149,10 +149,10 @@ public class Board {
                     if(searchedClass.getName().contains("FactoryImpl")) {
                         if (entityType == EntityType.MASTER_SQUIRREL) {
                             MasterSquirrelBot masterSquirrelBot = new MasterSquirrelBot(new XY(0, 0).getUtils().getRandomPosition(), searchedClass, botName);
-                            getEntitySet().addEntity(masterSquirrelBot);
+                            getEntitySet().add(masterSquirrelBot);
                         } else if (entityType == EntityType.MINI_SQUIRREL) {
                             MiniSquirrelBot miniSquirrelBot = new MiniSquirrelBot(new XY(0, 0).getUtils().getRandomPosition(), searchedClass, botName, BoardConfig.STANDARD_MINI_SQUIRREL_ENERGY);
-                            getEntitySet().addEntity(miniSquirrelBot);
+                            getEntitySet().add(miniSquirrelBot);
                         }
                     }
                 }catch (Exception ignored){}
