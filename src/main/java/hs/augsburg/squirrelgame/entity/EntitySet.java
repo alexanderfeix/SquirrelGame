@@ -6,12 +6,17 @@ import hs.augsburg.squirrelgame.game.GameMode;
 import hs.augsburg.squirrelgame.main.Launcher;
 
 import java.util.*;
-
-public class EntitySet {
+import java.util.Collection;
+public class EntitySet<E> implements Collection<E> {
     /**
      * This class is used to manage the entities. Every instance of EntitySet could contain a different set of entities.
      */
+    public EntitySet(){
 
+    }
+    public EntitySet(E e){
+
+    }
 
     private ListElement tail;
     private ListElement head;
@@ -268,6 +273,71 @@ public class EntitySet {
 
     public ListElement getTail() {
         return tail;
+    }
+
+    @Override
+    public int size() {
+        return 0;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return false;
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return null;
+    }
+
+    @Override
+    public Object[] toArray() {
+        return new Object[0];
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        return null;
+    }
+
+    @Override
+    public boolean add(E e) {
+        return false;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends E> c) {
+        return false;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public void clear() {
+
     }
 
     /**
