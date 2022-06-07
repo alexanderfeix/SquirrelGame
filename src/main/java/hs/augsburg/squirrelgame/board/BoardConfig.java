@@ -20,7 +20,7 @@ public class BoardConfig {
         put(EntityType.WALL, 10*2);
     }};
 
-    public static int STEPS = 50;
+    public static int STEPS = 200;
     public static int REMAINING_STEPS = STEPS;
     public static int CURRENT_ROUND = 1;
     public static int STANDARD_MINI_SQUIRREL_ENERGY = 200;

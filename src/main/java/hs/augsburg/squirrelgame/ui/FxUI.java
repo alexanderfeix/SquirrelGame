@@ -12,7 +12,9 @@ import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
 
 import hs.augsburg.squirrelgame.entity.util.sortByScore;
+import hs.augsburg.squirrelgame.game.Game;
 import hs.augsburg.squirrelgame.game.GameImpl;
+import hs.augsburg.squirrelgame.game.GameMode;
 import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.util.Direction;
 import javafx.application.Platform;
@@ -313,15 +315,27 @@ public class FxUI implements UI{
         if(getSquirrelInfoBar() != null) {
             getSquirrelInfoBar().getChildren().clear();
             while (entityIterator.hasNext()) {
-                hs.augsburg.squirrelgame.entity.Entity current = entityIterator.next();
-                ar.add(current.getEntity());
+                ar.add(entityIterator.next());
             }
-            Collections.sort(ar, new sortByScore());
+            ar.sort(new sortByScore());
             for(Entity entity:ar){
                 if(entity.getEnergy()>300) {
-                    Text text = new Text(entity.getEntityType().toString() + ": " + entity.getEnergy());
-                    text.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
-                    getSquirrelInfoBar().getChildren().add(text);
+                    if(Game.getGameMode() == GameMode.BOT_GUI){
+                        if(entity instanceof  MasterSquirrelBot){
+                            MasterSquirrelBot masterSquirrelBot = (MasterSquirrelBot) entity;
+                            Text text = new Text(masterSquirrelBot.getName() + ": " + entity.getEnergy());
+                            text.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
+                            getSquirrelInfoBar().getChildren().add(text);
+                        }else{
+                            Text text = new Text(entity.getEntityType().toString() + ": " + entity.getEnergy());
+                            text.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
+                            getSquirrelInfoBar().getChildren().add(text);
+                        }
+                    }else{
+                        Text text = new Text(entity.getEntityType().toString() + ": " + entity.getEnergy());
+                        text.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
+                        getSquirrelInfoBar().getChildren().add(text);
+                    }
                 }
             }
         }

@@ -131,6 +131,10 @@ public class MasterSquirrelBot extends MasterSquirrel{
         }
     }
 
+    public String getName() {
+        return name;
+    }
+
     public Class<? extends BotControllerFactory> getBotControllerFactory() {
         return botControllerFactory;
     }
