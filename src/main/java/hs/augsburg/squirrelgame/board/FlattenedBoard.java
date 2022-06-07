@@ -8,6 +8,7 @@ import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.entity.squirrel.MiniSquirrel;
+import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.ui.BoardView;
 import hs.augsburg.squirrelgame.util.MathUtils;
 import hs.augsburg.squirrelgame.util.XY;
@@ -16,6 +17,7 @@ import hs.augsburg.squirrelgame.util.exception.NotEnoughEnergyException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.logging.Level;
 
 public class FlattenedBoard implements BoardView, EntityContext{
 
@@ -53,7 +55,7 @@ public class FlattenedBoard implements BoardView, EntityContext{
     @Override
     public void move(Entity entity, XY movePosition) {
         if (getEntity(movePosition.getX(), movePosition.getY()) != null && getEntity(movePosition.getX(), movePosition.getY()).getId() != entity.getId()) {
-            System.out.println("on collision call [" + entity.getId() + " with " + getEntity(movePosition.getX(), movePosition.getY()).getId() + "]");
+            Launcher.getLogger().log(Level.INFO, "on collision call [" + entity.getId() + " with " + getEntity(movePosition.getX(), movePosition.getY()).getId() + "]");
             entity.onCollision(getEntity(movePosition.getX(), movePosition.getY()));
         } else {
             entity.updatePosition(movePosition);
@@ -84,7 +86,7 @@ public class FlattenedBoard implements BoardView, EntityContext{
      * Sets the entities to their positions on the gameBoard
      */
     private void fillGameBoard() {
-       Iterator<Entity> iterator = getEntitySet().iterator();
+        Iterator<Entity> iterator = getEntitySet().iterator();
         while (iterator.hasNext()) {
             Entity entity = iterator.next();
             XY position = entity.getPosition();

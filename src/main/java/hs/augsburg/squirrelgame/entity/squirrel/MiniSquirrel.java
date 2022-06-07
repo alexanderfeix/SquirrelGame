@@ -2,8 +2,11 @@ package hs.augsburg.squirrelgame.entity.squirrel;
 
 import hs.augsburg.squirrelgame.entity.*;
 import hs.augsburg.squirrelgame.entity.beast.BadBeast;
+import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.util.XY;
 import hs.augsburg.squirrelgame.util.XY;
+
+import java.util.logging.Level;
 
 public class MiniSquirrel extends MovableEntity {
 
@@ -30,6 +33,8 @@ public class MiniSquirrel extends MovableEntity {
 
 
     public void onCollision(Entity enemy) {
+        String before = "MiniSquirrel collided with " + enemy.getEntity() + "\n" + "BEFORE collision: (" + getPosition().toString() + "), " + getEnergy() + "\n";
+
         if (enemy.getEntityType() == EntityType.MASTER_SQUIRREL) {
             MasterSquirrel enemySquirrel = (MasterSquirrel) enemy;
             if (enemySquirrel.getId() == getMasterSquirrelId()) {
@@ -80,6 +85,7 @@ public class MiniSquirrel extends MovableEntity {
             }
             updatePosition(currentPosition);
         }
+        Launcher.getLogger().log(Level.INFO, before + "AFTER collision: (" + getPosition().toString() + "), " + getEnergy() + "\n");
     }
 
     public int getMasterSquirrelId() {

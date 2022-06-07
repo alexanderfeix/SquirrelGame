@@ -1,17 +1,15 @@
 package hs.augsburg.squirrelgame.entity;
 
+import hs.augsburg.squirrelgame.main.Launcher;
+
 import java.util.*;
 import java.util.Collection;
+import java.util.logging.Level;
+
 public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Entity> {
     /**
      * This class is used to manage the entities. Every instance of EntitySet could contain a different set of entities.
      */
-    public EntitySet(){
-
-    }
-    public EntitySet(Entity entity){
-
-    }
 
     private ListElement tail;
     private ListElement head;
@@ -24,33 +22,10 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
     private int entityCounter = 0;
 
     /**
-     * Checks if the set of entities contains a specific entity
-     *
-     * @param entityId
-     * @return
-     */
-    public boolean entityExists(int entityId) {
-        ListElement tempTail = tail;
-        if (tempTail == null) {
-            return false;
-        }
-        if (!tempTail.hasPrev() && tempTail.getEntity().getId() == entityId) {
-            return true;
-        }
-        while (tempTail.hasPrev()) {
-            ListElement newTempTail = tempTail.getPrevItem();
-            if (tempTail.getEntity().getId() == entityId) {
-                return true;
-            }
-            tempTail = newTempTail;
-        }
-        return tempTail.getEntity().getId() == entityId;
-    }
-
-    /**
      * Calls the nextStep() method on all entities
      */
     public void nextStep(EntityContext entityContext) {
+        Launcher.getLogger().log(Level.FINEST, "Called nextStep in EntitySet.");
         Iterator<Entity> entityIterator = iterator();
         while (entityIterator.hasNext()) {
             hs.augsburg.squirrelgame.entity.Entity current = entityIterator.next();
@@ -109,11 +84,30 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
 
     @Override
     public boolean contains(Object o) {
+        if(o instanceof Entity entity){
+            int entityId = entity.getId();
+            ListElement tempTail = tail;
+            if (tempTail == null) {
+                return false;
+            }
+            if (!tempTail.hasPrev() && tempTail.getEntity().getId() == entityId) {
+                return true;
+            }
+            while (tempTail.hasPrev()) {
+                ListElement newTempTail = tempTail.getPrevItem();
+                if (tempTail.getEntity().getId() == entityId) {
+                    return true;
+                }
+                tempTail = newTempTail;
+            }
+            return tempTail.getEntity().getId() == entityId;
+        }
         return false;
     }
 
     @Override
     public Iterator<hs.augsburg.squirrelgame.entity.Entity> iterator() {
+        Launcher.getLogger().log(Level.FINER, "Iterator call in EntitySet.");
         class EnumerateRandomClass<Entity> implements Iterator<hs.augsburg.squirrelgame.entity.Entity> {
             final HashSet<Integer> usedIndex = new HashSet<>();
             boolean checkUsedIndex = false;
@@ -170,7 +164,8 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
 
     @Override
     public boolean add(hs.augsburg.squirrelgame.entity.Entity entity) {
-            if (entityExists(entity.getId())) {
+            if (contains(entity)) {
+                Launcher.getLogger().log(Level.SEVERE, "IllegalStateException: An entity with this id already exists!");
                 throw new IllegalStateException("An entity with this id already exists!");
             } else{
                 ListElement newItem = new ListElement(entity);
@@ -185,6 +180,7 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
                 }
                 entityCounter++;
                 entities.add(entity);
+                Launcher.getLogger().log(Level.FINE, "Added new entity to EntitySet.");
                 return true;
             }
     }
@@ -192,7 +188,7 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
     @Override
     public boolean remove(Object o) {
         if(o instanceof hs.augsburg.squirrelgame.entity.Entity entity){
-            if (!entityExists(entity.getId())) throw new IllegalStateException("The entity doesn't exists!");
+            if (!contains(entity)) throw new IllegalStateException("The entity doesn't exists!");
             ListElement tempTail = tail;
             if (tempTail == null) {
                 return true;
@@ -228,6 +224,7 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
                 tempTail = newTempTail;
             }
             entities.remove(entity);
+            Launcher.getLogger().log(Level.FINE, "Removed entity from EntitySet.");
             return true;
         }
         return false;
@@ -255,7 +252,9 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
 
     @Override
     public void clear() {
-
+        for (Entity entity : this) {
+            remove(entity);
+        }
     }
 
     /**
