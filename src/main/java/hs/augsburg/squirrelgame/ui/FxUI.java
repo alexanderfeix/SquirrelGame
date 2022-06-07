@@ -10,7 +10,8 @@ import hs.augsburg.squirrelgame.command.CommandScanner;
 import hs.augsburg.squirrelgame.command.GameCommandType;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
-import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
+
+import hs.augsburg.squirrelgame.entity.util.sortByScore;
 import hs.augsburg.squirrelgame.game.GameImpl;
 import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.util.Direction;
@@ -38,7 +39,8 @@ import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Iterator;
 
 public class FxUI implements UI{
 
@@ -306,18 +308,20 @@ public class FxUI implements UI{
     }
 
     private void refreshSquirrelInfoBar(BoardView view){
-        if(getSquirrelInfoBar() != null){
+        ArrayList<Entity> ar = new ArrayList<Entity>();
+        Iterator<Entity> entityIterator = getController().getState().getBoard().getEntitySet().iterator();
+        if(getSquirrelInfoBar() != null) {
             getSquirrelInfoBar().getChildren().clear();
-            for(int col = 0; col < view.getGameBoard().length; col++){
-                for(int row = 0; row < view.getGameBoard()[col].length; row++){
-                    try {
-                        Entity entity = view.getEntity(col, row);
-                        if(entity.getEntityType() == EntityType.MASTER_SQUIRREL || entity.getEntityType() == EntityType.MINI_SQUIRREL){
-                            Text text = new Text(entity.getEntityType().toString() + ": " + entity.getEnergy());
-                            text.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
-                            getSquirrelInfoBar().getChildren().add(text);
-                        }
-                    }catch (Exception ignored){}
+            while (entityIterator.hasNext()) {
+                hs.augsburg.squirrelgame.entity.Entity current = entityIterator.next();
+                ar.add(current.getEntity());
+            }
+            Collections.sort(ar, new sortByScore());
+            for(Entity entity:ar){
+                if(entity.getEnergy()>300) {
+                    Text text = new Text(entity.getEntityType().toString() + ": " + entity.getEnergy());
+                    text.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
+                    getSquirrelInfoBar().getChildren().add(text);
                 }
             }
         }

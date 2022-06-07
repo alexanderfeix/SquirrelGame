@@ -15,6 +15,7 @@ import hs.augsburg.squirrelgame.util.exception.NotEnoughEnergyException;
 
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class FlattenedBoard implements BoardView, EntityContext{
 
@@ -83,9 +84,9 @@ public class FlattenedBoard implements BoardView, EntityContext{
      * Sets the entities to their positions on the gameBoard
      */
     private void fillGameBoard() {
-        Enumeration enumeration = getEntitySet().enumerateRandom();
-        while (enumeration.hasMoreElements()) {
-            Entity entity = (Entity) enumeration.nextElement();
+       Iterator<Entity> iterator = getEntitySet().iterator();
+        while (iterator.hasNext()) {
+            Entity entity = iterator.next();
             XY position = entity.getPosition();
             gameBoard[position.getX()][position.getY()] = entity;
         }
