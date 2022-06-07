@@ -12,47 +12,51 @@ public class XYSupport extends XY{
     }
 
     public XY escapeFromEntity(XY position) {
-        if (position.getX() > getX() && position.getY() > getY()) {
-            return this.plus(XY.LEFT_UP);
-        } else if (position.getX() > getX() && position.getY() < getY()) {
-            return this.plus(XY.LEFT_DOWN);
-        } else if (position.getX() > getX() && position.getY() == getY()) {
-            return this.plus(XY.LEFT);
-        } else if (position.getX() < getX() && position.getY() > getY()) {
-            return this.plus(XY.RIGHT_UP);
-        } else if (position.getX() < getX() && position.getY() < getY()) {
-            return this.plus(XY.RIGHT_DOWN);
-        } else if (position.getX() < getX() && position.getY() == getY()) {
-            return this.plus(XY.RIGHT);
-        } else if (position.getX() == getX() && position.getY() > getY()) {
-            return this.plus(XY.UP);
-        } else if (position.getX() == getX() && position.getY() < getY()) {
-            return this.plus(XY.DOWN);
-        } else if (position.getX() == getX() && position.getY() == getY()) {
-            return this;
+        if(position != null){
+            if (position.getX() > getX() && position.getY() > getY()) {
+                return this.plus(XY.LEFT_UP);
+            } else if (position.getX() > getX() && position.getY() < getY()) {
+                return this.plus(XY.LEFT_DOWN);
+            } else if (position.getX() > getX() && position.getY() == getY()) {
+                return this.plus(XY.LEFT);
+            } else if (position.getX() < getX() && position.getY() > getY()) {
+                return this.plus(XY.RIGHT_UP);
+            } else if (position.getX() < getX() && position.getY() < getY()) {
+                return this.plus(XY.RIGHT_DOWN);
+            } else if (position.getX() < getX() && position.getY() == getY()) {
+                return this.plus(XY.RIGHT);
+            } else if (position.getX() == getX() && position.getY() > getY()) {
+                return this.plus(XY.UP);
+            } else if (position.getX() == getX() && position.getY() < getY()) {
+                return this.plus(XY.DOWN);
+            } else if (position.getX() == getX() && position.getY() == getY()) {
+                return this;
+            }
         }
         return this;
     }
 
     public XY chaseEntity(XY position) {
-        if (position.getX() > getX() && position.getY() > getY()) {
-            return this.plus(XY.RIGHT_DOWN);
-        } else if (position.getX() > getX() && position.getY() < getY()) {
-            return this.plus(XY.RIGHT_UP);
-        } else if (position.getX() > getX() && position.getY() == getY()) {
-            return this.plus(XY.RIGHT);
-        } else if (position.getX() < getX() && position.getY() > getY()) {
-            return this.plus(XY.LEFT_DOWN);
-        } else if (position.getX() < getX() && position.getY() < getY()) {
-            return this.plus(XY.LEFT_UP);
-        } else if (position.getX() < getX() && position.getY() == getY()) {
-            return this.plus(XY.LEFT);
-        } else if (position.getX() == getX() && position.getY() > getY()) {
-            return this.plus(XY.DOWN);
-        } else if (position.getX() == getX() && position.getY() < getY()) {
-            return this.plus(XY.UP);
-        } else if (position.getX() == getX() && position.getY() == getY()) {
-            return this;
+        if(position != null){
+            if (position.getX() > getX() && position.getY() > getY()) {
+                return this.plus(XY.RIGHT_DOWN);
+            } else if (position.getX() > getX() && position.getY() < getY()) {
+                return this.plus(XY.RIGHT_UP);
+            } else if (position.getX() > getX() && position.getY() == getY()) {
+                return this.plus(XY.RIGHT);
+            } else if (position.getX() < getX() && position.getY() > getY()) {
+                return this.plus(XY.LEFT_DOWN);
+            } else if (position.getX() < getX() && position.getY() < getY()) {
+                return this.plus(XY.LEFT_UP);
+            } else if (position.getX() < getX() && position.getY() == getY()) {
+                return this.plus(XY.LEFT);
+            } else if (position.getX() == getX() && position.getY() > getY()) {
+                return this.plus(XY.DOWN);
+            } else if (position.getX() == getX() && position.getY() < getY()) {
+                return this.plus(XY.UP);
+            } else if (position.getX() == getX() && position.getY() == getY()) {
+                return this;
+            }
         }
         return this;
     }

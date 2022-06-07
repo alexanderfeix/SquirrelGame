@@ -20,6 +20,7 @@ import hs.augsburg.squirrelgame.game.Game;
 import hs.augsburg.squirrelgame.game.GameImpl;
 import hs.augsburg.squirrelgame.game.GameMode;
 import hs.augsburg.squirrelgame.util.GameUtils;
+import hs.augsburg.squirrelgame.util.WallPatterns;
 import hs.augsburg.squirrelgame.util.XY;
 
 import java.io.InputStream;
@@ -70,6 +71,14 @@ public class Board {
      */
     private void spawnEntitiesRandomly() {
         ArrayList<XY> spawnPositions = new ArrayList<>();
+        if(BoardConfig.LOAD_WALL_PATTERNS){
+            for(ArrayList<XY> wallPattern : BoardConfig.WALL_PATTERNS){
+                for(XY position : wallPattern){
+                    getEntitySet().add(new Wall(position));
+                    spawnPositions.add(position);
+                }
+            }
+        }
         Random random = new Random();
         for (int i = 0; i < BoardConfig.SPAWN_RATES.size(); i++) {
             for (int j = 0; j < (int) BoardConfig.SPAWN_RATES.values().toArray()[i]; j++) {

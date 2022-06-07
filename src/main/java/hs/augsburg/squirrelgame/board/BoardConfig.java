@@ -13,20 +13,20 @@ import java.util.List;
 
 public class BoardConfig {
 
-    public static int COLUMNS = 60;
-    public static int ROWS = 60;
+    public static int COLUMNS = 52;
+    public static int ROWS = 52;
     public static HashMap<EntityType, Integer> SPAWN_RATES = new HashMap<>() {{
-        put(EntityType.GOOD_BEAST, 16*2);
-        put(EntityType.BAD_BEAST, 16*2);
-        put(EntityType.GOOD_PLANT, 24*2);
-        put(EntityType.BAD_PLANT, 24*2);
-        put(EntityType.WALL, 10*2);
+        put(EntityType.GOOD_BEAST, 16/2);
+        put(EntityType.BAD_BEAST, 16/2);
+        put(EntityType.GOOD_PLANT, 24/2);
+        put(EntityType.BAD_PLANT, 24/2);
     }};
 
     public static int STEPS = 200;
     public static int REMAINING_STEPS = STEPS;
     public static int CURRENT_ROUND = 1;
     public static int STANDARD_MINI_SQUIRREL_ENERGY = 200;
+    public static boolean LOAD_WALL_PATTERNS = true;
 
     public static ArrayList<String> MASTER_BOT_IMPLEMENTATIONS = new ArrayList<>() {{
         add("hs.augsburg.squirrelgame.botimpls.Group1101Bot_2");
@@ -37,6 +37,6 @@ public class BoardConfig {
     public static HashMap<String, ArrayList<Integer>> HIGHSCORES = new HashMap<>();
 
     public static ArrayList<ArrayList<XY>> WALL_PATTERNS = new ArrayList<>(){{
-       new ArrayList<XY>().addAll(WallPatterns.LESS_WALLS);
+       add(WallPatterns.DEFAULT);
     }};
 }

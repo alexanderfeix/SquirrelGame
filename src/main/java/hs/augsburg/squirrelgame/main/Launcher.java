@@ -96,7 +96,7 @@ public class Launcher extends Application {
     private static void setupLogger(){
         logger.setLevel(loggerLevel);
         try {
-            FileHandler fileHandler = new FileHandler(new Date() + ".log");
+            FileHandler fileHandler = new FileHandler(new Date().getTime() + ".log");
             logger.addHandler(fileHandler);
             SimpleFormatter formatter = new SimpleFormatter();
             fileHandler.setFormatter(formatter);
