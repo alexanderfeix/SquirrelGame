@@ -6,6 +6,8 @@ import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.ui.UI;
 import javafx.application.Platform;
 
+import java.util.logging.Level;
+
 public abstract class Game {
 
     private State state;
@@ -27,6 +29,7 @@ public abstract class Game {
      * This method is the game loop
      */
     public void run() {
+        Launcher.getLogger().log(Level.INFO, "Starting game...");
         while (!RESET) {
             if(!PAUSE_MODE){
                 render();
@@ -41,6 +44,7 @@ public abstract class Game {
     }
 
     public void reset(){
+        Launcher.getLogger().log(Level.INFO, "Resetting game...");
         Platform.runLater(() -> {
             Launcher.getFxUI().switchPauseItems();
             Launcher.getFxUI().showHighscoreMenu();

@@ -8,6 +8,7 @@ import hs.augsburg.squirrelgame.entity.EntitySet;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.entity.squirrel.MiniSquirrel;
+import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.ui.BoardView;
 import hs.augsburg.squirrelgame.util.MathUtils;
 import hs.augsburg.squirrelgame.util.XY;
@@ -15,6 +16,8 @@ import hs.augsburg.squirrelgame.util.exception.NotEnoughEnergyException;
 
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.logging.Level;
 
 public class FlattenedBoard implements BoardView, EntityContext{
 
@@ -52,7 +55,7 @@ public class FlattenedBoard implements BoardView, EntityContext{
     @Override
     public void move(Entity entity, XY movePosition) {
         if (getEntity(movePosition.getX(), movePosition.getY()) != null && getEntity(movePosition.getX(), movePosition.getY()).getId() != entity.getId()) {
-            System.out.println("on collision call [" + entity.getId() + " with " + getEntity(movePosition.getX(), movePosition.getY()).getId() + "]");
+            Launcher.getLogger().log(Level.INFO, "on collision call [" + entity.getId() + " with " + getEntity(movePosition.getX(), movePosition.getY()).getId() + "]");
             entity.onCollision(getEntity(movePosition.getX(), movePosition.getY()));
         } else {
             entity.updatePosition(movePosition);
@@ -74,7 +77,7 @@ public class FlattenedBoard implements BoardView, EntityContext{
             while(getEntity(miniSquirrel.getPosition().getX(), miniSquirrel.getPosition().getY()) != null){
                 miniSquirrel.updatePosition(masterSquirrel.getPosition().getUtils().getRandomNearbyPosition());
             }
-            getBoard().getEntitySet().addEntity(miniSquirrel);
+            getBoard().getEntitySet().add(miniSquirrel);
         }
     }
 
@@ -83,9 +86,9 @@ public class FlattenedBoard implements BoardView, EntityContext{
      * Sets the entities to their positions on the gameBoard
      */
     private void fillGameBoard() {
-        Enumeration enumeration = getEntitySet().enumerateRandom();
-        while (enumeration.hasMoreElements()) {
-            Entity entity = (Entity) enumeration.nextElement();
+        Iterator<Entity> iterator = getEntitySet().iterator();
+        while (iterator.hasNext()) {
+            Entity entity = iterator.next();
             XY position = entity.getPosition();
             gameBoard[position.getX()][position.getY()] = entity;
         }
@@ -145,22 +148,23 @@ public class FlattenedBoard implements BoardView, EntityContext{
     private void checkEqualPositionOfEntities(){
         setOverlapping(false);
         HashMap<String, Entity> hashedEntities = new HashMap<>();
-        for(Entity entity : getEntitySet().getEntities()) {
-            if((entity.getEntityType() == EntityType.MASTER_SQUIRREL || entity.getEntityType() == EntityType.MINI_SQUIRREL)
-                && entity.getEnergy() <= 0 && entity.isAlive()){
+        for (Entity entity : getEntitySet()) {
+            if ((entity.getEntityType() == EntityType.MASTER_SQUIRREL || entity.getEntityType() == EntityType.MINI_SQUIRREL)
+                    && entity.getEnergy() <= 0 && entity.isAlive()) {
                 entity.setAlive(false);
             }
             try {
-                if(hashedEntities.containsKey(entity.getPosition().toString())){
-                    if(entity.getEntityType() == EntityType.GOOD_PLANT || entity.getEntityType() != EntityType.BAD_PLANT
-                    || entity.getEntityType() == EntityType.GOOD_BEAST || entity.getEntityType() == EntityType.BAD_BEAST){
+                if (hashedEntities.containsKey(entity.getPosition().toString())) {
+                    if (entity.getEntityType() == EntityType.GOOD_PLANT || entity.getEntityType() != EntityType.BAD_PLANT
+                            || entity.getEntityType() == EntityType.GOOD_BEAST || entity.getEntityType() == EntityType.BAD_BEAST) {
                         entity.updatePosition(entity.getPosition().getUtils().getRandomNearbyPosition());
                         setOverlapping(true);
                     }
-                }else{
+                } else {
                     hashedEntities.put(entity.getPosition().toString(), entity);
                 }
-            }catch (Exception ignored){}
+            } catch (Exception ignored) {
+            }
         }
         hashedEntities.clear();
     }

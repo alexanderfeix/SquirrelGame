@@ -8,12 +8,14 @@ import hs.augsburg.squirrelgame.game.State;
 import hs.augsburg.squirrelgame.ui.ConsoleUI;
 import hs.augsburg.squirrelgame.ui.FxUI;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+
+import java.io.IOException;
+import java.util.Date;
+import java.util.logging.*;
 
 public class Launcher extends Application {
 
@@ -23,18 +25,27 @@ public class Launcher extends Application {
     private static GameImpl controller;
     private static Thread gameThread;
     private static Thread fxThread;
+    private static final Logger logger = Logger.getLogger("");
+    private static final Level loggerLevel = Level.FINE;
+
 
     public static void main(String[] args) {
+        setupLogger();
+        getLogger().log(Level.INFO, "LoggingLevel is configured as " + loggerLevel);
+        getLogger().log(Level.INFO, "Starting application!");
         setupGame(args);
     }
 
     private static void setupGame(String[] args){
         if(args.length > 0){
             if (args[0].equalsIgnoreCase(GameMode.SINGLEPLAYER_GUI.toString())) {
+                getLogger().log(Level.INFO, "Starting in SINGLEPLAYER_GUI mode!");
                 setupSingleplayerGUI(args);
             }else if(args[0].equalsIgnoreCase(GameMode.SINGLEPLAYER_CONSOLE.toString())){
+                getLogger().log(Level.INFO, "Starting in SINGLEPLAYER_CONSOLE mode!");
                 setupConsole();
             }else if (args[0].equalsIgnoreCase(GameMode.BOT_GUI.toString())){
+                getLogger().log(Level.INFO, "Starting in BOT_GUI mode!");
                 setupBotGUI(args);
             }else{
                 throw new RuntimeException("Can not interpret gameMode. Please correct your arguments!");
@@ -82,6 +93,21 @@ public class Launcher extends Application {
         gameThread.start();
     }
 
+    private static void setupLogger(){
+        logger.setLevel(loggerLevel);
+        try {
+            FileHandler fileHandler = new FileHandler(new Date().getTime() + ".log");
+            logger.addHandler(fileHandler);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fileHandler.setFormatter(formatter);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for(Handler handler : getLogger().getHandlers()){
+            handler.setLevel(loggerLevel);
+        }
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
         fxThread = Thread.currentThread();
@@ -124,6 +150,10 @@ public class Launcher extends Application {
 
     public static Thread getFxThread() {
         return fxThread;
+    }
+
+    public static Logger getLogger() {
+        return logger;
     }
 
     public static void setGameThread(Thread gameThread) {

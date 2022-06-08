@@ -4,14 +4,19 @@ import hs.augsburg.squirrelgame.board.BoardConfig;
 import hs.augsburg.squirrelgame.botAPI.BotControllerFactoryImpl;
 import hs.augsburg.squirrelgame.botAPI.HighScore;
 import hs.augsburg.squirrelgame.botAPI.MasterSquirrelBot;
+import hs.augsburg.squirrelgame.botAPI.MiniSquirrelBot;
 import hs.augsburg.squirrelgame.botimpls.Group1101FactoryImpl;
 import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.command.CommandScanner;
 import hs.augsburg.squirrelgame.command.GameCommandType;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
+
 import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
+import hs.augsburg.squirrelgame.entity.util.sortByScore;
+import hs.augsburg.squirrelgame.game.Game;
 import hs.augsburg.squirrelgame.game.GameImpl;
+import hs.augsburg.squirrelgame.game.GameMode;
 import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.util.Direction;
 import javafx.application.Platform;
@@ -38,7 +43,8 @@ import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Iterator;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class FxUI implements UI{
 
@@ -71,7 +77,7 @@ public class FxUI implements UI{
         Platform.runLater(() -> {
             handleSquirrelDead();
             refreshGameBoard(view);
-            refreshSquirrelInfoBar(view);
+            refreshSquirrelInfoBar();
             setNextDirection(null);
         });
     }
@@ -305,19 +311,34 @@ public class FxUI implements UI{
         return squirrelInfoBar;
     }
 
-    private void refreshSquirrelInfoBar(BoardView view){
-        if(getSquirrelInfoBar() != null){
+    private void refreshSquirrelInfoBar(){
+        ArrayList<Entity> ar = new ArrayList<>();
+        Iterator<Entity> entityIterator = getController().getState().getBoard().getEntitySet().iterator();
+        if(getSquirrelInfoBar() != null) {
             getSquirrelInfoBar().getChildren().clear();
-            for(int col = 0; col < view.getGameBoard().length; col++){
-                for(int row = 0; row < view.getGameBoard()[col].length; row++){
-                    try {
-                        Entity entity = view.getEntity(col, row);
-                        if(entity.getEntityType() == EntityType.MASTER_SQUIRREL || entity.getEntityType() == EntityType.MINI_SQUIRREL){
+            while (entityIterator.hasNext()) {
+                ar.add(entityIterator.next());
+            }
+            ar.sort(new sortByScore());
+            for(Entity entity : ar){
+                if(entity.isAlive()){
+                    if(Game.getGameMode() == GameMode.BOT_GUI){
+                        if(entity instanceof MasterSquirrelBot masterSquirrelBot){
+                            Text text = new Text(masterSquirrelBot.getName() + ": " + entity.getEnergy());
+                            text.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
+                            getSquirrelInfoBar().getChildren().add(text);
+                        }else if (entity instanceof MiniSquirrelBot miniSquirrelBot){
+                            Text text = new Text(miniSquirrelBot.getName() + ": " + entity.getEnergy());
+                            text.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
+                            getSquirrelInfoBar().getChildren().add(text);
+                        }
+                    }else{
+                        if(entity.getEnergy() > 300  || entity instanceof MasterSquirrel) {
                             Text text = new Text(entity.getEntityType().toString() + ": " + entity.getEnergy());
                             text.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
                             getSquirrelInfoBar().getChildren().add(text);
                         }
-                    }catch (Exception ignored){}
+                    }
                 }
             }
         }
@@ -410,11 +431,11 @@ public class FxUI implements UI{
         textField.setOnAction(e -> {
             try {
                 int energy = Integer.parseInt(textField.getText());
-                getController().getState().getFlattenedBoard().createStandardMiniSquirrel(getController().getHandOperatedMasterSquirrel(), energy);
                 stage.close();
                 switchPauseItems();
                 getController().setPause(false);
-            }catch (Exception ignored){}
+                getController().spawnMiniSquirrelsFromFX(energy);
+            }catch (Exception ignored){ignored.printStackTrace();}
         });
     }
 

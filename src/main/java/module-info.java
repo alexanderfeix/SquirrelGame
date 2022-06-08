@@ -4,6 +4,7 @@ module SquirrelGame {
     requires javafx.fxml;
     requires transitive javafx.graphics;
     requires junit;
+    requires java.logging;
 
     opens hs.augsburg.squirrelgame.main to javafx.fxml;
 

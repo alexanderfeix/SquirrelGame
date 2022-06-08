@@ -28,12 +28,12 @@ public class MiniSquirrelBotTest {
         MiniSquirrelBot miniSquirrelBot = (MiniSquirrelBot) masterSquirrel.createMiniSquirrel(new XY(22, 22), 500);
         MiniSquirrelBot miniSquirrel = (MiniSquirrelBot) masterSquirrel.createMiniSquirrel(new XY(20,20), 200);
 
-        game.getState().getBoard().getEntitySet().addEntity(masterSquirrel);
-        game.getState().getBoard().getEntitySet().addEntity(miniSquirrel);
-        game.getState().getBoard().getEntitySet().addEntity(miniSquirrelBot);
-        game.getState().getBoard().getEntitySet().addEntity(goodBeast);
-        game.getState().getBoard().getEntitySet().addEntity(goodPlant);
-        game.getState().getBoard().getEntitySet().addEntity(goodPlant2);
+        game.getState().getBoard().getEntitySet().add(masterSquirrel);
+        game.getState().getBoard().getEntitySet().add(miniSquirrel);
+        game.getState().getBoard().getEntitySet().add(miniSquirrelBot);
+        game.getState().getBoard().getEntitySet().add(goodBeast);
+        game.getState().getBoard().getEntitySet().add(goodPlant);
+        game.getState().getBoard().getEntitySet().add(goodPlant2);
 
         int latestEnergyGoodBeast = goodBeast.getEnergy();
         int latestEnergyGoodPlant = goodPlant.getEnergy();

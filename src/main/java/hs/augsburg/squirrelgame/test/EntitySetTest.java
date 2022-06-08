@@ -17,7 +17,7 @@ public class EntitySetTest {
         EntitySet entitySet = new EntitySet();
         int firstID = entitySet.returnLastID();
         Entity test = new BadPlant(new XY(3, 3));
-        entitySet.addEntity(test);
+        entitySet.add(test);
         int secondID = entitySet.returnLastID();
         assertNotEquals(firstID, secondID);
         assertEquals(secondID, test.getId());
@@ -28,9 +28,9 @@ public class EntitySetTest {
         EntitySet entitySet = new EntitySet();
         Entity test = new BadPlant(new XY(3, 3));
         int removedID = test.getId();
-        entitySet.addEntity(test);
+        entitySet.add(test);
         assertEquals(entitySet.returnLastID(), test.getId());
-        entitySet.removeEntity(test);
+        entitySet.remove(test);
         assertNotEquals(removedID, entitySet.returnLastID());
     }
 
@@ -39,10 +39,10 @@ public class EntitySetTest {
         EntitySet entitySet = new EntitySet();
         int itemsInListStart = entitySet.countItems(true);
         Entity test = new BadPlant(new XY(3, 3));
-        entitySet.addEntity(test);
+        entitySet.add(test);
         int itemsInListAfterAdd = entitySet.countItems(true);
         assertNotEquals(itemsInListStart, itemsInListAfterAdd);
-        entitySet.removeEntity(test);
+        entitySet.remove(test);
         int itemsInListAfterRemove = entitySet.countItems(true);
         assertEquals(itemsInListStart, itemsInListAfterRemove);
     }
@@ -53,8 +53,8 @@ public class EntitySetTest {
         EntitySet entitySet = new EntitySet();
         Entity test = new BadPlant(new XY(3, 3));
         try {
-            entitySet.addEntity(test);
-            entitySet.addEntity(test);
+            entitySet.add(test);
+            entitySet.add(test);
         } catch (IllegalStateException ise) {
             thrown = true;
         }
@@ -67,7 +67,7 @@ public class EntitySetTest {
         EntitySet entitySet = new EntitySet();
         Entity test = new BadPlant(new XY(3, 3));
         try {
-            entitySet.removeEntity(test);
+            entitySet.remove(test);
         } catch (IllegalStateException ise) {
             thrown = true;
         }
@@ -79,7 +79,7 @@ public class EntitySetTest {
         State state = new State(new Board());
         EntitySet entitySet = new EntitySet();
         Entity test = new TestEntity(new XY(2, 5));
-        entitySet.addEntity(test);
+        entitySet.add(test);
         entitySet.nextStep(state.getFlattenedBoard());
         assertTrue(TestEntity.getStatus());
     }

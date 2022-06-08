@@ -1,6 +1,9 @@
 package hs.augsburg.squirrelgame.entity;
 
+import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.util.XY;
+
+import java.util.logging.Level;
 
 public abstract class Entity implements EntityInterface {
 
@@ -22,6 +25,7 @@ public abstract class Entity implements EntityInterface {
         this.id = idCount;
         this.alive = true;
         idCount++;
+        Launcher.getLogger().log(Level.FINE, "Instanced new entity with type " + entityType + " on position " + position + " with energy " + energy + ".");
     }
 
     public void updateEnergy(int energy) {

@@ -4,7 +4,10 @@ import hs.augsburg.squirrelgame.board.FlattenedBoard;
 import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.command.CommandTypeInfo;
 import hs.augsburg.squirrelgame.command.GameCommandType;
+import hs.augsburg.squirrelgame.entity.Entity;
+import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.entity.squirrel.HandOperatedMasterSquirrel;
+import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.ui.UI;
 import hs.augsburg.squirrelgame.util.XY;
 
@@ -25,7 +28,7 @@ public class GameImpl extends Game {
         super(state, ui);
         this.ui = ui;
         System.out.println(getGameMode());
-        if(getGameMode() != GameMode.BOT_GUI) state.getBoard().getEntitySet().addEntity(handOperatedMasterSquirrel);
+        if(getGameMode() != GameMode.BOT_GUI) state.getBoard().getEntitySet().add(handOperatedMasterSquirrel);
     }
 
     @Override
@@ -80,5 +83,17 @@ public class GameImpl extends Game {
 
     public PrintStream getOutputStream() {
         return outputStream;
+    }
+
+
+    public void spawnMiniSquirrelsFromFX(int energy){
+        for (Entity entity : getState().getBoard().getEntitySet()) {
+            if (entity.getEntityType() == EntityType.MASTER_SQUIRREL) {
+                MasterSquirrel masterSquirrel = (MasterSquirrel) entity;
+                if(masterSquirrel.getEnergy() > energy){
+                    getState().getFlattenedBoard().createStandardMiniSquirrel(masterSquirrel, energy);
+                }
+            }
+        }
     }
 }

@@ -28,7 +28,7 @@ public class CollisionTest {
         EntitySet entitySet = new EntitySet();
         board.flatten();
         HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2, 1));
-        entitySet.addEntity(masterSquirrel);
+        entitySet.add(masterSquirrel);
         int energyBeforeCollision = masterSquirrel.getEnergy();
         board.getFlattenedBoard().move(masterSquirrel, masterSquirrel.getPosition().plus(XY.UP));
         assertEquals(masterSquirrel.getEnergy(), energyBeforeCollision - 30);
@@ -39,8 +39,8 @@ public class CollisionTest {
         Board board = new Board();
         HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2, 1));
         BadBeast badBeast = new BadBeast(new XY(1, 1));
-        board.getEntitySet().addEntity(masterSquirrel);
-        board.getEntitySet().addEntity(badBeast);
+        board.getEntitySet().add(masterSquirrel);
+        board.getEntitySet().add(badBeast);
         board.flatten();
         int squirrelEnergyBeforeCollision = masterSquirrel.getEnergy();
         int badBeastEnergyBeforeCollision = badBeast.getEnergy();
@@ -55,8 +55,8 @@ public class CollisionTest {
         Board board = new Board();
         HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2, 1));
         GoodBeast goodBeast = new GoodBeast(new XY(2, 2));
-        board.getEntitySet().addEntity(masterSquirrel);
-        board.getEntitySet().addEntity(goodBeast);
+        board.getEntitySet().add(masterSquirrel);
+        board.getEntitySet().add(goodBeast);
         board.flatten();
         int squirrelEnergyBeforeCollision = masterSquirrel.getEnergy();
         int goodBeastEnergyBeforeCollision = goodBeast.getEnergy();
@@ -71,8 +71,8 @@ public class CollisionTest {
         Board board = new Board();
         HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2, 1));
         GoodPlant goodPlant = new GoodPlant(new XY(1, 1));
-        board.getEntitySet().addEntity(masterSquirrel);
-        board.getEntitySet().addEntity(goodPlant);
+        board.getEntitySet().add(masterSquirrel);
+        board.getEntitySet().add(goodPlant);
         board.flatten();
         int squirrelEnergyBeforeCollision = masterSquirrel.getEnergy();
         int goodPlantEnergyBeforeCollision = goodPlant.getEnergy();
@@ -87,8 +87,8 @@ public class CollisionTest {
         Board board = new Board();
         HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2, 1));
         BadPlant badPlant = new BadPlant(new XY(3, 1));
-        board.getEntitySet().addEntity(masterSquirrel);
-        board.getEntitySet().addEntity(badPlant);
+        board.getEntitySet().add(masterSquirrel);
+        board.getEntitySet().add(badPlant);
         board.flatten();
         int squirrelEnergyBeforeCollision = masterSquirrel.getEnergy();
         int badPlantEnergyBeforeCollision = badPlant.getEnergy();
@@ -103,8 +103,8 @@ public class CollisionTest {
         Board board = new Board();
         HandOperatedMasterSquirrel masterSquirrel = new HandOperatedMasterSquirrel(new XY(2, 1));
         MiniSquirrel miniSquirrel = (MiniSquirrel) masterSquirrel.createMiniSquirrel(new XY(3, 1), 150);
-        board.getEntitySet().addEntity(masterSquirrel);
-        board.getEntitySet().addEntity(miniSquirrel);
+        board.getEntitySet().add(masterSquirrel);
+        board.getEntitySet().add(miniSquirrel);
         board.flatten();
         int squirrelEnergyBeforeCollision = masterSquirrel.getEnergy();
         int miniSquirrelEnergyBeforeCollision = miniSquirrel.getEnergy();

@@ -5,8 +5,11 @@ import hs.augsburg.squirrelgame.botAPI.MiniSquirrelBot;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.entity.beast.BadBeast;
+import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.util.XY;
 import hs.augsburg.squirrelgame.util.XY;
+
+import java.util.logging.Level;
 
 public class MasterSquirrel extends Entity {
     //MasterSquirrel is actually a movable entity but can't implement the move() method, because move() provides
@@ -21,11 +24,7 @@ public class MasterSquirrel extends Entity {
 
 
     public void onCollision(Entity enemy) {
-        System.out.println("Squirrel collided with " + enemy.getEntity());
-        System.out.println("----------");
-        System.out.println("Energy of MasterSquirrel BEFORE collision: " + getEnergy());
-        System.out.println("Position of MasterSquirrel BEFORE collision: " + getPosition().toString());
-        System.out.println("\n");
+        String before = "MasterSquirrel collided with " + enemy.getEntity() + "\n" + "BEFORE collision: (" + getPosition().toString() + "), " + getEnergy() + "\n";
 
 
         if (enemy.getEntityType() == EntityType.WALL) {
@@ -66,10 +65,7 @@ public class MasterSquirrel extends Entity {
             enemy.setAlive(false);
         }
 
-
-        System.out.println("Energy of MasterSquirrel AFTER collision: " + getEnergy());
-        System.out.println("Position of MasterSquirrel AFTER collision: " + getPosition().toString());
-        System.out.println("----------\n");
+        Launcher.getLogger().log(Level.INFO, before + "AFTER collision: (" + getPosition().toString() + "), " + getEnergy() + "\n");
     }
 
 
@@ -81,6 +77,7 @@ public class MasterSquirrel extends Entity {
             miniSquirrel.setMasterSquirrelId(getId());
             miniSquirrel.setMasterSquirrel(this);
             this.updateEnergy(-energy);
+            Launcher.getLogger().log(Level.INFO, "Created new MiniSquirrel on position " + position + " with energy " + energy + ".");
             return miniSquirrel;
         }
     }

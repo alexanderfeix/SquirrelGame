@@ -12,6 +12,7 @@ public class BotControllerMini implements BotController{
         XY viewLowerLeft = controllerContext.getViewLowerLeft();
         XY viewUpperRight = controllerContext.getViewUpperRight();
 
+        controllerContext.implode(10);
         double shortestEnemyDistance = Double.MAX_VALUE;
         XY enemyPosition = null;
         double shortestFriendDistance = Double.MAX_VALUE;
