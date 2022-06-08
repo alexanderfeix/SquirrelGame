@@ -1,4 +1,4 @@
-package hs.augsburg.squirrelgame.botAPI;
+package hs.augsburg.squirrelgame.util;
 
 import hs.augsburg.squirrelgame.main.Launcher;
 
@@ -26,7 +26,7 @@ public class LoggingHandler implements InvocationHandler {
         if(args != null){
             argsString = Arrays.toString(args);
         }
-        Launcher.getLogger().log(Level.FINEST, "Method: " + method.toString() + ", args: " + argsString + ", result: " + resultString);
+        Launcher.getLogger().log(Level.FINER, "Method: " + method.toString() + ", args: " + argsString + ", result: " + resultString);
         return result;
     }
 }

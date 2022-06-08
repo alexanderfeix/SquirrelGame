@@ -8,6 +8,7 @@ import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.util.Direction;
+import hs.augsburg.squirrelgame.util.LoggingHandler;
 import hs.augsburg.squirrelgame.util.XY;
 
 import java.lang.reflect.InvocationTargetException;

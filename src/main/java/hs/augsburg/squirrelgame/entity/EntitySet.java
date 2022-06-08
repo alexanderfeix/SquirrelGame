@@ -104,13 +104,13 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
     @Override
     public Iterator<hs.augsburg.squirrelgame.entity.Entity> iterator() {
         Launcher.getLogger().log(Level.FINER, "Iterator call in EntitySet.");
-        class EnumerateRandomClass<Entity> implements Iterator<hs.augsburg.squirrelgame.entity.Entity> {
+        class IteratorRandomClass<Entity> implements Iterator<hs.augsburg.squirrelgame.entity.Entity> {
             final HashSet<Integer> usedIndex = new HashSet<>();
             boolean checkUsedIndex = false;
             ListElement currentElement;
             final ListElement[] arrayTemp = new ListElement[entityCounter];
 
-            public EnumerateRandomClass() {
+            public IteratorRandomClass() {
                 currentElement = head;
                 for (int j = 0; j < entityCounter; j++) {
                     arrayTemp[j] = currentElement;
@@ -142,7 +142,7 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
                 }
             }
         }
-        return new EnumerateRandomClass<>();
+        return new IteratorRandomClass<>();
     }
 
 

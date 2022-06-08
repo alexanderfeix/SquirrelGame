@@ -4,6 +4,7 @@ import hs.augsburg.squirrelgame.board.BoardConfig;
 import hs.augsburg.squirrelgame.botAPI.BotControllerFactoryImpl;
 import hs.augsburg.squirrelgame.botAPI.HighScore;
 import hs.augsburg.squirrelgame.botAPI.MasterSquirrelBot;
+import hs.augsburg.squirrelgame.botAPI.MiniSquirrelBot;
 import hs.augsburg.squirrelgame.botimpls.Group1101FactoryImpl;
 import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.command.CommandScanner;
@@ -76,7 +77,7 @@ public class FxUI implements UI{
         Platform.runLater(() -> {
             handleSquirrelDead();
             refreshGameBoard(view);
-            refreshSquirrelInfoBar(view);
+            refreshSquirrelInfoBar();
             setNextDirection(null);
         });
     }
@@ -310,8 +311,8 @@ public class FxUI implements UI{
         return squirrelInfoBar;
     }
 
-    private void refreshSquirrelInfoBar(BoardView view){
-        ArrayList<Entity> ar = new ArrayList<Entity>();
+    private void refreshSquirrelInfoBar(){
+        ArrayList<Entity> ar = new ArrayList<>();
         Iterator<Entity> entityIterator = getController().getState().getBoard().getEntitySet().iterator();
         if(getSquirrelInfoBar() != null) {
             getSquirrelInfoBar().getChildren().clear();
@@ -319,23 +320,24 @@ public class FxUI implements UI{
                 ar.add(entityIterator.next());
             }
             ar.sort(new sortByScore());
-            for(Entity entity:ar){
-                if(entity.getEnergy()>300) {
+            for(Entity entity : ar){
+                if(entity.isAlive()){
                     if(Game.getGameMode() == GameMode.BOT_GUI){
-                        if(entity instanceof  MasterSquirrelBot){
-                            MasterSquirrelBot masterSquirrelBot = (MasterSquirrelBot) entity;
+                        if(entity instanceof MasterSquirrelBot masterSquirrelBot){
                             Text text = new Text(masterSquirrelBot.getName() + ": " + entity.getEnergy());
                             text.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
                             getSquirrelInfoBar().getChildren().add(text);
-                        }else{
-                            Text text = new Text(entity.getEntityType().toString() + ": " + entity.getEnergy());
+                        }else if (entity instanceof MiniSquirrelBot miniSquirrelBot){
+                            Text text = new Text(miniSquirrelBot.getName() + ": " + entity.getEnergy());
                             text.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
                             getSquirrelInfoBar().getChildren().add(text);
                         }
                     }else{
-                        Text text = new Text(entity.getEntityType().toString() + ": " + entity.getEnergy());
-                        text.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
-                        getSquirrelInfoBar().getChildren().add(text);
+                        if(entity.getEnergy() > 300  || entity instanceof MasterSquirrel) {
+                            Text text = new Text(entity.getEntityType().toString() + ": " + entity.getEnergy());
+                            text.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
+                            getSquirrelInfoBar().getChildren().add(text);
+                        }
                     }
                 }
             }

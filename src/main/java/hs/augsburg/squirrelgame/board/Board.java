@@ -155,7 +155,7 @@ public class Board {
             for(Class<?> classInPackage : foundClassesInPackage){
                 try {
                     Class<? extends BotControllerFactory> searchedClass = (Class<? extends BotControllerFactory>) classInPackage;
-                    if(searchedClass.getName().contains("FactoryImpl")) {
+                    if(searchedClass.getName().toUpperCase(Locale.ROOT).contains("FACTORYIMPL")) {
                         if (entityType == EntityType.MASTER_SQUIRREL) {
                             MasterSquirrelBot masterSquirrelBot = new MasterSquirrelBot(new XY(0, 0).getUtils().getRandomPosition(), searchedClass, botName);
                             getEntitySet().add(masterSquirrelBot);

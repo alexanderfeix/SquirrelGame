@@ -11,6 +11,7 @@ import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.entity.squirrel.MiniSquirrel;
 import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.util.Direction;
+import hs.augsburg.squirrelgame.util.LoggingHandler;
 import hs.augsburg.squirrelgame.util.MathUtils;
 import hs.augsburg.squirrelgame.util.XY;
 
@@ -238,5 +239,9 @@ public class MiniSquirrelBot extends MiniSquirrel{
         public int getImpactRadius() {
             return impactRadius;
         }
+    }
+
+    public String getName() {
+        return name;
     }
 }
