@@ -21,7 +21,7 @@ public class MathUtils {
         System.out.println("distance is " + distance + ", Entity is " + affectedEntity.getEntityType() + ", ID is " + affectedEntity.getId());
         int impactArea = (int) (Math.pow(impactRadius, 2) * Math.PI);
         System.out.println(200 * (affectedEntity.getEnergy()/impactArea) * (1 - (int)distance/impactRadius));
-        return  200 * (affectedEntity.getEnergy()/impactArea) * (1 - (int)distance/impactRadius);
+        return  Math.abs(200 * (affectedEntity.getEnergy()/impactArea) * (1 - (int)distance/impactRadius));
     }
 
 

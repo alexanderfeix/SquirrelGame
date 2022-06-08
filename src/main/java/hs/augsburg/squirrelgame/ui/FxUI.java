@@ -11,6 +11,7 @@ import hs.augsburg.squirrelgame.command.GameCommandType;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
 
+import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.entity.util.sortByScore;
 import hs.augsburg.squirrelgame.game.Game;
 import hs.augsburg.squirrelgame.game.GameImpl;
@@ -41,8 +42,8 @@ import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class FxUI implements UI{
 
@@ -428,11 +429,11 @@ public class FxUI implements UI{
         textField.setOnAction(e -> {
             try {
                 int energy = Integer.parseInt(textField.getText());
-                getController().getState().getFlattenedBoard().createStandardMiniSquirrel(getController().getHandOperatedMasterSquirrel(), energy);
                 stage.close();
                 switchPauseItems();
                 getController().setPause(false);
-            }catch (Exception ignored){}
+                getController().spawnMiniSquirrelsFromFX(energy);
+            }catch (Exception ignored){ignored.printStackTrace();}
         });
     }
 

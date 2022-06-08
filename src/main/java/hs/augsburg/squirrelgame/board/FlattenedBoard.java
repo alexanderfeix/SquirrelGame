@@ -148,22 +148,23 @@ public class FlattenedBoard implements BoardView, EntityContext{
     private void checkEqualPositionOfEntities(){
         setOverlapping(false);
         HashMap<String, Entity> hashedEntities = new HashMap<>();
-        for(Entity entity : getEntitySet().getEntities()) {
-            if((entity.getEntityType() == EntityType.MASTER_SQUIRREL || entity.getEntityType() == EntityType.MINI_SQUIRREL)
-                && entity.getEnergy() <= 0 && entity.isAlive()){
+        for (Entity entity : getEntitySet()) {
+            if ((entity.getEntityType() == EntityType.MASTER_SQUIRREL || entity.getEntityType() == EntityType.MINI_SQUIRREL)
+                    && entity.getEnergy() <= 0 && entity.isAlive()) {
                 entity.setAlive(false);
             }
             try {
-                if(hashedEntities.containsKey(entity.getPosition().toString())){
-                    if(entity.getEntityType() == EntityType.GOOD_PLANT || entity.getEntityType() != EntityType.BAD_PLANT
-                    || entity.getEntityType() == EntityType.GOOD_BEAST || entity.getEntityType() == EntityType.BAD_BEAST){
+                if (hashedEntities.containsKey(entity.getPosition().toString())) {
+                    if (entity.getEntityType() == EntityType.GOOD_PLANT || entity.getEntityType() != EntityType.BAD_PLANT
+                            || entity.getEntityType() == EntityType.GOOD_BEAST || entity.getEntityType() == EntityType.BAD_BEAST) {
                         entity.updatePosition(entity.getPosition().getUtils().getRandomNearbyPosition());
                         setOverlapping(true);
                     }
-                }else{
+                } else {
                     hashedEntities.put(entity.getPosition().toString(), entity);
                 }
-            }catch (Exception ignored){}
+            } catch (Exception ignored) {
+            }
         }
         hashedEntities.clear();
     }

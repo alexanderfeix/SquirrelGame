@@ -13,7 +13,6 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
 
     private ListElement tail;
     private ListElement head;
-    private final ArrayList<hs.augsburg.squirrelgame.entity.Entity> entities = new ArrayList<>();
     /**
      * Counts the entities in the EntitySet. Do not confuse with the idCounter in Entity. The id in Entity-Class
      * is a real identifier for every entity created. The entityCounter in EntitySet identifies only counts the entities
@@ -35,9 +34,6 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
         }
     }
 
-    public ArrayList<hs.augsburg.squirrelgame.entity.Entity> getEntities() {
-        return entities;
-    }
 
     /**
      * @return the id of the tail. When tail == null, then return -1 flag.
@@ -179,7 +175,6 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
                     tail.setPrevItem(prevTail);
                 }
                 entityCounter++;
-                entities.add(entity);
                 Launcher.getLogger().log(Level.FINE, "Added new entity to EntitySet.");
                 return true;
             }
@@ -223,7 +218,7 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
                 }
                 tempTail = newTempTail;
             }
-            entities.remove(entity);
+            entityCounter--;
             Launcher.getLogger().log(Level.FINE, "Removed entity from EntitySet.");
             return true;
         }

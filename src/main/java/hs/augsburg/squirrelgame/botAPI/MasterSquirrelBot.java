@@ -41,7 +41,7 @@ public class MasterSquirrelBot extends MasterSquirrel{
             e.printStackTrace();
         }
         if(controllerContext.getRemainingSteps() <= 0){
-            Launcher.getLogger().log(Level.FINER, "Remaining steps are <= 0 for MasterSquirrelBot.");
+            Launcher.getLogger().log(Level.FINE, "Remaining steps are <= 0 for MasterSquirrelBot.");
             ArrayList<Integer> highScores;
             if(BoardConfig.HIGHSCORES.get(name) == null){
                 highScores = new ArrayList<>();
@@ -135,7 +135,7 @@ public class MasterSquirrelBot extends MasterSquirrel{
         @Override
         public int getEnergy() {
             int energy = MasterSquirrelBot.this.getEnergy();
-            Launcher.getLogger().log(Level.FINER, "Energy of MasterSquirrelBot is " + energy);
+            Launcher.getLogger().log(Level.FINE, "Energy of MasterSquirrelBot is " + energy);
             return energy;
         }
 

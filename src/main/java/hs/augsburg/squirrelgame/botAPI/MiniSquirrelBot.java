@@ -120,40 +120,43 @@ public class MiniSquirrelBot extends MiniSquirrel{
                 Launcher.getLogger().log(Level.SEVERE, "Throwing ImpactRadiusOutOfBoundsException because impactradius is " + impactRadius);
                 throw new ImpactRadiusOutOfBoundsException("[2; 10]");
             }
+            Launcher.getLogger().log(Level.INFO, "MiniSquirrelBot imploding on position " + getPosition());
+            Launcher.getLogger().log(Level.INFO, "Energy of MasterSquirrel BEFORE imploding: " + getMasterSquirrel().getEnergy());
             for(int col = getPosition().getX() - impactRadius; col < getPosition().getX() + impactRadius; col++){
                 for(int row = getPosition().getY() - impactRadius; row < getPosition().getY() + impactRadius; row++){
                     try {
                         XY position = new XY(col, row);
                         Entity entity = entityContext.getEntity(position);
-                        switch (entity.getEntityType()) {
-                            case MINI_SQUIRREL -> {
-                                MiniSquirrel miniSquirrel = (MiniSquirrel) entity;
-                                if (miniSquirrel.getMasterSquirrelId() != getMasterSquirrelId()) {
-                                    implodeHandling(miniSquirrel);
+                        if(entity.isAlive()){
+                            switch (entity.getEntityType()) {
+                                case MINI_SQUIRREL -> {
+                                    MiniSquirrel miniSquirrel = (MiniSquirrel) entity;
+                                    if (miniSquirrel.getMasterSquirrelId() != getMasterSquirrelId()) {
+                                        implodeHandling(miniSquirrel);
+                                    }
                                 }
-                            }
-                            case MASTER_SQUIRREL -> {
-                                MasterSquirrel masterSquirrel = (MasterSquirrel) entity;
-                                if (masterSquirrel.getId() != getMasterSquirrelId()) {
-                                    implodeHandling(masterSquirrel);
+                                case MASTER_SQUIRREL -> {
+                                    MasterSquirrel masterSquirrel = (MasterSquirrel) entity;
+                                    if (masterSquirrel.getId() != getMasterSquirrelId()) {
+                                        implodeHandling(masterSquirrel);
+                                    }
                                 }
-                            }
-                            case GOOD_PLANT, GOOD_BEAST -> implodeHandling(entity);
-                            case BAD_BEAST, BAD_PLANT -> {
-                                int energyLoss = MathUtils.getEnergyLoss(entity, MiniSquirrelBot.this, getImpactRadius());
-                                if (entity.getEnergy() + energyLoss >= 0) {
-                                    entity.setEnergy(0);
-                                } else {
-                                    entity.updateEnergy(energyLoss);
+                                case GOOD_PLANT, GOOD_BEAST -> implodeHandling(entity);
+                                case BAD_BEAST, BAD_PLANT -> {
+                                    int energyLoss = MathUtils.getEnergyLoss(entity, MiniSquirrelBot.this, getImpactRadius());
+                                    if (entity.getEnergy() + energyLoss >= 0) {
+                                        entity.setEnergy(0);
+                                    } else {
+                                        entity.updateEnergy(energyLoss);
+                                    }
                                 }
                             }
                         }
                     }catch (Exception ignored){}
                 }
             }
-
-            Launcher.getLogger().log(Level.INFO, "MiniSquirrelBot imploded on position" + getPosition());
             setEnergy(0);
+            Launcher.getLogger().log(Level.INFO, "Energy of MasterSquirrel AFTER imploding: " + getMasterSquirrel().getEnergy());
         }
 
         @Override
@@ -219,12 +222,16 @@ public class MiniSquirrelBot extends MiniSquirrel{
         }
 
         private void implodeHandling(Entity entity) {
+            String logMessage = "Detected implode handling for " + entity.getEntityType() + " on position (" + entity.getPosition() + ").\nEnergy BEFORE: " + entity.getEnergy();
                 int energyLoss = MathUtils.getEnergyLoss(entity, MiniSquirrelBot.this, getImpactRadius());
                 if(entity.getEnergy() < energyLoss){
+                    energyLoss = entity.getEnergy();
                     entity.setEnergy(0);
                 }else{
                     entity.updateEnergy(-energyLoss);
                 }
+                logMessage = logMessage + "\nEnergy AFTER: " + entity.getEnergy();
+                Launcher.getLogger().log(Level.FINE, logMessage);
                 getMasterSquirrel().updateEnergy(energyLoss);
         }
 
