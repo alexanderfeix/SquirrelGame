@@ -1,28 +1,51 @@
 package hs.augsburg.squirrelgame.botAPI;
 
+import hs.augsburg.squirrelgame.board.BoardConfig;
 import hs.augsburg.squirrelgame.botAPI.exception.OutOfViewException;
-import hs.augsburg.squirrelgame.entity.Entity;
+import hs.augsburg.squirrelgame.botAPI.exception.SpawnException;
 import hs.augsburg.squirrelgame.entity.EntityContext;
+import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.util.Direction;
 import hs.augsburg.squirrelgame.util.XY;
-import hs.augsburg.squirrelgame.util.exception.NotEnoughEnergyException;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 public class MasterSquirrelBot extends MasterSquirrel{
 
-    private final BotControllerFactory botControllerFactory;
+    private final Class<? extends BotControllerFactory> botControllerFactory;
+    private final String name;
 
-    public MasterSquirrelBot(hs.augsburg.squirrelgame.util.XY position) {
+    public MasterSquirrelBot(XY position, Class<? extends BotControllerFactory> factoryImpl, String name) {
         super(position);
-        this.botControllerFactory = new BotControllerFactoryImpl();
-
+        this.botControllerFactory = factoryImpl;
+        this.name = name;
     }
 
     @Override
     public void nextStep(EntityContext entityContext) {
         ControllerContext controllerContext = new ControllerContextImpl(entityContext);
-        BotController botController = botControllerFactory.createMasterBotController();
-        botController.nextStep(controllerContext);
+        try {
+            Object object = botControllerFactory.getDeclaredConstructor().newInstance();
+            Method method = botControllerFactory.getMethod("createMasterBotController");
+            BotController botController = (BotController) method.invoke(object);
+            botController.nextStep(controllerContext);
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        if(controllerContext.getRemainingSteps() <= 0){
+            ArrayList<Integer> highScores;
+            if(BoardConfig.HIGHSCORES.get(name) == null){
+                highScores = new ArrayList<>();
+            }else{
+                highScores = BoardConfig.HIGHSCORES.get(name);
+            }
+            highScores.add(controllerContext.getEnergy());
+            BoardConfig.HIGHSCORES.put(name, highScores);
+            System.out.println(highScores);
+        }
     }
 
     private class ControllerContextImpl implements ControllerContext{
@@ -48,15 +71,15 @@ public class MasterSquirrelBot extends MasterSquirrel{
         }
 
         @Override
-        public Entity getEntity(hs.augsburg.squirrelgame.util.XY xy) {
-            XY viewUpperRight = getViewUpperRight();
-            XY viewLowerLeft = getViewLowerLeft();
+        public EntityType getEntityAt(hs.augsburg.squirrelgame.util.XY xy) throws OutOfViewException{
+            hs.augsburg.squirrelgame.util.XY viewUpperRight = getViewUpperRight();
+            hs.augsburg.squirrelgame.util.XY viewLowerLeft = getViewLowerLeft();
             if(xy.getX() > viewUpperRight.getX() || xy.getX() < viewLowerLeft.getX()){
                 throw new OutOfViewException();
             }else if (xy.getY() > viewLowerLeft.getY() || xy.getY() < viewUpperRight.getY()){
                 throw new OutOfViewException();
             }
-            return entityContext.getEntity(xy);
+            return entityContext.getEntity(xy).getEntityType();
         }
 
         @Override
@@ -65,12 +88,12 @@ public class MasterSquirrelBot extends MasterSquirrel{
         }
 
         @Override
-        public void spawnMiniBot(hs.augsburg.squirrelgame.util.XY position, int energy) {
-            if(energy < 100){
-                throw new NotEnoughEnergyException();
-            }
-            MiniSquirrelBot miniSquirrelBot = (MiniSquirrelBot) createMiniSquirrel(position.getRandomNearbyPosition(), energy);
+        public void spawnMiniBot(hs.augsburg.squirrelgame.util.XY position, int energy) throws SpawnException{
+            MiniSquirrelBot miniSquirrelBot = (MiniSquirrelBot) createMiniSquirrel(position.getUtils().getRandomNearbyPosition(), energy);
             if(miniSquirrelBot != null){
+                if(energy < 100 || position == null || MasterSquirrelBot.this.getPosition() == miniSquirrelBot.getPosition()){
+                    throw new SpawnException();
+                }
                 miniSquirrelBot.setMasterSquirrelId(getId());
                 miniSquirrelBot.setMasterSquirrel(MasterSquirrelBot.this);
             }
@@ -78,7 +101,8 @@ public class MasterSquirrelBot extends MasterSquirrel{
 
         @Override
         public hs.augsburg.squirrelgame.util.XY locate() {
-            return MasterSquirrelBot.this.getPosition();
+            XY position =  MasterSquirrelBot.this.getPosition();
+            return new XY(position.getX(), position.getY());
         }
 
         @Override
@@ -87,8 +111,27 @@ public class MasterSquirrelBot extends MasterSquirrel{
         }
 
         @Override
-        public Direction getMasterSquirrelDirection() {
+        public Direction directionOfMaster() {
             return null;
         }
+
+        @Override
+        public boolean isMine(hs.augsburg.squirrelgame.util.XY xy) throws OutOfViewException{
+            return false;
+        }
+
+        @Override
+        public int getEnergy() {
+            return MasterSquirrelBot.this.getEnergy();
+        }
+
+        @Override
+        public long getRemainingSteps() {
+            return BoardConfig.REMAINING_STEPS;
+        }
+    }
+
+    public Class<? extends BotControllerFactory> getBotControllerFactory() {
+        return botControllerFactory;
     }
 }

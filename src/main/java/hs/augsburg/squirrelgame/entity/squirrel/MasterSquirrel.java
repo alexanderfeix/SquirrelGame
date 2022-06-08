@@ -1,9 +1,11 @@
 package hs.augsburg.squirrelgame.entity.squirrel;
 
+import hs.augsburg.squirrelgame.botAPI.BotControllerFactoryImpl;
 import hs.augsburg.squirrelgame.botAPI.MiniSquirrelBot;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.entity.beast.BadBeast;
+import hs.augsburg.squirrelgame.util.XY;
 import hs.augsburg.squirrelgame.util.XY;
 
 public class MasterSquirrel extends Entity {
@@ -12,7 +14,7 @@ public class MasterSquirrel extends Entity {
 
     private static final int startEnergy = 500;
 
-    public MasterSquirrel(hs.augsburg.squirrelgame.util.XY position) {
+    public MasterSquirrel(XY position) {
         super(EntityType.MASTER_SQUIRREL, position, startEnergy);
         setEntity(this);
     }
@@ -33,14 +35,14 @@ public class MasterSquirrel extends Entity {
             updateEnergy(enemy.getEnergy());
             XY currentPosition = enemy.getPosition();
             while (currentPosition == enemy.getPosition()) {
-                enemy.updatePosition(enemy.getPosition().getRandomPosition());
+                enemy.updatePosition(enemy.getPosition().getUtils().getRandomPosition());
             }
             updatePosition(currentPosition);
         } else if (enemy.getEntityType() == EntityType.GOOD_BEAST) {
             updateEnergy(enemy.getEnergy());
             XY currentPosition = enemy.getPosition();
             while (currentPosition == enemy.getPosition()) {
-                enemy.updatePosition(enemy.getPosition().getRandomPosition());
+                enemy.updatePosition(enemy.getPosition().getUtils().getRandomPosition());
             }
             updatePosition(currentPosition);
         }else if (enemy.getEntityType() == EntityType.BAD_BEAST){
@@ -49,7 +51,7 @@ public class MasterSquirrel extends Entity {
             if(badBeast.getBites() >= 7){
                 XY currentPosition = enemy.getPosition();
                 while (currentPosition == enemy.getPosition()) {
-                    enemy.updatePosition(enemy.getPosition().getRandomPosition());
+                    enemy.updatePosition(enemy.getPosition().getUtils().getRandomPosition());
                 }
                 updatePosition(currentPosition);
                 badBeast.setBites(0);
@@ -75,7 +77,7 @@ public class MasterSquirrel extends Entity {
         if (energy < 100) {
             return null;
         } else {
-            MiniSquirrelBot miniSquirrel = new MiniSquirrelBot(position, energy);
+            MiniSquirrelBot miniSquirrel = new MiniSquirrelBot(position, BotControllerFactoryImpl.class, "MiniSquirrelBot", energy);
             miniSquirrel.setMasterSquirrelId(getId());
             miniSquirrel.setMasterSquirrel(this);
             this.updateEnergy(-energy);

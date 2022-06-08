@@ -1,19 +1,28 @@
 package hs.augsburg.squirrelgame.ui;
 
+import hs.augsburg.squirrelgame.board.BoardConfig;
+import hs.augsburg.squirrelgame.botAPI.BotControllerFactoryImpl;
+import hs.augsburg.squirrelgame.botAPI.HighScore;
+import hs.augsburg.squirrelgame.botAPI.MasterSquirrelBot;
+import hs.augsburg.squirrelgame.botimpls.Group1101FactoryImpl;
 import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.command.CommandScanner;
 import hs.augsburg.squirrelgame.command.GameCommandType;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
+import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.game.GameImpl;
 import hs.augsburg.squirrelgame.main.Launcher;
 import hs.augsburg.squirrelgame.util.Direction;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -23,10 +32,13 @@ import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FxUI implements UI{
 
@@ -35,6 +47,7 @@ public class FxUI implements UI{
     private GameImpl controller;
     Label statusLabel = new Label("Game is running!");
     private static Direction nextDirection;
+    private Stage highScoreStage;
 
 
     MenuItem resumeMenu = new MenuItem("Resume");
@@ -104,6 +117,19 @@ public class FxUI implements UI{
                 try {
                     Entity entity = view.getEntity(col, row);
                     Shape shape = getRenderedEntityItem(entity.getEntityType());
+                    //TODO: REMOVE, THIS IS JUST FOR TESTING THE BOT ALGORITHMS
+
+                    if(entity.getEntityType() == EntityType.MASTER_SQUIRREL){
+                        try {
+                            MasterSquirrelBot masterSquirrelBot = (MasterSquirrelBot) entity;
+                            if(masterSquirrelBot.getBotControllerFactory() == BotControllerFactoryImpl.class){
+                                shape = createRectangle(Color.BLUE);
+                            }else if(masterSquirrelBot.getBotControllerFactory() == Group1101FactoryImpl.class){
+                                shape = createRectangle(Color.PURPLE);
+                            }
+                        }catch (Exception ignored){}
+                    }
+
                     gameBoardPane.add(shape, col, row);
                 }catch (Exception ignored){}
             }
@@ -142,7 +168,7 @@ public class FxUI implements UI{
     public GridPane getGameBoardPane() {
         if(gameBoardPane == null){
             gameBoardPane = new GridPane();
-            Launcher.getRootPane().setOnKeyPressed(new GUIKeyListener());
+            Launcher.getRootPane().setOnKeyPressed(new GUIKeyPressedListener());
             styleGameBoardPane();
         }
         return gameBoardPane;
@@ -322,6 +348,53 @@ public class FxUI implements UI{
         stage.show();
     }
 
+    public void showHighscoreMenu(){
+        ObservableList<HighScore> data = FXCollections.observableArrayList();
+        for(String name : BoardConfig.HIGHSCORES.keySet()){
+            int highestScore = 0, sum = 0, count = 0;
+            for(Integer score : BoardConfig.HIGHSCORES.get(name)){
+                if(score > highestScore){
+                    highestScore = score;
+                }
+                count++;
+                sum += score;
+                HighScore highScore = new HighScore(name, BoardConfig.CURRENT_ROUND, score);
+                data.add(highScore);
+            }
+            HighScore bestScore = new HighScore("Best for " + name, BoardConfig.CURRENT_ROUND, highestScore);
+            bestScore.setAverage(sum/count);
+            data.add(bestScore);
+        }
+        TableView<HighScore> tableView = new TableView<>();
+        TableColumn<HighScore, String> name = new TableColumn<>("Name");
+        TableColumn<HighScore, Integer> score = new TableColumn<>("Score");
+        TableColumn<HighScore, Integer> average = new TableColumn<>("Average");
+        score.setSortType(TableColumn.SortType.DESCENDING);
+        average.setSortType(TableColumn.SortType.DESCENDING);
+
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        score.setCellValueFactory(new PropertyValueFactory<>("highScore"));
+        average.setCellValueFactory(new PropertyValueFactory<>("average"));
+        tableView.setItems(data);
+        tableView.getColumns().addAll(name, score, average);
+        tableView.getSortOrder().add(average);
+        tableView.getSortOrder().add(score);
+        Scene scene = new Scene(tableView, 300, 300);
+        if(getHighScoreStage() == null){
+            this.highScoreStage = new Stage();
+        }
+        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+        getHighScoreStage().setX(primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth() - 200);
+        getHighScoreStage().setY(primaryScreenBounds.getMinY() + primaryScreenBounds.getHeight() - 500);
+        getHighScoreStage().setTitle("HighScores");
+        getHighScoreStage().setScene(scene);
+        if(getHighScoreStage().isShowing()){
+            getHighScoreStage().close();
+        }
+        getHighScoreStage().show();
+        switchPauseItems();
+    }
+
     private void createCommandButtons(Pane pane){
         for(GameCommandType gameCommandType : getController().getGameCommandTypes()){
             Text text = new Text(gameCommandType.getName() + ": " + gameCommandType.getHelpText());
@@ -368,7 +441,7 @@ public class FxUI implements UI{
         return circle;
     }
 
-    private void switchPauseItems(){
+    public void switchPauseItems(){
         String statusText;
         if(getController().isPause()){
             pauseButton.setDisable(false);
@@ -378,6 +451,7 @@ public class FxUI implements UI{
             helpButton.setDisable(false);
             spawnMiniSquirrelButton.setDisable(false);
             statusText = "Game resumed!";
+            getController().setPause(false);
         }else{
             pauseButton.setDisable(true);
             pauseMenu.setDisable(true);
@@ -386,6 +460,7 @@ public class FxUI implements UI{
             helpButton.setDisable(false);
             spawnMiniSquirrelButton.setDisable(false);
             statusText = "Game paused!";
+            getController().setPause(true);
         }
         statusLabel.setText(statusText);
     }
@@ -410,5 +485,9 @@ public class FxUI implements UI{
 
     public void setSquirrelInfoBar(VBox squirrelInfoBar) {
         this.squirrelInfoBar = squirrelInfoBar;
+    }
+
+    public Stage getHighScoreStage() {
+        return highScoreStage;
     }
 }

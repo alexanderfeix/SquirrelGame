@@ -1,5 +1,10 @@
 package hs.augsburg.squirrelgame.entity;
 
+import hs.augsburg.squirrelgame.board.BoardConfig;
+import hs.augsburg.squirrelgame.game.Game;
+import hs.augsburg.squirrelgame.game.GameMode;
+import hs.augsburg.squirrelgame.main.Launcher;
+
 import java.util.*;
 
 public class EntitySet {

@@ -5,10 +5,11 @@ import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
 import hs.augsburg.squirrelgame.game.Game;
 import hs.augsburg.squirrelgame.util.Direction;
+import hs.augsburg.squirrelgame.util.XY;
 
 public class HandOperatedMasterSquirrel extends MasterSquirrel implements EntityContext {
 
-    public HandOperatedMasterSquirrel(hs.augsburg.squirrelgame.util.XY position) {
+    public HandOperatedMasterSquirrel(XY position) {
         super(position);
     }
 
@@ -25,21 +26,21 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel implements Entity
         }
         if (Game.getUi().getNextDirection() == Direction.UP) {
             System.out.println("UP");
-            entityContext.move(getEntity(), getPosition().getRandomNearbyPosition(Direction.UP));
+            entityContext.move(getEntity(), getPosition().plus(XY.UP));
         } else if (Game.getUi().getNextDirection() == Direction.RIGHT) {
             System.out.println("RIGHT");
-            entityContext.move(getEntity(), getPosition().getRandomNearbyPosition(Direction.RIGHT));
+            entityContext.move(getEntity(), getPosition().plus(XY.RIGHT));
         } else if (Game.getUi().getNextDirection() == Direction.DOWN) {
             System.out.println("DOWN");
-            entityContext.move(getEntity(), getPosition().getRandomNearbyPosition(Direction.DOWN));
+            entityContext.move(getEntity(), getPosition().plus(XY.DOWN));
         } else if (Game.getUi().getNextDirection() == Direction.LEFT) {
             System.out.println("LEFT");
-            entityContext.move(getEntity(), getPosition().getRandomNearbyPosition(Direction.LEFT));
+            entityContext.move(getEntity(), getPosition().plus(XY.LEFT));
         }
     }
 
     @Override
-    public void move(Entity entity, hs.augsburg.squirrelgame.util.XY randomPosition) {
+    public void move(Entity entity, XY randomPosition) {
 
     }
 
@@ -49,12 +50,12 @@ public class HandOperatedMasterSquirrel extends MasterSquirrel implements Entity
     }
 
     @Override
-    public hs.augsburg.squirrelgame.util.XY getNearbySquirrelPosition(Entity entity) {
+    public XY getNearbySquirrelPosition(Entity entity) {
         return null;
     }
 
     @Override
-    public Entity getEntity(hs.augsburg.squirrelgame.util.XY position) {
+    public Entity getEntity(XY position) {
         return null;
     }
 }

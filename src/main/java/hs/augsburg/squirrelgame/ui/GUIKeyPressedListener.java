@@ -4,7 +4,7 @@ import hs.augsburg.squirrelgame.util.Direction;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 
-public class GUIKeyListener extends FxUI implements EventHandler<KeyEvent> {
+public class GUIKeyPressedListener extends FxUI implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent keyEvent) {
         String keyTyped = keyEvent.getText().toUpperCase();

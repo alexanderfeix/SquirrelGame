@@ -1,32 +1,56 @@
 package hs.augsburg.squirrelgame.botAPI;
 
+import hs.augsburg.squirrelgame.board.BoardConfig;
 import hs.augsburg.squirrelgame.botAPI.exception.ImpactRadiusOutOfBoundsException;
 import hs.augsburg.squirrelgame.botAPI.exception.OutOfViewException;
+import hs.augsburg.squirrelgame.botAPI.exception.SpawnException;
 import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityContext;
+import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.entity.squirrel.MiniSquirrel;
 import hs.augsburg.squirrelgame.util.Direction;
 import hs.augsburg.squirrelgame.util.MathUtils;
 import hs.augsburg.squirrelgame.util.XY;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+
 public class MiniSquirrelBot extends MiniSquirrel{
 
-    public MiniSquirrelBot(hs.augsburg.squirrelgame.util.XY position, int energy) {
+
+    private final Class<? extends BotControllerFactory> botControllerFactory;
+    private final String name;
+
+    public MiniSquirrelBot(XY position, Class<? extends BotControllerFactory> factoryImpl, String name, int energy) {
         super(position, energy);
+        this.botControllerFactory = factoryImpl;
+        this.name = name;
     }
-    private final BotControllerFactory botControllerFactory = new BotControllerFactoryImpl();
-    private ControllerContext controllerContext;
 
 
     public void nextStep(EntityContext entityContext) {
-        controllerContext = new ControllerContextImpl(entityContext);
-        BotController botController = botControllerFactory.createMiniBotController();
-        botController.nextStep(controllerContext);
-    }
-
-    public ControllerContext getControllerContext() {
-        return controllerContext;
+        ControllerContext controllerContext = new MiniSquirrelBot.ControllerContextImpl(entityContext);
+        try {
+            Object object = botControllerFactory.getDeclaredConstructor().newInstance();
+            Method method = botControllerFactory.getMethod("createMiniBotController");
+            BotController botController = (BotController) method.invoke(object);
+            botController.nextStep(controllerContext);
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        if(controllerContext.getRemainingSteps() <= 0){
+            ArrayList<Integer> highScores;
+            if(BoardConfig.HIGHSCORES.get(name) == null){
+                highScores = new ArrayList<>();
+            }else{
+                highScores = BoardConfig.HIGHSCORES.get(name);
+            }
+            highScores.add(controllerContext.getEnergy());
+            BoardConfig.HIGHSCORES.put(name, highScores);
+            System.out.println(highScores);
+        }
     }
 
     private class ControllerContextImpl implements ControllerContext{
@@ -53,15 +77,15 @@ public class MiniSquirrelBot extends MiniSquirrel{
         }
 
         @Override
-        public Entity getEntity(hs.augsburg.squirrelgame.util.XY xy) {
-            XY viewUpperRight = getViewUpperRight();
-            XY viewLowerLeft = getViewLowerLeft();
+        public EntityType getEntityAt(hs.augsburg.squirrelgame.util.XY xy) throws OutOfViewException{
+            hs.augsburg.squirrelgame.util.XY viewUpperRight = getViewUpperRight();
+            hs.augsburg.squirrelgame.util.XY viewLowerLeft = getViewLowerLeft();
             if(xy.getX() > viewUpperRight.getX() || xy.getX() < viewLowerLeft.getX()){
                 throw new OutOfViewException();
             }else if (xy.getY() > viewLowerLeft.getY() || xy.getY() < viewUpperRight.getY()){
                 throw new OutOfViewException();
             }
-            return entityContext.getEntity(xy);
+            return entityContext.getEntity(xy).getEntityType();
         }
 
         @Override
@@ -70,16 +94,16 @@ public class MiniSquirrelBot extends MiniSquirrel{
         }
 
         @Override
-        public void spawnMiniBot(hs.augsburg.squirrelgame.util.XY position, int energy) {
+        public void spawnMiniBot(hs.augsburg.squirrelgame.util.XY position, int energy) throws SpawnException {
             //TODO: NOTHING TO DO HERE!
         }
 
         @Override
         public hs.augsburg.squirrelgame.util.XY locate() {
-            return MiniSquirrelBot.this.getPosition();
+            XY position = MiniSquirrelBot.this.getPosition();
+            return new XY(position.getX(), position.getY());
         }
 
-        //TODO: Testing
         @Override
         public void implode(int impactRadius){
             if(!(impactRadius >= 2 && impactRadius <= 10)){
@@ -89,7 +113,7 @@ public class MiniSquirrelBot extends MiniSquirrel{
                 for(int row = getPosition().getY() - impactRadius; row < getPosition().getY() + impactRadius; row++){
                     try {
                         XY position = new XY(col, row);
-                        Entity entity = getEntity(position);
+                        Entity entity = entityContext.getEntity(position);
                         switch (entity.getEntityType()) {
                             case MINI_SQUIRREL -> {
                                 MiniSquirrel miniSquirrel = (MiniSquirrel) entity;
@@ -119,18 +143,8 @@ public class MiniSquirrelBot extends MiniSquirrel{
             setEnergy(0);
         }
 
-        private void implodeHandling(Entity entity) {
-                int energyLoss = MathUtils.getEnergyLoss(entity, MiniSquirrelBot.this, getImpactRadius());
-                if(entity.getEnergy() < energyLoss){
-                    entity.setEnergy(0);
-                }else{
-                    entity.updateEnergy(-energyLoss);
-                }
-                getMasterSquirrel().updateEnergy(energyLoss);
-        }
-
         @Override
-        public Direction getMasterSquirrelDirection(){
+        public Direction directionOfMaster() {
             MasterSquirrel masterSquirrel = getMasterSquirrel();
             XY masterSquirrelPosition = masterSquirrel.getPosition();
             if(masterSquirrelPosition.getX() > getPosition().getX() && masterSquirrelPosition.getY() == getPosition().getY()){
@@ -152,6 +166,46 @@ public class MiniSquirrelBot extends MiniSquirrel{
             }
             //Position of MasterSquirrel is equal to position of MiniSquirrel
             return null;
+        }
+
+
+        @Override
+        public boolean isMine(hs.augsburg.squirrelgame.util.XY xy) throws OutOfViewException{
+            hs.augsburg.squirrelgame.util.XY viewUpperRight = getViewUpperRight();
+            hs.augsburg.squirrelgame.util.XY viewLowerLeft = getViewLowerLeft();
+            if(xy.getX() > viewUpperRight.getX() || xy.getX() < viewLowerLeft.getX()){
+                throw new OutOfViewException();
+            }else if (xy.getY() > viewLowerLeft.getY() || xy.getY() < viewUpperRight.getY()){
+                throw new OutOfViewException();
+            }
+            if(getEntityAt(xy) == EntityType.MINI_SQUIRREL){
+                MiniSquirrel miniSquirrel = (MiniSquirrel) entityContext.getEntity(xy);
+                return miniSquirrel.getMasterSquirrel() == getMasterSquirrel();
+            }else if (getEntityAt(xy) == EntityType.MASTER_SQUIRREL){
+                MasterSquirrel masterSquirrel = (MasterSquirrel) entityContext.getEntity(xy);
+                return masterSquirrel.getId() == getMasterSquirrelId();
+            }
+            return false;
+        }
+
+        @Override
+        public int getEnergy() {
+            return MiniSquirrelBot.this.getEnergy();
+        }
+
+        @Override
+        public long getRemainingSteps() {
+            return BoardConfig.REMAINING_STEPS;
+        }
+
+        private void implodeHandling(Entity entity) {
+                int energyLoss = MathUtils.getEnergyLoss(entity, MiniSquirrelBot.this, getImpactRadius());
+                if(entity.getEnergy() < energyLoss){
+                    entity.setEnergy(0);
+                }else{
+                    entity.updateEnergy(-energyLoss);
+                }
+                getMasterSquirrel().updateEnergy(energyLoss);
         }
 
         public int getImpactRadius() {

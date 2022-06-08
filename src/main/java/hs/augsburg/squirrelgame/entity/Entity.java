@@ -9,14 +9,14 @@ public abstract class Entity implements EntityInterface {
     private final int id;
     private final EntityType entityType;
     private int energy;
-    private XY XY;
+    private XY xy;
     private Entity entity;
     private int moveCounter = 0;
     private boolean alive;
 
 
     public Entity(EntityType entityType, XY position, int energy) {
-        this.XY = position;
+        this.xy = position;
         this.energy = energy;
         this.entityType = entityType;
         this.id = idCount;
@@ -32,7 +32,7 @@ public abstract class Entity implements EntityInterface {
     }
 
     public void updatePosition(XY position) {
-        this.XY = position;
+        this.xy = position;
     }
 
     public void nextStep(EntityContext entityContext) {
@@ -55,7 +55,7 @@ public abstract class Entity implements EntityInterface {
     }
 
     public XY getPosition() {
-        return XY;
+        return xy;
     }
 
     public Entity getEntity() {

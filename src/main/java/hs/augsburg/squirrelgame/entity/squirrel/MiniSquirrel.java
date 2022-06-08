@@ -3,6 +3,7 @@ package hs.augsburg.squirrelgame.entity.squirrel;
 import hs.augsburg.squirrelgame.entity.*;
 import hs.augsburg.squirrelgame.entity.beast.BadBeast;
 import hs.augsburg.squirrelgame.util.XY;
+import hs.augsburg.squirrelgame.util.XY;
 
 public class MiniSquirrel extends MovableEntity {
 
@@ -10,14 +11,14 @@ public class MiniSquirrel extends MovableEntity {
     private MasterSquirrel masterSquirrel;
     private boolean invulnerable = true;
 
-    public MiniSquirrel(hs.augsburg.squirrelgame.util.XY position, int energy) {
+    public MiniSquirrel(XY position, int energy) {
         super(EntityType.MINI_SQUIRREL, position, energy);
         setEntity(this);
     }
 
     public void nextStep(EntityContext entityContext) {
         if(!invulnerable){
-            entityContext.move(getEntity(), getPosition().getRandomNearbyPosition());
+            entityContext.move(getEntity(), getPosition().getUtils().getRandomNearbyPosition());
             updateEnergy(-1);
             if (getEnergy() <= 0) {
                 setAlive(false);
@@ -45,14 +46,14 @@ public class MiniSquirrel extends MovableEntity {
             updateEnergy(enemy.getEnergy());
             XY currentPosition = enemy.getPosition();
             while (currentPosition == enemy.getPosition()) {
-                enemy.updatePosition(enemy.getPosition().getRandomPosition());
+                enemy.updatePosition(enemy.getPosition().getUtils().getRandomPosition());
             }
             updatePosition(currentPosition);
         }else if (enemy.getEntityType() == EntityType.GOOD_PLANT){
             getMasterSquirrel().updateEnergy(enemy.getEnergy());
             XY currentPosition = enemy.getPosition();
             while (currentPosition == enemy.getPosition()) {
-                enemy.updatePosition(enemy.getPosition().getRandomPosition());
+                enemy.updatePosition(enemy.getPosition().getUtils().getRandomPosition());
             }
             updatePosition(currentPosition);
         } else if (enemy.getEntityType() == EntityType.WALL) {
@@ -64,7 +65,7 @@ public class MiniSquirrel extends MovableEntity {
             if(badBeast.getBites() >= 7){
                 XY currentPosition = enemy.getPosition();
                 while (currentPosition == enemy.getPosition()) {
-                    enemy.updatePosition(enemy.getPosition().getRandomPosition());
+                    enemy.updatePosition(enemy.getPosition().getUtils().getRandomPosition());
                 }
                 updatePosition(currentPosition);
                 badBeast.setBites(0);
@@ -75,7 +76,7 @@ public class MiniSquirrel extends MovableEntity {
             getMasterSquirrel().updateEnergy(enemy.getEnergy());
             XY currentPosition = enemy.getPosition();
             while (currentPosition == enemy.getPosition()) {
-                enemy.updatePosition(enemy.getPosition().getRandomPosition());
+                enemy.updatePosition(enemy.getPosition().getUtils().getRandomPosition());
             }
             updatePosition(currentPosition);
         }
@@ -102,7 +103,7 @@ public class MiniSquirrel extends MovableEntity {
     }
 
     @Override
-    public void move(Entity entity, hs.augsburg.squirrelgame.util.XY randomPosition) {
+    public void move(Entity entity, XY randomPosition) {
 
     }
 
@@ -112,12 +113,12 @@ public class MiniSquirrel extends MovableEntity {
     }
 
     @Override
-    public hs.augsburg.squirrelgame.util.XY getNearbySquirrelPosition(Entity entity) {
+    public XY getNearbySquirrelPosition(Entity entity) {
         return null;
     }
 
     @Override
-    public Entity getEntity(hs.augsburg.squirrelgame.util.XY position) {
+    public Entity getEntity(XY position) {
         return null;
     }
 }

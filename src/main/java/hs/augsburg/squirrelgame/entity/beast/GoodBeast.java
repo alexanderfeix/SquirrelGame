@@ -1,6 +1,5 @@
 package hs.augsburg.squirrelgame.entity.beast;
 
-import hs.augsburg.squirrelgame.command.Command;
 import hs.augsburg.squirrelgame.entity.*;
 import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
 import hs.augsburg.squirrelgame.util.XY;
@@ -9,7 +8,7 @@ public class GoodBeast extends MovableEntity {
 
     private static final int startEnergy = 300;
 
-    public GoodBeast(hs.augsburg.squirrelgame.util.XY position) {
+    public GoodBeast(XY position) {
         super(EntityType.GOOD_BEAST, position, startEnergy);
         setEntity(this);
     }
@@ -28,7 +27,7 @@ public class GoodBeast extends MovableEntity {
         if (enemy.getEntityType() == EntityType.MASTER_SQUIRREL || enemy.getEntityType() == EntityType.MINI_SQUIRREL) {
             XY currentPosition = getPosition();
             while (currentPosition == getPosition()) {
-                updatePosition(getPosition().getRandomPosition());
+                updatePosition(getPosition().getUtils().getRandomPosition());
             }
             enemy.updatePosition(currentPosition);
             enemy.updateEnergy(getEnergy());
@@ -66,11 +65,11 @@ public class GoodBeast extends MovableEntity {
                 return new XY(position.getX() + 1, position.getY());
             }
         }
-        return position.getRandomNearbyPosition();
+        return position.getUtils().getRandomNearbyPosition();
     }
 
     @Override
-    public void move(Entity entity, hs.augsburg.squirrelgame.util.XY movePosition) {
+    public void move(Entity entity, XY movePosition) {
 
     }
 
@@ -80,12 +79,12 @@ public class GoodBeast extends MovableEntity {
     }
 
     @Override
-    public hs.augsburg.squirrelgame.util.XY getNearbySquirrelPosition(Entity entity) {
+    public XY getNearbySquirrelPosition(Entity entity) {
         return null;
     }
 
     @Override
-    public Entity getEntity(hs.augsburg.squirrelgame.util.XY position) {
+    public Entity getEntity(XY position) {
         return null;
     }
 
