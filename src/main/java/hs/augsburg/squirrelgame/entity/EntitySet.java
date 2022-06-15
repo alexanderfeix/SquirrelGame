@@ -6,10 +6,19 @@ import java.util.*;
 import java.util.Collection;
 import java.util.logging.Level;
 
-public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Entity> {
+public class EntitySet implements Collection<Entity> {
     /**
      * This class is used to manage the entities. Every instance of EntitySet could contain a different set of entities.
      */
+
+    public EntitySet(Collection<Entity> entityCollection){
+        for (Entity entity : entityCollection) {
+            add(entity);
+        }
+    }
+    public EntitySet(){
+
+    }
 
     private ListElement tail;
     private ListElement head;
@@ -25,9 +34,7 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
      */
     public void nextStep(EntityContext entityContext) {
         Launcher.getLogger().log(Level.FINEST, "Called nextStep in EntitySet.");
-        Iterator<Entity> entityIterator = iterator();
-        while (entityIterator.hasNext()) {
-            hs.augsburg.squirrelgame.entity.Entity current = entityIterator.next();
+        for (Entity current : this) {
             if (current.isAlive()) {
                 current.nextStep(entityContext);
             }
@@ -70,12 +77,12 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
 
     @Override
     public int size() {
-        return 0;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -103,6 +110,7 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
 
     @Override
     public Iterator<hs.augsburg.squirrelgame.entity.Entity> iterator() {
+        int storedEntitySize = entityCounter;
         Launcher.getLogger().log(Level.FINER, "Iterator call in EntitySet.");
         class IteratorRandomClass<Entity> implements Iterator<hs.augsburg.squirrelgame.entity.Entity> {
             final HashSet<Integer> usedIndex = new HashSet<>();
@@ -122,6 +130,9 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
 
             @Override
             public boolean hasNext() {
+                if(storedEntitySize != entityCounter){
+                    throw new ConcurrentModificationException();
+                }
                 return usedIndex.size() < entityCounter;
             }
 
@@ -150,12 +161,12 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -227,22 +238,22 @@ public class EntitySet implements Collection<hs.augsburg.squirrelgame.entity.Ent
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean addAll(Collection<? extends hs.augsburg.squirrelgame.entity.Entity> c) {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override

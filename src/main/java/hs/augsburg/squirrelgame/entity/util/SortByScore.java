@@ -4,7 +4,7 @@ import hs.augsburg.squirrelgame.entity.Entity;
 
 import java.util.Comparator;
 
-public class sortByScore implements Comparator<Entity> {
+public class SortByScore implements Comparator<Entity> {
 
     @Override
     public int compare(Entity o1, Entity o2) {

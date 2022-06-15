@@ -13,7 +13,7 @@ import hs.augsburg.squirrelgame.entity.Entity;
 import hs.augsburg.squirrelgame.entity.EntityType;
 
 import hs.augsburg.squirrelgame.entity.squirrel.MasterSquirrel;
-import hs.augsburg.squirrelgame.entity.util.sortByScore;
+import hs.augsburg.squirrelgame.entity.util.SortByScore;
 import hs.augsburg.squirrelgame.game.Game;
 import hs.augsburg.squirrelgame.game.GameImpl;
 import hs.augsburg.squirrelgame.game.GameMode;
@@ -44,7 +44,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class FxUI implements UI{
 
@@ -319,7 +318,7 @@ public class FxUI implements UI{
             while (entityIterator.hasNext()) {
                 ar.add(entityIterator.next());
             }
-            ar.sort(new sortByScore());
+            ar.sort((o1, o2) -> o2.getEnergy() - o1.getEnergy());
             for(Entity entity : ar){
                 if(entity.isAlive()){
                     if(Game.getGameMode() == GameMode.BOT_GUI){

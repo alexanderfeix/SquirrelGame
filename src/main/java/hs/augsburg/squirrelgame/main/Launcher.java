@@ -26,8 +26,7 @@ public class Launcher extends Application {
     private static Thread gameThread;
     private static Thread fxThread;
     private static final Logger logger = Logger.getLogger("");
-    private static final Level loggerLevel = Level.FINE;
-
+    private static final Level loggerLevel = Level.SEVERE;
 
     public static void main(String[] args) {
         setupLogger();

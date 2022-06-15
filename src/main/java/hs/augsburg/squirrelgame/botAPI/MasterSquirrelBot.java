@@ -85,8 +85,11 @@ public class MasterSquirrelBot extends MasterSquirrel{
             }else if (xy.getY() > viewLowerLeft.getY() || xy.getY() < viewUpperRight.getY()){
                 throw new OutOfViewException();
             }
-            Launcher.getLogger().log(Level.FINER, "Getting entity from position " + xy.toString() + ": " + entityContext.getEntity(xy).getEntityType());
-            return entityContext.getEntity(xy).getEntityType();
+            if(entityContext.getEntity(xy) == null){
+                return EntityType.NULL;
+            }else{
+                return entityContext.getEntity(xy).getEntityType();
+            }
         }
 
         @Override

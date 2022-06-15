@@ -2,91 +2,53 @@ package hs.augsburg.squirrelgame.botimpls;
 
 import hs.augsburg.squirrelgame.botAPI.BotController;
 import hs.augsburg.squirrelgame.botAPI.ControllerContext;
+import hs.augsburg.squirrelgame.botimpls.algorithm.AStarAlgorithmHandler;
+import hs.augsburg.squirrelgame.botimpls.algorithm.SearchHandler;
 import hs.augsburg.squirrelgame.entity.EntityType;
 import hs.augsburg.squirrelgame.util.XY;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class Group1101BotControllerMaster implements BotController {
 
-    /**
-     * Explanation of the algorithm
-     * 1. Search the 30x30 field for the nearest friendly entity(either GoodBeast or GoodPlant)
-     * 2. Search the 30x30 field for all bad entities and build a virtual boarder around them (1 entity = 9 fields)
-     * 3. If near bad entity found: Escape from entity
-     * 4. Else: Use the A* Algorithm to generate a path to the friendly entity around the bad entity-boarder
-     * 5. Move the first step of the calculated path
-     * 6. Repeat 1-5 every nextStep call
-     */
-
-
-    List<XY> badEntityPositions;
-    double nearestFriendlyEntityDistance;
-    XY nearestFriendlyEntityPosition;
-    double nearestEnemyEntityDistance;
-    XY nearestEnemyEntityPosition;
 
     @Override
     public void nextStep(ControllerContext controllerContext) {
-        badEntityPositions = new ArrayList<>();
-        nearestFriendlyEntityDistance = Double.MAX_VALUE;
-        nearestEnemyEntityDistance = Double.MAX_VALUE;
-        for(int col = controllerContext.getViewLowerLeft().getX(); col < controllerContext.getViewUpperRight().getX(); col++){
-            for(int row = controllerContext.getViewUpperRight().getY(); row < controllerContext.getViewLowerLeft().getY(); row++){
-                try {
-                    XY searchPosition = new XY(col, row);
-                    double distance = getDistanceFromTwoPoints(searchPosition, controllerContext.locate());
-                    EntityType entityType = controllerContext.getEntityAt(searchPosition);
-                    if(entityType == EntityType.BAD_BEAST || entityType == EntityType.BAD_PLANT){
-                        if(distance < nearestEnemyEntityDistance){
-                            nearestEnemyEntityDistance = distance;
-                            nearestEnemyEntityPosition = searchPosition;
-                        }
-                        badEntityPositions.add(searchPosition);
-                    }else if(entityType == EntityType.GOOD_BEAST || entityType == EntityType.GOOD_PLANT){
-                        if(distance < nearestFriendlyEntityDistance){
-                            nearestFriendlyEntityDistance = distance;
-                            nearestFriendlyEntityPosition = searchPosition;
-                        }
-                    }
-                }catch (Exception ignored){}
+        SearchHandler searchHandler = new SearchHandler();
+        searchHandler.search(controllerContext);
+        XY nearestFriend = searchHandler.getNearestFriendPosition(controllerContext);
+        if(nearestFriend != null){
+            AStarAlgorithmHandler.fillGameBoard(searchHandler);
+            AStarAlgorithmHandler.evaluate(controllerContext.locate(), nearestFriend);
+            if(AStarAlgorithmHandler.getNextMove() != null){
+                controllerContext.move(AStarAlgorithmHandler.getNextMove());
+            }else{
+                controllerContext.move(moveRandom(controllerContext.locate()));
             }
-        }
-        addEnemyBoarders();
-        if(nearestEnemyEntityDistance <= 2.){
-            controllerContext.move(controllerContext.locate().getUtils().escapeFromEntity(nearestEnemyEntityPosition));
         }else{
-            //TODO: Pathfinding
-            controllerContext.move(controllerContext.locate().getUtils().chaseEntity(nearestFriendlyEntityPosition));
+            controllerContext.move(moveRandom(controllerContext.locate()));
         }
+        AStarAlgorithmHandler.reset();
     }
 
-    private void addEnemyBoarders(){
-        if(badEntityPositions.size() != 0){
-            System.out.println(badEntityPositions.size());
-            List<XY> boarderPosition = new ArrayList<>();
-            for(XY position : badEntityPositions){
-                boarderPosition.add(position.plus(XY.UP));
-                boarderPosition.add(position.plus(XY.DOWN));
-                boarderPosition.add(position.plus(XY.LEFT));
-                boarderPosition.add(position.plus(XY.RIGHT));
-                boarderPosition.add(position.plus(XY.LEFT_UP));
-                boarderPosition.add(position.plus(XY.RIGHT_UP));
-                boarderPosition.add(position.plus(XY.LEFT_DOWN));
-                boarderPosition.add(position.plus(XY.RIGHT_DOWN));
-            }
-            badEntityPositions.addAll(boarderPosition);
-        }
-    }
 
-    private double getDistanceFromTwoPoints(XY pos1, XY pos2){
-        int x1 = pos1.getX();
-        int y1 = pos1.getY();
-        int x2 = pos2.getX();
-        int y2 = pos2.getY();
-        return Math.sqrt(Math.pow((Math.abs(x2-x1)), 2) + Math.pow((Math.abs(y2-y1)), 2));
+    private XY moveRandom(XY position){
+        Random random = new Random();
+        int nextInt = random.nextInt(8);
+        return switch (nextInt) {
+            case 0 -> position.plus(XY.UP);
+            case 1 -> position.plus(XY.RIGHT_UP);
+            case 2 -> position.plus(XY.LEFT_UP);
+            case 3 -> position.plus(XY.LEFT);
+            case 4 -> position.plus(XY.LEFT_DOWN);
+            case 5 -> position.plus(XY.DOWN);
+            case 6 -> position.plus(XY.RIGHT_DOWN);
+            case 7 -> position.plus(XY.RIGHT);
+            default -> position;
+        };
     }
 
 }

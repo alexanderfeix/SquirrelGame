@@ -74,7 +74,8 @@ public class Board {
         if(BoardConfig.LOAD_WALL_PATTERNS){
             for(ArrayList<XY> wallPattern : BoardConfig.WALL_PATTERNS){
                 for(XY position : wallPattern){
-                    getEntitySet().add(new Wall(position));
+                    Entity entity = getNewEntityFromType(position, EntityType.WALL);
+                    getEntitySet().add(entity);
                     spawnPositions.add(position);
                 }
             }
